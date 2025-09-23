@@ -1,0 +1,373 @@
+openapi: 3.0.0
+info:
+  title: BeBrahma AI API Gateway
+  description: Central entry point for BeBrahma AI microservices architecture
+  version: 1.0.0
+  contact:
+    name: BeBrahma AI Team
+    email: support@bebrahma.ai
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3002
+    description: Development server
+  - url: https://api.bebrahma.ai
+    description: Production server
+
+tags:
+  - name: AI Workflow
+    description: AI workflow management and orchestration
+  - name: AI Services
+    description: AI-related service endpoints
+  - name: Administration
+    description: Administrative service endpoints
+  - name: SaaS Services
+    description: SaaS-related service endpoints
+  - name: Conversation
+    description: Conversation service endpoints
+  - name: Health
+    description: Service health and status endpoints
+
+paths:
+  /:
+    get:
+      tags:
+        - Health
+      summary: Service health check
+      description: Basic health check endpoint for the API Gateway
+      responses:
+        '200':
+          description: API Gateway is running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  service:
+                    type: string
+                    example: "BeBrahma AI API Gateway"
+                  status:
+                    type: string
+                    example: "running"
+                  version:
+                    type: string
+                    example: "1.0.0"
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Detailed health status
+      description: Comprehensive health check including dependent services and configuration
+      responses:
+        '200':
+          description: Detailed health status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+                  environment:
+                    type: string
+                    example: "development"
+                  port:
+                    type: integer
+                    example: 3002
+                  apiUrl:
+                    type: string
+                    example: "http://localhost:3002"
+                  frontendUrl:
+                    type: string
+                    example: "http://localhost:3000"
+                  llm:
+                    type: object
+                    properties:
+                      openai:
+                        type: boolean
+                        example: true
+                      anthropic:
+                        type: boolean
+                        example: true
+
+  /api/ai:
+    get:
+      tags:
+        - AI Services
+      summary: AI service endpoints
+      description: Base path for AI-related services
+      responses:
+        '200':
+          description: AI service information
+
+  /api/admin:
+    get:
+      tags:
+        - Administration
+      summary: Admin service endpoints
+      description: Base path for administrative services
+      responses:
+        '200':
+          description: Admin service information
+
+  /api/saas:
+    get:
+      tags:
+        - SaaS Services
+      summary: SaaS service endpoints
+      description: Base path for SaaS-related services
+      responses:
+        '200':
+          description: SaaS service information
+
+  /api/conversation:
+    get:
+      tags:
+        - Conversation
+      summary: Conversation service endpoints
+      description: Base path for conversation services
+      responses:
+        '200':
+          description: Conversation service information
+
+  /api/chat/crew/start:
+    post:
+      tags:
+        - AI Workflow
+      summary: Start new AI workflow session
+      description: Initialize a new AI workflow session with CrewAI integration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sessionId
+                - task
+              properties:
+                sessionId:
+                  type: string
+                  description: Unique session identifier
+                  example: "workflow-12345"
+                task:
+                  type: string
+                  description: Task description for AI agents
+                  example: "Design a customer feedback system"
+                context:
+                  type: object
+                  description: Additional context for the workflow
+                  example: {"industry": "SaaS", "targetUsers": "Enterprise"}
+      responses:
+        '200':
+          description: Workflow session started successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowResponse'
+        '400':
+          description: Bad request - missing required fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/chat/crew/next:
+    post:
+      tags:
+        - AI Workflow
+      summary: Advance workflow to next step
+      description: Execute the next step in the AI workflow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sessionId
+              properties:
+                sessionId:
+                  type: string
+                  description: Session identifier to advance
+                  example: "workflow-12345"
+      responses:
+        '200':
+          description: Workflow advanced successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowResponse'
+        '400':
+          description: Bad request - missing sessionId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/chat/decision:
+    post:
+      tags:
+        - AI Workflow
+      summary: Process user decision at workflow stage
+      description: Handle user decisions to advance workflow stages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sessionId
+                - decision
+              properties:
+                sessionId:
+                  type: string
+                  description: Session identifier
+                  example: "workflow-12345"
+                decision:
+                  type: string
+                  enum: [approve, reject, modify]
+                  description: User decision for the current stage
+                  example: "approve"
+                userMessage:
+                  type: string
+                  description: Optional user message with decision
+                  example: "This approach looks good, proceed"
+      responses:
+        '200':
+          description: Decision processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowResponse'
+        '400':
+          description: Bad request - invalid decision or missing fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    WorkflowResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: AI agent messages from the workflow
+        stage:
+          type: string
+          description: Current workflow stage
+          example: "PROBLEM_CAPTURE"
+        stageStatus:
+          type: string
+          description: Status of the current stage
+          example: "IN_PROGRESS"
+        stageProgress:
+          type: object
+          description: Progress indicators for the current stage
+          example: {"completion": 0.75, "stepsCompleted": 3}
+        pendingDecision:
+          type: boolean
+          description: Whether a user decision is required
+          example: true
+        decisionOptions:
+          type: array
+          items:
+            type: string
+          description: Available decision options
+          example: ["approve", "reject", "modify"]
+        error:
+          type: string
+          description: Error message if operation failed
+          example: "Session not found"
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique message identifier
+          example: "msg-12345"
+        content:
+          type: string
+          description: Message content
+          example: "I've analyzed the problem and identified key areas..."
+        role:
+          type: string
+          description: Role of the message sender
+          example: "Facilitator"
+        timestamp:
+          type: string
+          format: date-time
+          description: When the message was created
+          example: "2025-08-25T07:30:00Z"
+        metadata:
+          type: object
+          description: Additional message metadata
+          example: {"stage": "PROBLEM_CAPTURE", "agentId": "facilitator-001"}
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: Error message
+          example: "Session ID is required"
+        code:
+          type: string
+          description: Error code for programmatic handling
+          example: "VALIDATION_ERROR"
+        details:
+          type: object
+          description: Additional error details
+          example: {"field": "sessionId", "reason": "missing"}
+
+security:
+  - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication

@@ -1,0 +1,241 @@
+// packages/database/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?  @db.Text
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  emailVerified DateTime?
+  image         String?
+  role          UserRole  @default(USER)
+  
+  // Pricing & Usage
+  plan          PricingPlan @default(STARTER)
+  monthlyRuns   Int         @default(0)
+  lastResetAt   DateTime    @default(now())
+  stripeCustomerId String?  @unique
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  projects      Project[]
+  toolCredentials ToolCredential[]
+  auditEvents   AuditEvent[]
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  status      ProjectStatus @default(DEFINING)
+  
+  // Core problem definition
+  problemStatement String?  @db.Text
+  targetMarket    String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  runs        Run[]
+  artifacts   Artifact[]
+
+  @@index([userId])
+}
+
+model Run {
+  id          String   @id @default(cuid())
+  projectId   String
+  userId      String
+  status      RunStatus @default(PENDING)
+  stage       Stage    @default(DEFINE)
+  
+  // Agent conversation state
+  conversationHistory Json?    @db.Json
+  agentStates        Json?    @db.Json
+  
+  // Cost tracking
+  totalTokens Int      @default(0)
+  totalCost   Decimal  @default(0) @db.Decimal(10, 4)
+  
+  // Execution metadata
+  startedAt   DateTime?
+  completedAt DateTime?
+  error       String?  @db.Text
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  artifacts   Artifact[]
+  auditEvents AuditEvent[]
+
+  @@index([projectId])
+  @@index([status])
+}
+
+model Artifact {
+  id          String   @id @default(cuid())
+  runId       String
+  projectId   String
+  type        ArtifactType
+  name        String
+  content     Json     @db.Json
+  
+  // For citations and sources
+  sources     Json?    @db.Json
+  confidence  Decimal? @db.Decimal(3, 2)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  run         Run      @relation(fields: [runId], references: [id], onDelete: Cascade)
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([runId])
+  @@index([projectId])
+  @@index([type])
+}
+
+model ToolCredential {
+  id          String   @id @default(cuid())
+  userId      String
+  tool        ToolType
+  credentials Json     @db.Json // Encrypted
+  scope       String?
+  expiresAt   DateTime?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tool])
+  @@index([userId])
+}
+
+model AuditEvent {
+  id          String   @id @default(cuid())
+  userId      String?
+  runId       String?
+  action      String
+  entity      String
+  entityId    String?
+  metadata    Json?    @db.Json
+  ipAddress   String?
+  userAgent   String?
+  
+  createdAt   DateTime @default(now())
+
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  run         Run?     @relation(fields: [runId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([runId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model PricingPlan {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  displayName String
+  monthlyRuns Int
+  features    Json     @db.Json
+  stripePriceId String? @unique
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Enums
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum PricingPlan {
+  STARTER
+  PRO
+  ENTERPRISE
+}
+
+enum ProjectStatus {
+  DEFINING
+  RESEARCHING
+  EVALUATING
+  GTM
+  BUILDING
+  LAUNCHED
+  ARCHIVED
+}
+
+enum RunStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum Stage {
+  DEFINE
+  RESEARCH
+  EVALUATE
+  GTM
+  BUILD
+  LAUNCH
+}
+
+enum ArtifactType {
+  PROBLEM_BRIEF
+  MARKET_SNAPSHOT
+  GTM_SEED
+  BUILD_PROMPT
+  DECISION_LOG
+  EXPORT
+}
+
+enum ToolType {
+  SEARCH
+  NOTION
+  GOOGLE_SHEETS
+  GITHUB
+  GMAIL
+  GA4
+  STRIPE
+  VERCEL
+}

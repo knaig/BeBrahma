@@ -1,0 +1,470 @@
+openapi: 3.0.0
+info:
+  title: BeBrahma CrewAI Service
+  description: Multi-agent AI collaboration and task execution service
+  version: 1.0.0
+  contact:
+    name: BeBrahma AI Team
+    email: support@bebrahma.ai
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:5055
+    description: Development server
+  - url: https://crew.bebrahma.ai
+    description: Production server
+
+tags:
+  - name: Session Management
+    description: AI agent session operations
+  - name: Workflow Execution
+    description: Workflow step execution and progression
+  - name: Agent Management
+    description: AI agent registration and configuration
+  - name: Health
+    description: Service health and status endpoints
+
+paths:
+  /:
+    get:
+      tags:
+        - Health
+      summary: Service health check
+      description: Basic health check for CrewAI service
+      responses:
+        '200':
+          description: CrewAI service is running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  service:
+                    type: string
+                    example: "BeBrahma CrewAI Service"
+                  status:
+                    type: string
+                    example: "running"
+                  version:
+                    type: string
+                    example: "1.0.0"
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /api/crew/start:
+    post:
+      tags:
+        - Session Management
+      summary: Initialize new AI agent session
+      description: Create a new session with AI agents for collaborative problem solving
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sessionId
+                - stage
+                - objectives
+                - requiredAgents
+              properties:
+                sessionId:
+                  type: string
+                  description: Unique session identifier
+                  example: "session-12345"
+                stage:
+                  type: string
+                  description: Current workflow stage
+                  example: "PROBLEM_CAPTURE"
+                objectives:
+                  type: array
+                  items:
+                    type: string
+                  description: List of objectives for this stage
+                  example: ["Analyze problem", "Identify stakeholders", "Define scope"]
+                requiredAgents:
+                  type: array
+                  items:
+                    type: string
+                  description: Required agent roles for this stage
+                  example: ["facilitator", "market_analyst", "critical_cassandra"]
+                requestType:
+                  type: string
+                  enum: [single_step, multi_step, complete_stage]
+                  description: Type of execution request
+                  example: "single_step"
+                stepLimit:
+                  type: integer
+                  description: Maximum number of steps to execute
+                  example: 1
+      responses:
+        '200':
+          description: Session started successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrewMessage'
+        '400':
+          description: Bad request - missing required fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/crew/next:
+    post:
+      tags:
+        - Workflow Execution
+      summary: Execute next step in workflow
+      description: Execute the next logical step in the current workflow stage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sessionId
+              properties:
+                sessionId:
+                  type: string
+                  description: Session identifier to advance
+                  example: "session-12345"
+                stepLimit:
+                  type: integer
+                  description: Maximum number of steps to execute
+                  example: 1
+      responses:
+        '200':
+          description: Step executed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrewMessage'
+        '400':
+          description: Bad request - missing sessionId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/crew/decision:
+    post:
+      tags:
+        - Workflow Execution
+      summary: Process user decision
+      description: Handle user decisions to control workflow progression
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sessionId
+                - decision
+              properties:
+                sessionId:
+                  type: string
+                  description: Session identifier
+                  example: "session-12345"
+                decision:
+                  type: string
+                  enum: [approve, reject, modify]
+                  description: User decision for workflow progression
+                  example: "approve"
+                userMessage:
+                  type: string
+                  description: Optional user message with decision
+                  example: "This approach looks good, proceed"
+      responses:
+        '200':
+          description: Decision processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrewMessage'
+        '400':
+          description: Bad request - invalid decision or missing fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/crew/status/{sessionId}:
+    get:
+      tags:
+        - Session Management
+      summary: Get session status
+      description: Retrieve current status and progress of a session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Session identifier
+          example: "session-12345"
+      responses:
+        '200':
+          description: Session status retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionId:
+                    type: string
+                    example: "session-12345"
+                  currentStage:
+                    type: string
+                    example: "PROBLEM_CAPTURE"
+                  turn:
+                    type: integer
+                    example: 5
+                  status:
+                    type: string
+                    enum: [active, completed, paused, error]
+                    example: "active"
+                  lastActivity:
+                    type: string
+                    format: date-time
+                    example: "2025-08-25T07:30:00Z"
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/crew/agents:
+    get:
+      tags:
+        - Agent Management
+      summary: List available agents
+      description: Get list of all available AI agents and their capabilities
+      responses:
+        '200':
+          description: Agents retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agent'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      tags:
+        - Agent Management
+      summary: Register new agent
+      description: Register a new AI agent with the system
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentRegistration'
+      responses:
+        '201':
+          description: Agent registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+        '400':
+          description: Bad request - invalid agent data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Agent already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    CrewMessage:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
+        messages:
+          type: array
+          items:
+            type: object
+            properties:
+              content:
+                type: string
+                description: Message content from AI agent
+                example: "I've analyzed the problem and identified key stakeholders..."
+              role:
+                type: string
+                description: Role of the message sender
+                example: "Facilitator"
+              timestamp:
+                type: string
+                format: date-time
+                description: When the message was generated
+                example: "2025-08-25T07:30:00Z"
+          description: AI agent messages from the workflow
+        stage:
+          type: string
+          description: Current workflow stage
+          example: "PROBLEM_CAPTURE"
+        error:
+          type: string
+          description: Error message if operation failed
+          example: null
+
+    Agent:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique agent identifier
+          example: "facilitator-001"
+        name:
+          type: string
+          description: Human-readable agent name
+          example: "Project Facilitator"
+        role:
+          type: string
+          description: Agent's primary role
+          example: "facilitator"
+        description:
+          type: string
+          description: Agent's purpose and capabilities
+          example: "Helps capture and clarify business problems"
+        capabilities:
+          type: array
+          items:
+            type: string
+          description: List of agent capabilities
+          example: ["problem_analysis", "stakeholder_identification", "scope_definition"]
+        status:
+          type: string
+          enum: [active, inactive, maintenance]
+          description: Current agent status
+          example: "active"
+        createdAt:
+          type: string
+          format: date-time
+          description: When the agent was created
+          example: "2025-08-25T07:00:00Z"
+
+    AgentRegistration:
+      type: object
+      required:
+        - name
+        - role
+        - description
+      properties:
+        name:
+          type: string
+          description: Human-readable agent name
+          example: "Data Analyst"
+        role:
+          type: string
+          description: Agent's primary role
+          example: "data_analyst"
+        description:
+          type: string
+          description: Agent's purpose and capabilities
+          example: "Analyzes data and provides insights"
+        capabilities:
+          type: array
+          items:
+            type: string
+          description: List of agent capabilities
+          example: ["data_analysis", "statistical_modeling", "insight_generation"]
+        configuration:
+          type: object
+          description: Agent-specific configuration
+          example: {"model": "gpt-4", "temperature": 0.7}
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: Error message
+          example: "Session ID is required"
+        code:
+          type: string
+          description: Error code for programmatic handling
+          example: "VALIDATION_ERROR"
+        details:
+          type: object
+          description: Additional error details
+          example: {"field": "sessionId", "reason": "missing"}
+
+security:
+  - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication

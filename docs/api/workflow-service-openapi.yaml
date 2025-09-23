@@ -1,0 +1,367 @@
+openapi: 3.0.0
+info:
+  title: BeBrahma LangGraph Workflow Service
+  description: State-managed workflow orchestration and stage progression service
+  version: 1.0.0
+  contact:
+    name: BeBrahma AI Team
+    email: support@bebrahma.ai
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:5056
+    description: Development server
+  - url: https://workflow.bebrahma.ai
+    description: Production server
+
+tags:
+  - name: Workflow Orchestration
+    description: LangGraph workflow management and execution
+  - name: Workflow Status
+    description: Workflow state and progress monitoring
+  - name: Health
+    description: Service health and status endpoints
+
+paths:
+  /:
+    get:
+      tags:
+        - Health
+      summary: Service health check
+      description: Basic health check for Workflow service
+      responses:
+        '200':
+          description: Workflow service is running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  service:
+                    type: string
+                    example: "BeBrahma LangGraph Workflow Service"
+                  status:
+                    type: string
+                    example: "running"
+                  version:
+                    type: string
+                    example: "1.0.0"
+
+  /api/workflow/start:
+    post:
+      tags:
+        - Workflow Orchestration
+      summary: Start new LangGraph workflow
+      description: Initialize a new LangGraph workflow session with CrewAI integration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sessionId
+                - task
+              properties:
+                sessionId:
+                  type: string
+                  description: Unique session identifier
+                  example: "workflow-12345"
+                task:
+                  type: string
+                  description: Task description for the workflow
+                  example: "Design a customer feedback system"
+                context:
+                  type: object
+                  description: Additional context for the workflow
+                  example: {"industry": "SaaS", "targetUsers": "Enterprise"}
+      responses:
+        '200':
+          description: Workflow started successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowResponse'
+        '400':
+          description: Bad request - missing required fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/workflow/next:
+    post:
+      tags:
+        - Workflow Orchestration
+      summary: Advance workflow state
+      description: Execute the next step in the LangGraph workflow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sessionId
+              properties:
+                sessionId:
+                  type: string
+                  description: Session identifier to advance
+                  example: "workflow-12345"
+      responses:
+        '200':
+          description: Workflow advanced successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowResponse'
+        '400':
+          description: Bad request - missing sessionId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/workflow/decision:
+    post:
+      tags:
+        - Workflow Orchestration
+      summary: Process stage decisions
+      description: Handle user decisions to advance workflow stages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sessionId
+                - decision
+              properties:
+                sessionId:
+                  type: string
+                  description: Session identifier
+                  example: "workflow-12345"
+                decision:
+                  type: string
+                  enum: [approve, reject, modify]
+                  description: User decision for the current stage
+                  example: "approve"
+                userMessage:
+                  type: string
+                  description: Optional user message with decision
+                  example: "This approach looks good, proceed"
+      responses:
+        '200':
+          description: Decision processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowResponse'
+        '400':
+          description: Bad request - invalid decision or missing fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/workflow/status/{sessionId}:
+    get:
+      tags:
+        - Workflow Status
+      summary: Get workflow status
+      description: Retrieve current workflow state and progress
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Session identifier
+          example: "workflow-12345"
+      responses:
+        '200':
+          description: Workflow status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowStatusResponse'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    WorkflowResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+          example: true
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowMessage'
+          description: AI agent messages from the workflow
+        stage:
+          type: string
+          description: Current workflow stage
+          example: "PROBLEM_CAPTURE"
+        stageStatus:
+          type: string
+          description: Status of the current stage
+          example: "IN_PROGRESS"
+        stageProgress:
+          type: object
+          description: Progress indicators for the current stage
+          example: {"completion": 0.75, "stepsCompleted": 3}
+        pendingDecision:
+          type: boolean
+          description: Whether a user decision is required
+          example: true
+        decisionOptions:
+          type: array
+          items:
+            type: string
+          description: Available decision options
+          example: ["approve", "reject", "modify"]
+        error:
+          type: string
+          description: Error message if operation failed
+          example: null
+
+    WorkflowStatusResponse:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          description: Session identifier
+          example: "workflow-12345"
+        currentStage:
+          type: string
+          description: Current workflow stage
+          example: "PROBLEM_CAPTURE"
+        stageStatus:
+          type: string
+          description: Status of the current stage
+          example: "IN_PROGRESS"
+        stageProgress:
+          type: object
+          description: Progress indicators for the current stage
+          example: {"completion": 0.75, "stepsCompleted": 3}
+        pendingDecision:
+          type: boolean
+          description: Whether a user decision is required
+          example: true
+        decisionOptions:
+          type: array
+          items:
+            type: string
+          description: Available decision options
+          example: ["approve", "reject", "modify"]
+        totalSteps:
+          type: integer
+          description: Total steps completed
+          example: 15
+        lastActivity:
+          type: string
+          format: date-time
+          description: Last activity timestamp
+          example: "2025-08-25T07:30:00Z"
+
+    WorkflowMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique message identifier
+          example: "msg-12345"
+        content:
+          type: string
+          description: Message content
+          example: "I've analyzed the problem and identified key areas..."
+        role:
+          type: string
+          description: Role of the message sender
+          example: "Facilitator"
+        timestamp:
+          type: string
+          format: date-time
+          description: When the message was created
+          example: "2025-08-25T07:30:00Z"
+        metadata:
+          type: object
+          description: Additional message metadata
+          example: {"stage": "PROBLEM_CAPTURE", "agentId": "facilitator-001"}
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: Error message
+          example: "Session ID is required"
+        code:
+          type: string
+          description: Error code for programmatic handling
+          example: "VALIDATION_ERROR"
+        details:
+          type: object
+          description: Additional error details
+          example: {"field": "sessionId", "reason": "missing"}
+
+security:
+  - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication
