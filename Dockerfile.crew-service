@@ -1,0 +1,79 @@
+# AWS ECR-optimized Dockerfile for BeBrahma CrewAI Service
+# Multi-stage build for production deployment with monorepo support
+
+# Build arguments
+ARG NODE_ENV=production
+ARG CI=false
+ARG BUILD_VERSION=latest
+
+# Base stage with Python 3.11 slim
+FROM python:3.11-slim AS base
+WORKDIR /app
+
+# Install system dependencies for security and compatibility
+RUN apt-get update && apt-get install -y \
+    curl \
+    sqlite3 \
+    build-essential \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# Dependencies stage
+FROM base AS deps
+WORKDIR /app
+
+# Copy requirements file from correct monorepo location
+COPY apps/crew-service/requirements.txt ./
+
+# Create virtual environment and install dependencies
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Install Python packages with optimization
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Production stage
+FROM base AS runner
+WORKDIR /app
+
+# Environment variables
+ENV PYTHONPATH=/app
+ENV PORT=5055
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV NODE_ENV=${NODE_ENV}
+ENV CI=${CI}
+
+# Create non-root user for security
+RUN groupadd --gid 1001 crewai
+RUN useradd --uid 1001 --gid crewai --shell /bin/bash --create-home crewai
+
+# Copy virtual environment from deps stage
+COPY --from=deps /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Copy application code from monorepo
+COPY apps/crew-service/ ./apps/crew-service/
+COPY bebrahma/ ./bebrahma/
+
+# Create necessary directories
+RUN mkdir -p /app/data /app/logs && chown -R crewai:crewai /app
+
+# Set proper permissions
+RUN chown -R crewai:crewai /app
+RUN chmod -R 755 /app
+
+# Switch to non-root user
+USER crewai
+
+# Health check with improved reliability
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:5055/health || exit 1
+
+# Expose port
+EXPOSE 5055
+
+# Start the application with uvicorn
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5055", "--workers", "1", "--app-dir", "apps/crew-service"]

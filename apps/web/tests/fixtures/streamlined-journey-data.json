@@ -1,0 +1,520 @@
+{
+  "onboarding": {
+    "companyTypes": {
+      "startup": {
+        "companyName": "TechStart Inc",
+        "industry": "technology",
+        "companySize": "1-10",
+        "projectType": "web-application",
+        "budget": "10k-50k",
+        "timeline": "3-6-months",
+        "description": "Building a modern web application for our startup",
+        "teamSize": "5",
+        "experience": "beginner",
+        "goals": ["market-validation", "user-acquisition", "fundraising"]
+      },
+      "enterprise": {
+        "companyName": "Enterprise Corp",
+        "industry": "finance",
+        "companySize": "1000+",
+        "projectType": "enterprise-solution",
+        "budget": "100k+",
+        "timeline": "6-12-months",
+        "description": "Enterprise-grade solution for financial services",
+        "teamSize": "50",
+        "experience": "expert",
+        "goals": ["compliance", "scalability", "security", "integration"]
+      },
+      "smallBusiness": {
+        "companyName": "Local Business LLC",
+        "industry": "retail",
+        "companySize": "11-50",
+        "projectType": "ecommerce",
+        "budget": "5k-25k",
+        "timeline": "1-3-months",
+        "description": "E-commerce platform for local retail business",
+        "teamSize": "15",
+        "experience": "intermediate",
+        "goals": ["online-presence", "sales-increase", "customer-engagement"]
+      },
+      "nonProfit": {
+        "companyName": "Community Foundation",
+        "industry": "non-profit",
+        "companySize": "51-200",
+        "projectType": "community-platform",
+        "budget": "25k-100k",
+        "timeline": "3-9-months",
+        "description": "Community engagement and donation platform",
+        "teamSize": "25",
+        "experience": "intermediate",
+        "goals": ["community-outreach", "donor-engagement", "impact-measurement"]
+      }
+    },
+    "industries": [
+      "technology",
+      "finance",
+      "healthcare",
+      "education",
+      "retail",
+      "manufacturing",
+      "consulting",
+      "non-profit",
+      "real-estate",
+      "transportation"
+    ],
+    "companySizes": [
+      "1-10",
+      "11-50",
+      "51-200",
+      "201-1000",
+      "1000+"
+    ],
+    "projectTypes": [
+      "web-application",
+      "mobile-app",
+      "ecommerce",
+      "enterprise-solution",
+      "api-service",
+      "data-analytics",
+      "ai-ml-platform",
+      "blockchain-application",
+      "iot-platform",
+      "saas-product"
+    ],
+    "budgetRanges": [
+      "under-5k",
+      "5k-25k",
+      "25k-100k",
+      "100k-500k",
+      "500k+"
+    ],
+    "timelines": [
+      "1-3-months",
+      "3-6-months",
+      "6-12-months",
+      "12+months"
+    ]
+  },
+  "projects": {
+    "webApplication": {
+      "name": "Modern Web Application",
+      "description": "A responsive web application with modern UI/UX",
+      "requirements": [
+        "user-authentication",
+        "responsive-design",
+        "data-persistence",
+        "real-time-updates",
+        "admin-dashboard",
+        "user-management",
+        "search-functionality",
+        "file-upload",
+        "notifications",
+        "analytics"
+      ],
+      "priority": "high",
+      "deadline": "2024-06-30",
+      "complexity": "medium",
+      "teamSize": "8",
+      "technologies": ["react", "nodejs", "postgresql", "redis"],
+      "phases": ["planning", "design", "development", "testing", "deployment"]
+    },
+    "ecommerce": {
+      "name": "E-commerce Platform",
+      "description": "Full-featured online shopping platform",
+      "requirements": [
+        "product-catalog",
+        "shopping-cart",
+        "payment-processing",
+        "order-management",
+        "inventory-tracking",
+        "customer-reviews",
+        "shipping-calculator",
+        "tax-calculation",
+        "discount-codes",
+        "analytics-dashboard"
+      ],
+      "priority": "high",
+      "deadline": "2024-08-31",
+      "complexity": "high",
+      "teamSize": "12",
+      "technologies": ["nextjs", "typescript", "mongodb", "stripe"],
+      "phases": ["discovery", "design", "development", "testing", "launch"]
+    },
+    "enterpriseSolution": {
+      "name": "Enterprise Management System",
+      "description": "Comprehensive business management solution",
+      "requirements": [
+        "multi-tenant-architecture",
+        "role-based-access-control",
+        "audit-trails",
+        "data-encryption",
+        "api-integration",
+        "reporting-engine",
+        "workflow-automation",
+        "compliance-tools",
+        "backup-recovery",
+        "monitoring-alerts"
+      ],
+      "priority": "critical",
+      "deadline": "2024-12-31",
+      "complexity": "very-high",
+      "teamSize": "20",
+      "technologies": ["angular", "java", "oracle", "kafka"],
+      "phases": ["requirements", "architecture", "development", "testing", "deployment", "training"]
+    },
+    "mobileApp": {
+      "name": "Cross-Platform Mobile App",
+      "description": "Native mobile application for iOS and Android",
+      "requirements": [
+        "cross-platform-support",
+        "offline-functionality",
+        "push-notifications",
+        "biometric-authentication",
+        "camera-integration",
+        "gps-tracking",
+        "social-sharing",
+        "in-app-purchases",
+        "analytics-tracking",
+        "crash-reporting"
+      ],
+      "priority": "medium",
+      "deadline": "2024-07-31",
+      "complexity": "medium",
+      "teamSize": "10",
+      "technologies": ["react-native", "typescript", "firebase", "expo"],
+      "phases": ["design", "development", "testing", "app-store-submission"]
+    },
+    "quickMVP": {
+      "name": "Quick MVP",
+      "description": "Minimum viable product for rapid validation",
+      "requirements": [
+        "core-features",
+        "basic-ui",
+        "data-persistence",
+        "user-feedback",
+        "analytics"
+      ],
+      "priority": "high",
+      "deadline": "2024-04-30",
+      "complexity": "low",
+      "teamSize": "4",
+      "technologies": ["html", "css", "javascript", "sqlite"],
+      "phases": ["design", "development", "testing", "launch"]
+    }
+  },
+  "workflows": {
+    "stages": {
+      "initialization": {
+        "name": "Project Initialization",
+        "progress": 0,
+        "agents": ["coordinator"],
+        "decisions": [],
+        "status": "starting",
+        "duration": "1-2 days",
+        "deliverables": ["project-charter", "team-assignment", "timeline"]
+      },
+      "requirementsGathering": {
+        "name": "Requirements Gathering",
+        "progress": 25,
+        "agents": ["analyst", "coordinator"],
+        "decisions": ["scope-defined"],
+        "status": "active",
+        "duration": "3-5 days",
+        "deliverables": ["requirements-document", "user-stories", "acceptance-criteria"]
+      },
+      "planning": {
+        "name": "Project Planning",
+        "progress": 50,
+        "agents": ["planner", "coordinator"],
+        "decisions": ["scope-defined", "timeline-set"],
+        "status": "active",
+        "duration": "2-3 days",
+        "deliverables": ["project-plan", "resource-allocation", "risk-assessment"]
+      },
+      "execution": {
+        "name": "Development Execution",
+        "progress": 75,
+        "agents": ["developer", "coordinator"],
+        "decisions": ["scope-defined", "timeline-set", "plan-approved"],
+        "status": "active",
+        "duration": "2-4 weeks",
+        "deliverables": ["working-software", "documentation", "test-results"]
+      },
+      "completion": {
+        "name": "Project Completion",
+        "progress": 100,
+        "agents": ["coordinator"],
+        "decisions": ["scope-defined", "timeline-set", "plan-approved", "project-completed"],
+        "status": "completed",
+        "duration": "1-2 days",
+        "deliverables": ["final-deliverables", "project-retrospective", "handover-documentation"]
+      }
+    },
+    "agents": {
+      "coordinator": {
+        "name": "Project Coordinator",
+        "role": "Manages overall project flow and coordinates between agents",
+        "capabilities": ["project-management", "communication", "decision-making"],
+        "personality": "organized, communicative, decisive"
+      },
+      "analyst": {
+        "name": "Business Analyst",
+        "role": "Gathers and analyzes business requirements",
+        "capabilities": ["requirements-analysis", "stakeholder-communication", "business-process-modeling"],
+        "personality": "analytical, detail-oriented, collaborative"
+      },
+      "planner": {
+        "name": "Project Planner",
+        "role": "Creates detailed project plans and schedules",
+        "capabilities": ["project-planning", "resource-planning", "risk-management"],
+        "personality": "strategic, methodical, risk-aware"
+      },
+      "developer": {
+        "name": "Software Developer",
+        "role": "Implements the technical solution",
+        "capabilities": ["software-development", "testing", "deployment"],
+        "personality": "technical, problem-solving, quality-focused"
+      },
+      "tester": {
+        "name": "Quality Assurance",
+        "role": "Ensures software quality and functionality",
+        "capabilities": ["test-planning", "test-execution", "defect-tracking"],
+        "personality": "detail-oriented, quality-focused, systematic"
+      }
+    },
+    "decisionPoints": {
+      "scopeDefinition": {
+        "name": "Scope Definition",
+        "description": "Define project boundaries and deliverables",
+        "options": ["expand-scope", "maintain-scope", "reduce-scope"],
+        "impact": "high",
+        "stakeholders": ["client", "project-manager", "technical-lead"]
+      },
+      "timelineAdjustment": {
+        "name": "Timeline Adjustment",
+        "description": "Adjust project timeline based on progress",
+        "options": ["extend-timeline", "maintain-timeline", "accelerate-timeline"],
+        "impact": "medium",
+        "stakeholders": ["project-manager", "client", "team-leads"]
+      },
+      "technologyChoice": {
+        "name": "Technology Choice",
+        "description": "Select appropriate technologies for implementation",
+        "options": ["modern-stack", "proven-stack", "custom-solution"],
+        "impact": "high",
+        "stakeholders": ["technical-lead", "architect", "project-manager"]
+      },
+      "resourceAllocation": {
+        "name": "Resource Allocation",
+        "description": "Allocate team members and resources",
+        "options": ["increase-resources", "maintain-resources", "optimize-resources"],
+        "impact": "medium",
+        "stakeholders": ["project-manager", "hr-manager", "team-leads"]
+      }
+    }
+  },
+  "testScenarios": {
+    "happyPath": {
+      "name": "Happy Path - Complete Success",
+      "description": "User completes entire journey without any issues",
+      "steps": [
+        "onboarding-completion",
+        "dashboard-access",
+        "project-creation",
+        "workflow-progression",
+        "project-completion"
+      ],
+      "expectedOutcome": "User successfully completes project with all features working",
+      "successCriteria": [
+        "onboarding-completed",
+        "dashboard-accessible",
+        "project-created",
+        "workflow-completed",
+        "satisfaction-high"
+      ]
+    },
+    "errorRecovery": {
+      "name": "Error Recovery - Graceful Degradation",
+      "description": "User experiences errors but system recovers gracefully",
+      "steps": [
+        "onboarding-with-errors",
+        "error-handling",
+        "recovery-mechanisms",
+        "continued-progress"
+      ],
+      "expectedOutcome": "User can continue despite errors, system provides helpful feedback",
+      "successCriteria": [
+        "errors-handled-gracefully",
+        "recovery-successful",
+        "user-experience-maintained",
+        "progress-continued"
+      ]
+    },
+    "partialFailure": {
+      "name": "Partial Failure - Mixed Success",
+      "description": "Some features work while others fail",
+      "steps": [
+        "partial-service-availability",
+        "graceful-degradation",
+        "core-functionality-maintained",
+        "degraded-features-identified"
+      ],
+      "expectedOutcome": "Core functionality remains available, user informed of limitations",
+      "successCriteria": [
+        "core-features-working",
+        "degraded-features-identified",
+        "user-communication-clear",
+        "fallback-options-available"
+      ]
+    },
+    "performanceTesting": {
+      "name": "Performance Testing - Load and Stress",
+      "description": "System performance under various load conditions",
+      "steps": [
+        "normal-load-testing",
+        "peak-load-testing",
+        "stress-testing",
+        "performance-optimization"
+      ],
+      "expectedOutcome": "System maintains performance standards under expected loads",
+      "successCriteria": [
+        "response-time-acceptable",
+        "throughput-sufficient",
+        "resource-usage-optimized",
+        "scalability-demonstrated"
+      ]
+    },
+    "accessibilityTesting": {
+      "name": "Accessibility Testing - WCAG Compliance",
+      "description": "Ensure application meets accessibility standards",
+      "steps": [
+        "keyboard-navigation",
+        "screen-reader-compatibility",
+        "color-contrast-checking",
+        "aria-label-validation"
+      ],
+      "expectedOutcome": "Application meets WCAG 2.1 AA standards",
+      "successCriteria": [
+        "keyboard-navigation-functional",
+        "screen-reader-compatible",
+        "color-contrast-compliant",
+        "aria-labels-correct"
+      ]
+    }
+  },
+  "errorConditions": {
+    "networkErrors": {
+      "timeout": {
+        "name": "Request Timeout",
+        "statusCode": 408,
+        "message": "Request timed out",
+        "recoveryAction": "retry-with-backoff",
+        "userMessage": "The request is taking longer than expected. Please try again."
+      },
+      "connectionLost": {
+        "name": "Connection Lost",
+        "statusCode": 0,
+        "message": "Network connection lost",
+        "recoveryAction": "reconnect-and-retry",
+        "userMessage": "Network connection lost. Please check your internet connection and try again."
+      },
+      "serverUnavailable": {
+        "name": "Server Unavailable",
+        "statusCode": 503,
+        "message": "Service temporarily unavailable",
+        "recoveryAction": "retry-later",
+        "userMessage": "Service is temporarily unavailable. Please try again in a few minutes."
+      }
+    },
+    "validationErrors": {
+      "requiredField": {
+        "name": "Required Field Missing",
+        "statusCode": 400,
+        "message": "Required field is missing",
+        "recoveryAction": "fill-required-field",
+        "userMessage": "Please fill in all required fields before continuing."
+      },
+      "invalidFormat": {
+        "name": "Invalid Format",
+        "statusCode": 400,
+        "message": "Invalid data format",
+        "recoveryAction": "correct-format",
+        "userMessage": "Please check the format of your input and try again."
+      },
+      "businessRule": {
+        "name": "Business Rule Violation",
+        "statusCode": 400,
+        "message": "Business rule violation",
+        "recoveryAction": "adjust-business-logic",
+        "userMessage": "Your request cannot be processed due to business rules. Please contact support."
+      }
+    },
+    "serverErrors": {
+      "internalError": {
+        "name": "Internal Server Error",
+        "statusCode": 500,
+        "message": "Internal server error",
+        "recoveryAction": "retry-or-contact-support",
+        "userMessage": "An unexpected error occurred. Please try again or contact support if the problem persists."
+      },
+      "notImplemented": {
+        "name": "Not Implemented",
+        "statusCode": 501,
+        "message": "Feature not implemented",
+        "recoveryAction": "use-alternative-method",
+        "userMessage": "This feature is not yet available. Please use an alternative method."
+      },
+      "serviceUnavailable": {
+        "name": "Service Unavailable",
+        "statusCode": 503,
+        "message": "Service unavailable",
+        "recoveryAction": "retry-later",
+        "userMessage": "This service is currently unavailable. Please try again later."
+      }
+    }
+  },
+  "performanceMetrics": {
+    "pageLoad": {
+      "target": 2000,
+      "acceptable": 3000,
+      "poor": 5000,
+      "unit": "milliseconds"
+    },
+    "apiResponse": {
+      "target": 500,
+      "acceptable": 1000,
+      "poor": 2000,
+      "unit": "milliseconds"
+    },
+    "memoryUsage": {
+      "target": 50,
+      "acceptable": 100,
+      "poor": 200,
+      "unit": "MB"
+    },
+    "renderTime": {
+      "target": 16,
+      "acceptable": 33,
+      "poor": 50,
+      "unit": "milliseconds"
+    }
+  },
+  "accessibilityStandards": {
+    "wcagLevel": "AA",
+    "wcagVersion": "2.1",
+    "colorContrast": {
+      "normal": 4.5,
+      "large": 3.0
+    },
+    "keyboardNavigation": {
+      "tabOrder": "logical",
+      "focusIndicators": "visible",
+      "skipLinks": "available"
+    },
+    "screenReader": {
+      "ariaLabels": "comprehensive",
+      "semanticHTML": "proper",
+      "announcements": "appropriate"
+    }
+  }
+}

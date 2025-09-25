@@ -1,0 +1,104 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - heading "ChatInterface Test Page" [level=1] [ref=e4]
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]:
+            - img [ref=e10]
+            - generic [ref=e12]:
+              - heading "BeBrahma" [level=1] [ref=e13]
+              - paragraph [ref=e14]: Your SaaS-Specialized AI Co-Founder
+          - generic [ref=e15]:
+            - generic [ref=e16]: "Phase: planning"
+            - generic [ref=e17]: "Providers: OK"
+            - button "Show Analysis" [ref=e18] [cursor=pointer]:
+              - img [ref=e19] [cursor=pointer]
+              - text: Show Analysis
+            - button "Show Context" [ref=e24] [cursor=pointer]:
+              - img [ref=e25] [cursor=pointer]
+              - text: Show Context
+        - generic [ref=e35]:
+          - button "“Validate this business idea”" [ref=e36] [cursor=pointer]
+          - button "“Biggest risks and mitigations”" [ref=e37] [cursor=pointer]
+          - button "“How should I price my SaaS?”" [ref=e38] [cursor=pointer]
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - generic [ref=e43]: 🤖
+            - generic [ref=e44]:
+              - generic [ref=e46]:
+                - heading "🚀 Welcome to BeBrahma - Your SaaS Co-Founder!" [level=1] [ref=e47]
+                - paragraph [ref=e48]:
+                  - text: I'm your
+                  - strong [ref=e49]: SaaS-specialized AI business team
+                  - text: ", built exclusively for B2B SaaS founders. I understand SaaS metrics, challenges, and opportunities better than any generalist solution."
+                - heading "🎯 How BeBrahma Works for SaaS:" [level=2] [ref=e50]:
+                  - text: 🎯
+                  - strong [ref=e51]: "How BeBrahma Works for SaaS:"
+                - 'heading "Stage 1: SaaS Idea to Evidence" [level=3] [ref=e52]':
+                  - strong [ref=e53]: "Stage 1: SaaS Idea to Evidence"
+                - list [ref=e54]:
+                  - listitem [ref=e55]: Problem-Solution Fit Analysis for SaaS models
+                  - listitem [ref=e56]: SaaS Market Sizing with recurring revenue potential
+                  - listitem [ref=e57]: Competitive SaaS landscape analysis
+                  - listitem [ref=e58]: SaaS business model validation (Freemium vs Premium, seat-based vs usage-based)
+                  - listitem [ref=e59]: Technology stack recommendations for SaaS
+                  - listitem [ref=e60]: Compliance requirements (GDPR, SOC2, security standards)
+                - 'heading "Stage 2: SaaS GTM Execution" [level=3] [ref=e61]':
+                  - strong [ref=e62]: "Stage 2: SaaS GTM Execution"
+                - list [ref=e63]:
+                  - listitem [ref=e64]: SaaS-specific ICP definition with decision-maker mapping
+                  - listitem [ref=e65]: Product-led vs Sales-led growth strategy selection
+                  - listitem [ref=e66]: Pricing strategy workshop (usage-based, per-seat, tiered)
+                  - listitem [ref=e67]: Free trial/freemium strategy optimization
+                  - listitem [ref=e68]: Product-led growth tactics and viral loops
+                  - listitem [ref=e69]: Enterprise vs SMB strategy development
+                - 'heading "Stage 3: SaaS Strategic Management" [level=3] [ref=e70]':
+                  - strong [ref=e71]: "Stage 3: SaaS Strategic Management"
+                - list [ref=e72]:
+                  - listitem [ref=e73]: SaaS growth stage analysis and metric tracking
+                  - listitem [ref=e74]: Cohort analysis and retention optimization
+                  - listitem [ref=e75]: Expansion revenue opportunities and upsell strategies
+                  - listitem [ref=e76]: Competitive response and feature parity analysis
+                  - listitem [ref=e77]: Funding readiness and SaaS investor deck optimization
+                - heading "👥 Your SaaS Expert Team:" [level=2] [ref=e78]:
+                  - text: 👥
+                  - strong [ref=e79]: "Your SaaS Expert Team:"
+                - list [ref=e80]:
+                  - listitem [ref=e81]:
+                    - strong [ref=e82]: 🎯 SaaS Business Model Expert
+                    - text: ": Pricing, packaging, revenue optimization"
+                  - listitem [ref=e83]:
+                    - strong [ref=e84]: 🚀 Product-Led Growth Specialist
+                    - text: ": In-product growth, onboarding, activation"
+                  - listitem [ref=e85]:
+                    - strong [ref=e86]: 💼 SaaS Sales Strategy
+                    - text: ": B2B sales processes, enterprise approaches"
+                  - listitem [ref=e87]:
+                    - strong [ref=e88]: 🤝 Customer Success Manager
+                    - text: ": Retention, expansion, health scoring"
+                  - listitem [ref=e89]:
+                    - strong [ref=e90]: 💰 SaaS Finance Analyst
+                    - text: ": Unit economics, SaaS metrics, funding prep"
+                  - listitem [ref=e91]:
+                    - strong [ref=e92]: 🔒 Compliance & Security Expert
+                    - text: ": SOC2, GDPR, enterprise requirements"
+                - paragraph [ref=e93]:
+                  - strong [ref=e94]: What SaaS business idea would you like to explore today?
+              - generic [ref=e95]: 14:51
+          - generic [ref=e96]:
+            - generic [ref=e97]:
+              - paragraph [ref=e100]: Smart Vernacular Tutoring Apps - Personalized tutoring platforms that use SLMs to teach school subjects or language skills in regional languages
+              - generic [ref=e101]: 14:51
+            - generic [ref=e102]: 👤
+          - button "Next message ▸ (N)" [ref=e104] [cursor=pointer]
+        - generic [ref=e106]:
+          - textbox "Describe your SaaS business idea or ask a question..." [ref=e107]
+          - button [disabled] [ref=e108]:
+            - img [ref=e109]
+  - alert [ref=e112]
+```

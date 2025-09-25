@@ -1,0 +1,542 @@
+{
+  "taskManagement": {
+    "success": {
+      "taskCreation": {
+        "id": "task_2024_001",
+        "title": "Implement user authentication system",
+        "description": "Create secure login, registration, and password reset functionality with JWT tokens and role-based access control",
+        "status": "pending",
+        "priority": "high",
+        "assignee": "john.doe@company.com",
+        "reporter": "jane.smith@company.com",
+        "project": "proj_mvp_001",
+        "labels": ["security", "authentication", "mvp"],
+        "estimatedHours": 40,
+        "actualHours": 0,
+        "dueDate": "2024-12-15T17:00:00Z",
+        "createdAt": "2024-11-15T10:30:00Z",
+        "updatedAt": "2024-11-15T10:30:00Z",
+        "metadata": {
+          "complexity": "medium",
+          "businessValue": "high",
+          "technicalDebt": "none",
+          "blockers": [],
+          "dependencies": []
+        },
+        "customFields": {
+          "epicId": "epic_auth_001",
+          "storyPoints": 8,
+          "acceptanceCriteria": [
+            "Users can register with email and password",
+            "Email verification is required",
+            "Password reset works via email",
+            "JWT tokens expire after 24 hours",
+            "Role-based permissions are enforced"
+          ]
+        }
+      },
+      "taskUpdate": {
+        "id": "task_2024_001", 
+        "title": "Implement user authentication system",
+        "description": "Create secure login, registration, and password reset functionality with JWT tokens and role-based access control",
+        "status": "in-progress",
+        "priority": "high",
+        "assignee": "john.doe@company.com",
+        "reporter": "jane.smith@company.com",
+        "project": "proj_mvp_001",
+        "labels": ["security", "authentication", "mvp"],
+        "estimatedHours": 40,
+        "actualHours": 12,
+        "dueDate": "2024-12-15T17:00:00Z",
+        "createdAt": "2024-11-15T10:30:00Z",
+        "updatedAt": "2024-11-18T14:22:00Z",
+        "metadata": {
+          "complexity": "medium",
+          "businessValue": "high", 
+          "technicalDebt": "none",
+          "blockers": [],
+          "dependencies": [],
+          "progress": 30
+        },
+        "customFields": {
+          "epicId": "epic_auth_001",
+          "storyPoints": 8,
+          "acceptanceCriteria": [
+            "✓ Users can register with email and password",
+            "✓ Email verification is required", 
+            "⧖ Password reset works via email",
+            "⧖ JWT tokens expire after 24 hours",
+            "⧖ Role-based permissions are enforced"
+          ]
+        },
+        "statusHistory": [
+          {
+            "status": "pending",
+            "changedAt": "2024-11-15T10:30:00Z",
+            "changedBy": "jane.smith@company.com"
+          },
+          {
+            "status": "in-progress", 
+            "changedAt": "2024-11-18T09:15:00Z",
+            "changedBy": "john.doe@company.com"
+          }
+        ],
+        "workLog": [
+          {
+            "date": "2024-11-18",
+            "hours": 8,
+            "description": "Set up authentication middleware and user model",
+            "author": "john.doe@company.com"
+          },
+          {
+            "date": "2024-11-19",
+            "hours": 4,
+            "description": "Implemented registration endpoint and email validation",
+            "author": "john.doe@company.com"
+          }
+        ]
+      },
+      "taskRetrieval": {
+        "id": "task_2024_002",
+        "title": "Create project dashboard UI",
+        "description": "Build responsive dashboard showing project overview, recent activity, and quick actions",
+        "status": "completed",
+        "priority": "medium", 
+        "assignee": "alice.wilson@company.com",
+        "reporter": "bob.johnson@company.com",
+        "project": "proj_mvp_001",
+        "labels": ["frontend", "dashboard", "ui"],
+        "estimatedHours": 32,
+        "actualHours": 35,
+        "dueDate": "2024-11-20T17:00:00Z",
+        "createdAt": "2024-11-10T09:00:00Z",
+        "updatedAt": "2024-11-20T16:45:00Z",
+        "completedAt": "2024-11-20T16:45:00Z",
+        "metadata": {
+          "complexity": "low",
+          "businessValue": "high",
+          "technicalDebt": "low",
+          "blockers": [],
+          "dependencies": ["task_2024_001"],
+          "progress": 100
+        },
+        "attachments": [
+          {
+            "id": "att_001",
+            "filename": "dashboard_mockup.png",
+            "size": 1024000,
+            "mimeType": "image/png",
+            "uploadedAt": "2024-11-12T11:30:00Z",
+            "uploadedBy": "alice.wilson@company.com"
+          }
+        ]
+      }
+    },
+    "errors": {
+      "taskNotFound": {
+        "error": "Task not found",
+        "code": "TASK_NOT_FOUND",
+        "taskId": "task_invalid_001",
+        "details": "The specified task does not exist or has been deleted"
+      },
+      "invalidStatusTransition": {
+        "error": "Invalid status transition",
+        "code": "INVALID_STATUS_TRANSITION",
+        "currentStatus": "completed",
+        "attemptedStatus": "pending", 
+        "validTransitions": ["reopened"],
+        "details": "Tasks cannot move from completed to pending. Use reopened status instead."
+      },
+      "assigneeNotFound": {
+        "error": "Assignee not found",
+        "code": "USER_NOT_FOUND",
+        "assignee": "invalid.user@company.com",
+        "details": "The specified assignee is not a member of this project"
+      }
+    }
+  },
+  "openProjectIntegration": {
+    "success": {
+      "singleExport": {
+        "results": [
+          {
+            "status": "success",
+            "id": "wp_12345",
+            "href": "https://openproject.company.com/work_packages/12345",
+            "title": "Implement user authentication system",
+            "subject": "Implement user authentication system",
+            "description": "Create secure login, registration, and password reset functionality",
+            "type": "Task",
+            "priority": "High",
+            "assignee": {
+              "name": "John Doe",
+              "email": "john.doe@company.com"
+            },
+            "project": {
+              "id": "5",
+              "name": "MVP Development"
+            },
+            "createdAt": "2024-11-20T10:15:00Z",
+            "updatedAt": "2024-11-20T10:15:00Z"
+          }
+        ]
+      },
+      "batchExport": {
+        "results": [
+          {
+            "status": "success",
+            "id": "wp_12346",
+            "href": "https://openproject.company.com/work_packages/12346",
+            "title": "Create project dashboard UI",
+            "type": "Feature",
+            "priority": "Medium"
+          },
+          {
+            "status": "success",
+            "id": "wp_12347", 
+            "href": "https://openproject.company.com/work_packages/12347",
+            "title": "Implement task management system",
+            "type": "Epic", 
+            "priority": "High"
+          },
+          {
+            "status": "success",
+            "id": "wp_12348",
+            "href": "https://openproject.company.com/work_packages/12348", 
+            "title": "Add mobile responsive design",
+            "type": "Task",
+            "priority": "Medium"
+          }
+        ],
+        "summary": {
+          "totalActions": 3,
+          "successful": 3,
+          "failed": 0,
+          "processingTimeMs": 2450
+        }
+      },
+      "mixedResults": {
+        "results": [
+          {
+            "status": "success", 
+            "id": "wp_12349",
+            "href": "https://openproject.company.com/work_packages/12349",
+            "title": "Setup CI/CD pipeline",
+            "type": "Task"
+          },
+          {
+            "status": "error",
+            "error": "Validation failed: Subject can't be blank",
+            "title": "",
+            "details": "The work package subject is required but was not provided",
+            "errorCode": "VALIDATION_ERROR"
+          },
+          {
+            "status": "success",
+            "id": "wp_12350",
+            "href": "https://openproject.company.com/work_packages/12350", 
+            "title": "Database migration scripts",
+            "type": "Task"
+          }
+        ],
+        "summary": {
+          "totalActions": 3,
+          "successful": 2,
+          "failed": 1,
+          "processingTimeMs": 3100
+        }
+      }
+    },
+    "errors": {
+      "authenticationError": {
+        "error": "Authentication failed",
+        "code": "AUTHENTICATION_ERROR",
+        "details": "Invalid API token or insufficient permissions",
+        "openProjectResponse": {
+          "status": 401,
+          "message": "You are not authorized to perform this action"
+        }
+      },
+      "connectionError": {
+        "error": "Failed to connect to OpenProject",
+        "code": "CONNECTION_ERROR",
+        "details": "Could not establish connection to OpenProject server",
+        "endpoint": "https://openproject.company.com/api/v3/work_packages",
+        "timeout": true
+      },
+      "rateLimited": {
+        "error": "Rate limit exceeded",
+        "code": "RATE_LIMITED", 
+        "retryAfter": 300,
+        "details": "OpenProject API rate limit exceeded. Please wait before retrying.",
+        "openProjectResponse": {
+          "status": 429,
+          "headers": {
+            "X-RateLimit-Limit": "100",
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": "1700567400"
+          }
+        }
+      }
+    }
+  },
+  "workflowSession": {
+    "success": {
+      "sessionInitialization": {
+        "sessionId": "session_wf_001",
+        "status": "active",
+        "type": "mvp_planning",
+        "createdAt": "2024-11-20T10:00:00Z",
+        "updatedAt": "2024-11-20T10:00:00Z", 
+        "expiresAt": "2024-11-21T10:00:00Z",
+        "project": {
+          "id": "proj_mvp_001",
+          "name": "MVP Development Project"
+        },
+        "currentStage": "initialization",
+        "stageHistory": [
+          {
+            "stage": "initialization",
+            "enteredAt": "2024-11-20T10:00:00Z",
+            "status": "active"
+          }
+        ],
+        "metadata": {
+          "userId": "user_123",
+          "ipAddress": "192.168.1.100",
+          "userAgent": "Mozilla/5.0...",
+          "workflowVersion": "2.1.0"
+        }
+      },
+      "stageProgression": {
+        "sessionId": "session_wf_001",
+        "status": "active",
+        "currentStage": "sca_analysis",
+        "previousStage": "problem_clarification", 
+        "progress": {
+          "overallPercent": 45,
+          "currentStagePercent": 20,
+          "completedStages": ["initialization", "problem_clarification"],
+          "totalStages": 6
+        },
+        "stageHistory": [
+          {
+            "stage": "initialization",
+            "enteredAt": "2024-11-20T10:00:00Z",
+            "completedAt": "2024-11-20T10:05:00Z",
+            "status": "completed"
+          },
+          {
+            "stage": "problem_clarification", 
+            "enteredAt": "2024-11-20T10:05:00Z",
+            "completedAt": "2024-11-20T10:15:00Z",
+            "status": "completed"
+          },
+          {
+            "stage": "sca_analysis",
+            "enteredAt": "2024-11-20T10:15:00Z",
+            "status": "active"
+          }
+        ],
+        "data": {
+          "problemClarification": {
+            "clarifiedProblem": "Small businesses need streamlined project management",
+            "targetAudience": "SMBs with 5-50 employees",
+            "completedAt": "2024-11-20T10:15:00Z"
+          },
+          "scaAnalysis": {
+            "inProgress": true,
+            "factorsIdentified": 3,
+            "targetFactors": 6
+          }
+        }
+      },
+      "sessionCompletion": {
+        "sessionId": "session_wf_001", 
+        "status": "completed",
+        "currentStage": "completed",
+        "progress": {
+          "overallPercent": 100,
+          "completedStages": [
+            "initialization",
+            "problem_clarification", 
+            "sca_analysis",
+            "mvp_planning",
+            "action_export", 
+            "completed"
+          ],
+          "totalStages": 6
+        },
+        "completedAt": "2024-11-20T11:30:00Z",
+        "duration": "1h 30m",
+        "summary": {
+          "problemClarified": true,
+          "scaFactorsIdentified": 6,
+          "mvpFeaturesPlanned": 8,
+          "actionsExported": 12,
+          "openProjectWorkPackages": ["wp_12345", "wp_12346", "wp_12347"]
+        }
+      }
+    },
+    "errors": {
+      "sessionExpired": {
+        "error": "Workflow session has expired",
+        "code": "SESSION_EXPIRED",
+        "sessionId": "session_wf_expired",
+        "expiredAt": "2024-11-19T10:00:00Z",
+        "details": "Session expired due to inactivity. Please start a new workflow session."
+      },
+      "invalidStageTransition": {
+        "error": "Invalid stage transition",
+        "code": "INVALID_STAGE_TRANSITION",
+        "currentStage": "problem_clarification",
+        "attemptedStage": "mvp_planning",
+        "requiredStage": "sca_analysis",
+        "details": "SCA analysis must be completed before MVP planning"
+      },
+      "sessionDataCorrupted": {
+        "error": "Session data is corrupted or incomplete",
+        "code": "SESSION_DATA_CORRUPTED",
+        "sessionId": "session_wf_corrupted", 
+        "missingData": ["problemClarification", "scaFactors"],
+        "details": "Critical workflow data is missing. Session must be restarted."
+      }
+    }
+  },
+  "progressTracking": {
+    "success": {
+      "workflowProgress": {
+        "sessionId": "session_wf_001",
+        "overallProgress": 65,
+        "currentStage": "mvp_planning",
+        "stageProgress": 40,
+        "estimatedTimeRemaining": "25 minutes",
+        "stages": [
+          {
+            "name": "initialization",
+            "status": "completed",
+            "progress": 100,
+            "duration": "5 minutes"
+          },
+          {
+            "name": "problem_clarification",
+            "status": "completed", 
+            "progress": 100,
+            "duration": "10 minutes"
+          },
+          {
+            "name": "sca_analysis",
+            "status": "completed",
+            "progress": 100, 
+            "duration": "20 minutes"
+          },
+          {
+            "name": "mvp_planning",
+            "status": "in_progress",
+            "progress": 40,
+            "estimatedDuration": "15 minutes",
+            "elapsedTime": "6 minutes"
+          },
+          {
+            "name": "action_export",
+            "status": "pending",
+            "progress": 0,
+            "estimatedDuration": "10 minutes"
+          }
+        ],
+        "metrics": {
+          "totalEstimatedTime": "60 minutes",
+          "elapsedTime": "41 minutes", 
+          "averageStageTime": "13.67 minutes",
+          "efficiencyScore": 85
+        }
+      },
+      "taskProgress": {
+        "taskId": "task_2024_001",
+        "title": "Implement user authentication system",
+        "overallProgress": 75,
+        "status": "in-progress",
+        "subtasks": [
+          {
+            "id": "subtask_001",
+            "name": "Design authentication flow",
+            "status": "completed",
+            "progress": 100
+          },
+          {
+            "id": "subtask_002", 
+            "name": "Implement user registration",
+            "status": "completed",
+            "progress": 100
+          },
+          {
+            "id": "subtask_003",
+            "name": "Add password reset functionality", 
+            "status": "in-progress",
+            "progress": 60
+          },
+          {
+            "id": "subtask_004",
+            "name": "Implement JWT token handling",
+            "status": "in-progress",
+            "progress": 40
+          },
+          {
+            "id": "subtask_005",
+            "name": "Add role-based access control",
+            "status": "pending",
+            "progress": 0
+          }
+        ],
+        "timeTracking": {
+          "estimatedHours": 40,
+          "loggedHours": 28,
+          "remainingHours": 12,
+          "burndownRate": "2.5 hours/day"
+        }
+      }
+    },
+    "errors": {
+      "progressCalculationError": {
+        "error": "Unable to calculate progress",
+        "code": "PROGRESS_CALCULATION_ERROR", 
+        "details": "Inconsistent task status data prevents accurate progress calculation",
+        "affectedTasks": ["task_2024_001", "task_2024_002"]
+      }
+    }
+  },
+  "realTimeUpdates": {
+    "success": {
+      "statusUpdate": {
+        "type": "status_change",
+        "timestamp": "2024-11-20T14:30:00Z",
+        "taskId": "task_2024_001",
+        "previousStatus": "pending",
+        "newStatus": "in-progress", 
+        "changedBy": "john.doe@company.com",
+        "sessionId": "session_wf_001",
+        "broadcastToUsers": ["jane.smith@company.com", "bob.johnson@company.com"]
+      },
+      "progressUpdate": {
+        "type": "progress_update",
+        "timestamp": "2024-11-20T14:35:00Z",
+        "taskId": "task_2024_001",
+        "previousProgress": 60,
+        "newProgress": 75,
+        "milestone": "Password reset functionality completed",
+        "updatedBy": "john.doe@company.com",
+        "sessionId": "session_wf_001"
+      },
+      "commentAdded": {
+        "type": "comment_added",
+        "timestamp": "2024-11-20T14:40:00Z", 
+        "taskId": "task_2024_001",
+        "commentId": "comment_789",
+        "content": "Authentication middleware is working correctly. Moving on to JWT token implementation.",
+        "author": "john.doe@company.com",
+        "mentions": ["alice.wilson@company.com"],
+        "sessionId": "session_wf_001"
+      }
+    }
+  }
+}

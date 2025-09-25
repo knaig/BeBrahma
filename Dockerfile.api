@@ -1,0 +1,128 @@
+# AWS ECR-optimized Dockerfile for BeBrahma API Service
+# Multi-stage build for production deployment with Turbo monorepo support
+
+# Build arguments
+ARG NODE_ENV=production
+ARG CI=false
+ARG BUILD_VERSION=latest
+
+# Base stage with Node.js 20 Alpine from ECR Public Gallery
+FROM public.ecr.aws/docker/library/node:20-alpine AS base
+WORKDIR /app
+
+# Install system dependencies for security and compatibility
+RUN apk add --no-cache \
+    dumb-init \
+    curl \
+    openssl \
+    && rm -rf /var/cache/apk/*
+
+# Dependencies stage - install all dependencies for monorepo
+FROM base AS deps
+WORKDIR /app
+
+# Copy root package files for monorepo workspace detection
+COPY package.json ./
+COPY turbo.json ./
+
+# Copy API package files
+COPY apps/api/package*.json ./apps/api/
+
+# Copy Prisma schema
+COPY apps/api/prisma ./apps/api/prisma
+
+# Install dependencies efficiently for monorepo
+RUN npm install --ignore-scripts
+
+# Install API dependencies
+RUN cd apps/api && npm install --ignore-scripts
+
+# Create symlink for Prisma client in API node_modules
+RUN mkdir -p apps/api/node_modules/@prisma && ln -sf ../../../node_modules/@prisma/client apps/api/node_modules/@prisma/client
+
+# Verify API node_modules exists
+RUN ls -la apps/api/node_modules || echo "API node_modules not found"
+RUN ls -la apps/api/ || echo "apps/api directory not found"
+
+# Generate Prisma client in the root node_modules (monorepo setup)
+RUN cd apps/api && npx prisma generate --schema=./prisma/schema.prisma
+
+# Verify Prisma client generation
+RUN ls -la node_modules/@prisma/client || echo "Prisma client not found in root"
+RUN ls -la apps/api/node_modules/.prisma/client || echo "Prisma client not found in API"
+
+# Build stage - use Turbo for monorepo builds
+FROM base AS builder
+WORKDIR /app
+
+# Copy root package files for Turbo
+COPY package.json ./
+COPY turbo.json ./
+
+# Copy API package files
+COPY apps/api/package*.json ./apps/api/
+
+# Install all dependencies including devDependencies for build
+RUN npm install --ignore-scripts
+
+# Install API dev dependencies
+RUN cd apps/api && npm install --ignore-scripts
+
+# Copy source code
+COPY apps/api/src ./apps/api/src
+COPY apps/api/tsconfig.json ./apps/api/
+
+# Copy shared packages if they exist (skip if not present)
+# COPY packages ./packages
+
+# Install turbo globally and build
+RUN npm install -g turbo
+RUN npm run build
+
+# Production stage
+FROM base AS runner
+WORKDIR /app
+
+# Environment variables
+ENV NODE_ENV=production
+ENV PORT=4000
+ENV NODE_OPTIONS="--max-old-space-size=1024"
+ENV CI=false
+
+# Create non-root user for security
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 bebrahma
+
+# Copy production dependencies (includes generated Prisma client)
+COPY --from=deps --chown=bebrahma:nodejs /app/node_modules ./node_modules
+# Note: API dependencies are included in root node_modules for monorepo
+
+# Copy built application
+COPY --from=builder --chown=bebrahma:nodejs /app/apps/api/dist ./apps/api/dist
+COPY --from=builder --chown=bebrahma:nodejs /app/apps/api/package*.json ./apps/api/
+
+# Copy environment configuration
+COPY --chown=bebrahma:nodejs bebrahma/env.config.js ./bebrahma/env.config.js
+
+# Copy Prisma schema and generated client
+COPY --from=deps --chown=bebrahma:nodejs /app/apps/api/prisma ./apps/api/prisma
+
+# Set proper permissions
+RUN chown -R bebrahma:nodejs /app
+RUN chmod -R 755 /app
+
+# Switch to non-root user
+USER bebrahma
+
+# Health check with improved reliability
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:4000/health || exit 1
+
+# Expose port
+EXPOSE 4000
+
+# Use dumb-init for proper signal handling
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the application
+CMD ["node", "apps/api/dist/server.js"]

@@ -1,0 +1,679 @@
+{
+  "coreWebVitalsBaselines": {
+    "homePage": {
+      "lcp": {
+        "baseline": 1200,
+        "threshold": 2500,
+        "target": 800,
+        "regressionThreshold": 0.2
+      },
+      "fid": {
+        "baseline": 45,
+        "threshold": 100,
+        "target": 30,
+        "regressionThreshold": 0.3
+      },
+      "cls": {
+        "baseline": 0.05,
+        "threshold": 0.1,
+        "target": 0.02,
+        "regressionThreshold": 0.4
+      },
+      "tti": {
+        "baseline": 2000,
+        "threshold": 3800,
+        "target": 1500,
+        "regressionThreshold": 0.25
+      }
+    },
+    "dashboardPage": {
+      "lcp": {
+        "baseline": 1500,
+        "threshold": 2500,
+        "target": 1000,
+        "regressionThreshold": 0.2
+      },
+      "fid": {
+        "baseline": 55,
+        "threshold": 100,
+        "target": 35,
+        "regressionThreshold": 0.3
+      },
+      "cls": {
+        "baseline": 0.06,
+        "threshold": 0.1,
+        "target": 0.03,
+        "regressionThreshold": 0.4
+      },
+      "tti": {
+        "baseline": 2500,
+        "threshold": 3800,
+        "target": 1800,
+        "regressionThreshold": 0.25
+      }
+    },
+    "chatPage": {
+      "lcp": {
+        "baseline": 1800,
+        "threshold": 2500,
+        "target": 1200,
+        "regressionThreshold": 0.2
+      },
+      "fid": {
+        "baseline": 65,
+        "threshold": 100,
+        "target": 40,
+        "regressionThreshold": 0.3
+      },
+      "cls": {
+        "baseline": 0.08,
+        "threshold": 0.1,
+        "target": 0.04,
+        "regressionThreshold": 0.4
+      },
+      "tti": {
+        "baseline": 3000,
+        "threshold": 3800,
+        "target": 2200,
+        "regressionThreshold": 0.25
+      }
+    },
+    "onboardingPage": {
+      "lcp": {
+        "baseline": 1400,
+        "threshold": 2500,
+        "target": 900,
+        "regressionThreshold": 0.2
+      },
+      "fid": {
+        "baseline": 50,
+        "threshold": 100,
+        "target": 32,
+        "regressionThreshold": 0.3
+      },
+      "cls": {
+        "baseline": 0.07,
+        "threshold": 0.1,
+        "target": 0.035,
+        "regressionThreshold": 0.4
+      },
+      "tti": {
+        "baseline": 2200,
+        "threshold": 3800,
+        "target": 1600,
+        "regressionThreshold": 0.25
+      }
+    }
+  },
+  "memoryUsageBaselines": {
+    "initialLoad": {
+      "homePage": {
+        "baseline": 25,
+        "threshold": 50,
+        "target": 20,
+        "regressionThreshold": 0.3
+      },
+      "dashboardPage": {
+        "baseline": 35,
+        "threshold": 70,
+        "target": 28,
+        "regressionThreshold": 0.3
+      },
+      "chatPage": {
+        "baseline": 40,
+        "threshold": 80,
+        "target": 32,
+        "regressionThreshold": 0.3
+      },
+      "onboardingPage": {
+        "baseline": 30,
+        "threshold": 60,
+        "target": 24,
+        "regressionThreshold": 0.3
+      }
+    },
+    "memoryGrowth": {
+      "perMinute": {
+        "baseline": 0.05,
+        "threshold": 0.2,
+        "target": 0.02,
+        "regressionThreshold": 0.4
+      },
+      "perSession": {
+        "baseline": 0.15,
+        "threshold": 0.5,
+        "target": 0.1,
+        "regressionThreshold": 0.4
+      },
+      "peakMemory": {
+        "baseline": 45,
+        "threshold": 100,
+        "target": 35,
+        "regressionThreshold": 0.3
+      }
+    },
+    "garbageCollection": {
+      "frequency": {
+        "baseline": 0.1,
+        "threshold": 0.3,
+        "target": 0.05,
+        "regressionThreshold": 0.5
+      },
+      "duration": {
+        "baseline": 150,
+        "threshold": 500,
+        "target": 100,
+        "regressionThreshold": 0.4
+      },
+      "memoryBeforeGC": {
+        "baseline": 40,
+        "threshold": 80,
+        "target": 32,
+        "regressionThreshold": 0.3
+      },
+      "memoryAfterGC": {
+        "baseline": 25,
+        "threshold": 50,
+        "target": 20,
+        "regressionThreshold": 0.3
+      }
+    }
+  },
+  "networkPerformanceBaselines": {
+    "apiResponseTimes": {
+      "userProfile": {
+        "baseline": 200,
+        "threshold": 500,
+        "target": 150,
+        "regressionThreshold": 0.3
+      },
+      "dashboardData": {
+        "baseline": 300,
+        "threshold": 800,
+        "target": 200,
+        "regressionThreshold": 0.3
+      },
+      "chatHistory": {
+        "baseline": 250,
+        "threshold": 600,
+        "target": 180,
+        "regressionThreshold": 0.3
+      },
+      "workflowStatus": {
+        "baseline": 180,
+        "threshold": 400,
+        "target": 120,
+        "regressionThreshold": 0.3
+      }
+    },
+    "bundleLoading": {
+      "mainBundle": {
+        "baseline": 1200,
+        "threshold": 3000,
+        "target": 800,
+        "regressionThreshold": 0.25
+      },
+      "vendorBundle": {
+        "baseline": 800,
+        "threshold": 2000,
+        "target": 600,
+        "regressionThreshold": 0.25
+      },
+      "chunkBundle": {
+        "baseline": 400,
+        "threshold": 1000,
+        "target": 300,
+        "regressionThreshold": 0.25
+      }
+    },
+    "imageLoading": {
+      "heroImage": {
+        "baseline": 500,
+        "threshold": 1500,
+        "target": 300,
+        "regressionThreshold": 0.3
+      },
+      "avatarImage": {
+        "baseline": 200,
+        "threshold": 600,
+        "target": 150,
+        "regressionThreshold": 0.3
+      },
+      "iconImage": {
+        "baseline": 100,
+        "threshold": 300,
+        "target": 80,
+        "regressionThreshold": 0.3
+      }
+    },
+    "cdnPerformance": {
+      "responseTime": {
+        "baseline": 120,
+        "threshold": 300,
+        "target": 80,
+        "regressionThreshold": 0.3
+      },
+      "throughput": {
+        "baseline": 5000,
+        "threshold": 2000,
+        "target": 8000,
+        "regressionThreshold": 0.4
+      },
+      "cacheHitRate": {
+        "baseline": 0.85,
+        "threshold": 0.6,
+        "target": 0.95,
+        "regressionThreshold": 0.3
+      }
+    }
+  },
+  "browserSpecificPerformance": {
+    "chrome": {
+      "pageLoadTime": {
+        "mobile": 1500,
+        "tablet": 1200,
+        "desktop": 1000
+      },
+      "timeToInteractive": {
+        "mobile": 2500,
+        "tablet": 2000,
+        "desktop": 1800
+      },
+      "memoryUsage": {
+        "initial": 25,
+        "peak": 45,
+        "growth": 0.2
+      },
+      "javascriptExecution": {
+        "parseTime": 150,
+        "compileTime": 200,
+        "executionTime": 300
+      },
+      "renderingPerformance": {
+        "paintTime": 45,
+        "layoutTime": 28,
+        "compositeTime": 15
+      }
+    },
+    "firefox": {
+      "pageLoadTime": {
+        "mobile": 1600,
+        "tablet": 1300,
+        "desktop": 1100
+      },
+      "timeToInteractive": {
+        "mobile": 2600,
+        "tablet": 2100,
+        "desktop": 1900
+      },
+      "memoryUsage": {
+        "initial": 28,
+        "peak": 48,
+        "growth": 0.25
+      },
+      "javascriptExecution": {
+        "parseTime": 160,
+        "compileTime": 220,
+        "executionTime": 320
+      },
+      "renderingPerformance": {
+        "paintTime": 48,
+        "layoutTime": 32,
+        "compositeTime": 18
+      }
+    },
+    "safari": {
+      "pageLoadTime": {
+        "mobile": 1400,
+        "tablet": 1100,
+        "desktop": 900
+      },
+      "timeToInteractive": {
+        "mobile": 2400,
+        "tablet": 1900,
+        "desktop": 1700
+      },
+      "memoryUsage": {
+        "initial": 22,
+        "peak": 42,
+        "growth": 0.18
+      },
+      "javascriptExecution": {
+        "parseTime": 140,
+        "compileTime": 180,
+        "executionTime": 280
+      },
+      "renderingPerformance": {
+        "paintTime": 42,
+        "layoutTime": 26,
+        "compositeTime": 14
+      }
+    }
+  },
+  "deviceSpecificPerformance": {
+    "mobile": {
+      "pageLoadTime": {
+        "baseline": 1800,
+        "threshold": 4000,
+        "target": 1200,
+        "regressionThreshold": 0.25
+      },
+      "timeToInteractive": {
+        "baseline": 3000,
+        "threshold": 6000,
+        "target": 2000,
+        "regressionThreshold": 0.25
+      },
+      "memoryUsage": {
+        "baseline": 30,
+        "threshold": 60,
+        "target": 24,
+        "regressionThreshold": 0.3
+      },
+      "batteryImpact": {
+        "baseline": 0.05,
+        "threshold": 0.15,
+        "target": 0.03,
+        "regressionThreshold": 0.4
+      }
+    },
+    "tablet": {
+      "pageLoadTime": {
+        "baseline": 1400,
+        "threshold": 3000,
+        "target": 1000,
+        "regressionThreshold": 0.25
+      },
+      "timeToInteractive": {
+        "baseline": 2200,
+        "threshold": 4500,
+        "target": 1600,
+        "regressionThreshold": 0.25
+      },
+      "memoryUsage": {
+        "baseline": 35,
+        "threshold": 70,
+        "target": 28,
+        "regressionThreshold": 0.3
+      },
+      "batteryImpact": {
+        "baseline": 0.04,
+        "threshold": 0.12,
+        "target": 0.025,
+        "regressionThreshold": 0.4
+      }
+    },
+    "desktop": {
+      "pageLoadTime": {
+        "baseline": 1000,
+        "threshold": 2000,
+        "target": 700,
+        "regressionThreshold": 0.25
+      },
+      "timeToInteractive": {
+        "baseline": 1600,
+        "threshold": 3000,
+        "target": 1200,
+        "regressionThreshold": 0.25
+      },
+      "memoryUsage": {
+        "baseline": 40,
+        "threshold": 80,
+        "target": 32,
+        "regressionThreshold": 0.3
+      },
+      "cpuUsage": {
+        "baseline": 0.15,
+        "threshold": 0.4,
+        "target": 0.1,
+        "regressionThreshold": 0.4
+      }
+    }
+  },
+  "realTimeFeaturePerformance": {
+    "websocketConnection": {
+      "establishmentTime": {
+        "baseline": 800,
+        "threshold": 2000,
+        "target": 500,
+        "regressionThreshold": 0.3
+      },
+      "messageLatency": {
+        "baseline": 75,
+        "threshold": 200,
+        "target": 50,
+        "regressionThreshold": 0.3
+      },
+      "reconnectionTime": {
+        "baseline": 2500,
+        "threshold": 8000,
+        "target": 1500,
+        "regressionThreshold": 0.4
+      }
+    },
+    "agentStatusUpdates": {
+      "updateFrequency": {
+        "baseline": 10,
+        "threshold": 5,
+        "target": 15,
+        "regressionThreshold": 0.4
+      },
+      "updateLatency": {
+        "baseline": 150,
+        "threshold": 500,
+        "target": 100,
+        "regressionThreshold": 0.3
+      },
+      "updateReliability": {
+        "baseline": 0.98,
+        "threshold": 0.9,
+        "target": 0.99,
+        "regressionThreshold": 0.2
+      }
+    },
+    "workflowProgress": {
+      "progressUpdateFrequency": {
+        "baseline": 5,
+        "threshold": 2,
+        "target": 8,
+        "regressionThreshold": 0.4
+      },
+      "progressUpdateLatency": {
+        "baseline": 200,
+        "threshold": 600,
+        "target": 150,
+        "regressionThreshold": 0.3
+      },
+      "progressUpdateAccuracy": {
+        "baseline": 0.95,
+        "threshold": 0.8,
+        "target": 0.98,
+        "regressionThreshold": 0.3
+      }
+    }
+  },
+  "performanceRegressionThresholds": {
+    "critical": {
+      "lcp": 0.5,
+      "fid": 0.6,
+      "cls": 0.8,
+      "tti": 0.5,
+      "memoryUsage": 0.6,
+      "pageLoadTime": 0.5
+    },
+    "warning": {
+      "lcp": 0.3,
+      "fid": 0.4,
+      "cls": 0.5,
+      "tti": 0.3,
+      "memoryUsage": 0.4,
+      "pageLoadTime": 0.3
+    },
+    "acceptable": {
+      "lcp": 0.2,
+      "fid": 0.3,
+      "cls": 0.4,
+      "tti": 0.2,
+      "memoryUsage": 0.3,
+      "pageLoadTime": 0.2
+    }
+  },
+  "performanceMonitoringAlerts": {
+    "immediate": {
+      "lcp": 4000,
+      "fid": 200,
+      "cls": 0.25,
+      "tti": 8000,
+      "memoryUsage": 150,
+      "pageLoadTime": 8000
+    },
+    "high": {
+      "lcp": 3000,
+      "fid": 150,
+      "cls": 0.15,
+      "tti": 6000,
+      "memoryUsage": 100,
+      "pageLoadTime": 6000
+    },
+    "medium": {
+      "lcp": 2500,
+      "fid": 100,
+      "cls": 0.1,
+      "tti": 3800,
+      "memoryUsage": 80,
+      "pageLoadTime": 4000
+    },
+    "low": {
+      "lcp": 2000,
+      "fid": 80,
+      "cls": 0.08,
+      "tti": 3000,
+      "memoryUsage": 60,
+      "pageLoadTime": 3000
+    }
+  },
+  "performanceOptimizationTargets": {
+    "shortTerm": {
+      "lcp": 0.1,
+      "fid": 0.15,
+      "cls": 0.2,
+      "tti": 0.1,
+      "memoryUsage": 0.15,
+      "pageLoadTime": 0.1
+    },
+    "mediumTerm": {
+      "lcp": 0.2,
+      "fid": 0.25,
+      "cls": 0.3,
+      "tti": 0.2,
+      "memoryUsage": 0.25,
+      "pageLoadTime": 0.2
+    },
+    "longTerm": {
+      "lcp": 0.3,
+      "fid": 0.35,
+      "cls": 0.4,
+      "tti": 0.3,
+      "memoryUsage": 0.35,
+      "pageLoadTime": 0.3
+    }
+  },
+  "networkConditionBaselines": {
+    "3G": {
+      "downloadSpeed": 750,
+      "uploadSpeed": 250,
+      "latency": 100,
+      "expectedPageLoadTime": 8000,
+      "expectedTTI": 12000
+    },
+    "4G": {
+      "downloadSpeed": 4000,
+      "uploadSpeed": 3000,
+      "latency": 20,
+      "expectedPageLoadTime": 3000,
+      "expectedTTI": 5000
+    },
+    "wifi": {
+      "downloadSpeed": 30000,
+      "uploadSpeed": 15000,
+      "latency": 2,
+      "expectedPageLoadTime": 1000,
+      "expectedTTI": 2000
+    },
+    "slow3G": {
+      "downloadSpeed": 500,
+      "uploadSpeed": 150,
+      "latency": 200,
+      "expectedPageLoadTime": 12000,
+      "expectedTTI": 18000
+    }
+  },
+  "userInteractionPerformance": {
+    "clickResponse": {
+      "baseline": 45,
+      "threshold": 100,
+      "target": 30,
+      "regressionThreshold": 0.3
+    },
+    "inputResponse": {
+      "baseline": 32,
+      "threshold": 80,
+      "target": 25,
+      "regressionThreshold": 0.3
+    },
+    "scrollPerformance": {
+      "baseline": 60,
+      "threshold": 120,
+      "target": 45,
+      "regressionThreshold": 0.3
+    },
+    "hoverResponse": {
+      "baseline": 28,
+      "threshold": 60,
+      "target": 20,
+      "regressionThreshold": 0.3
+    }
+  },
+  "resourceLoadingPerformance": {
+    "criticalResources": {
+      "baseline": 800,
+      "threshold": 2000,
+      "target": 500,
+      "regressionThreshold": 0.25
+    },
+    "nonCriticalResources": {
+      "baseline": 2000,
+      "threshold": 5000,
+      "target": 1500,
+      "regressionThreshold": 0.25
+    },
+    "imageOptimization": {
+      "compressionRatio": {
+        "baseline": 0.6,
+        "threshold": 0.3,
+        "target": 0.7,
+        "regressionThreshold": 0.3
+      },
+      "loadingTime": {
+        "baseline": 500,
+        "threshold": 1500,
+        "target": 300,
+        "regressionThreshold": 0.3
+      }
+    },
+    "codeSplitting": {
+      "initialBundleSize": {
+        "baseline": 500,
+        "threshold": 800,
+        "target": 400,
+        "regressionThreshold": 0.3
+      },
+      "chunkLoadingTime": {
+        "baseline": 200,
+        "threshold": 500,
+        "target": 150,
+        "regressionThreshold": 0.3
+      }
+    }
+  }
+}

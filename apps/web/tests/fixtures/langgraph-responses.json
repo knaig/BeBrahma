@@ -1,0 +1,607 @@
+{
+  "workflow_start": {
+    "success": {
+      "session_id": "session_1234567890_1234567890",
+      "current_stage": "PROBLEM_CAPTURE",
+      "stage_status": "in_progress",
+      "workflow_name": "Healthcare System Analysis",
+      "initial_context": {
+        "domain": "healthcare",
+        "complexity": "high",
+        "stakeholders": ["doctors", "nurses", "patients", "administrators"],
+        "constraints": {
+          "budget": 1000000,
+          "timeline": "6 months",
+          "compliance": ["HIPAA", "FDA", "EMR"]
+        }
+      },
+      "messages": [
+        {
+          "id": "welcome_msg_001",
+          "content": "Welcome to the BeBrahma AI Workflow! I'm here to help you analyze and solve complex problems through a structured, multi-stage approach. We'll work together through 7 stages to ensure comprehensive problem understanding and solution development. Let's start with Problem Capture - please tell me about the challenge you're facing.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T10:00:00Z",
+          "stage": "PROBLEM_CAPTURE",
+          "metadata": {
+            "message_type": "welcome",
+            "stage_introduction": true
+          },
+          "attachments": []
+        }
+      ],
+      "stage_progress": {
+        "PROBLEM_CAPTURE": {
+          "status": "in_progress",
+          "message_count": 1,
+          "completed": false,
+          "objectives": [
+            "Define the core problem clearly",
+            "Identify key stakeholders",
+            "Understand problem scope and impact"
+          ]
+        },
+        "PROBLEM_CLARIFICATION": {
+          "status": "not_started",
+          "message_count": 0,
+          "completed": false
+        },
+        "SOLUTION_DESIGN": {
+          "status": "not_started",
+          "message_count": 0,
+          "completed": false
+        },
+        "IMPLEMENTATION_PLAN": {
+          "status": "not_started",
+          "message_count": 0,
+          "completed": false
+        },
+        "TESTING_STRATEGY": {
+          "status": "not_started",
+          "message_count": 0,
+          "completed": false
+        },
+        "DEPLOYMENT_PLAN": {
+          "status": "not_started",
+          "message_count": 0,
+          "completed": false
+        },
+        "MONITORING_SETUP": {
+          "status": "not_started",
+          "message_count": 0,
+          "completed": false
+        }
+      },
+      "pending_decision": false,
+      "decision_options": [],
+      "created_at": "2024-01-15T10:00:00Z",
+      "updated_at": "2024-01-15T10:00:00Z"
+    },
+    "error_invalid_payload": {
+      "detail": "Invalid request payload",
+      "errors": [
+        {
+          "field": "session_id",
+          "message": "Session ID cannot be empty"
+        },
+        {
+          "field": "workflow_name",
+          "message": "Workflow name is required"
+        }
+      ]
+    },
+    "error_service_unavailable": {
+      "detail": "Service temporarily unavailable",
+      "retry_after": 30
+    }
+  },
+  "step_progression": {
+    "problem_capture_message": {
+      "session_id": "session_1234567890_1234567890",
+      "current_stage": "PROBLEM_CAPTURE",
+      "stage_status": "in_progress",
+      "messages": [
+        {
+          "id": "welcome_msg_001",
+          "content": "Welcome to the BeBrahma AI Workflow! I'm here to help you analyze and solve complex problems through a structured, multi-stage approach. We'll work together through 7 stages to ensure comprehensive problem understanding and solution development. Let's start with Problem Capture - please tell me about the challenge you're facing.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T10:00:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "business_analyst_msg_001",
+          "content": "As a Business Analyst, I can see you're working on a healthcare system analysis. This is a complex domain with multiple stakeholders and regulatory requirements. To properly capture the problem, I need to understand: What specific healthcare system are we analyzing? What are the main pain points or challenges you're experiencing? Who are the primary users and what are their needs?",
+          "agent_id": "business_analyst",
+          "agent_name": "Business Analyst",
+          "agent_title": "Business Analyst",
+          "timestamp": "2024-01-15T10:01:00Z",
+          "stage": "PROBLEM_CAPTURE",
+          "metadata": {
+            "agent_role": "problem_analysis",
+            "question_type": "clarification"
+          }
+        }
+      ],
+      "stage_progress": {
+        "PROBLEM_CAPTURE": {
+          "status": "in_progress",
+          "message_count": 2,
+          "completed": false
+        }
+      },
+      "pending_decision": false,
+      "decision_options": []
+    },
+    "stage_completion_ready": {
+      "session_id": "session_1234567890_1234567890",
+      "current_stage": "PROBLEM_CAPTURE",
+      "stage_status": "awaiting_decision",
+      "messages": [
+        {
+          "id": "welcome_msg_001",
+          "content": "Welcome to the BeBrahma AI Workflow! I'm here to help you analyze and solve complex problems through a structured, multi-stage approach. We'll work together through 7 stages to ensure comprehensive problem understanding and solution development. Let's start with Problem Capture - please tell me about the challenge you're facing.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T10:00:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "business_analyst_msg_001",
+          "content": "As a Business Analyst, I can see you're working on a healthcare system analysis. This is a complex domain with multiple stakeholders and regulatory requirements. To properly capture the problem, I need to understand: What specific healthcare system are we analyzing? What are the main pain points or challenges you're experiencing? Who are the primary users and what are their needs?",
+          "agent_id": "business_analyst",
+          "agent_name": "Business Analyst",
+          "agent_title": "Business Analyst",
+          "timestamp": "2024-01-15T10:01:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "solution_architect_msg_001",
+          "content": "From a technical architecture perspective, I can see several areas that need attention in your healthcare system. The current system appears to have scalability issues, security vulnerabilities, and integration challenges with existing hospital infrastructure. We need to address these technical debt items while maintaining HIPAA compliance.",
+          "agent_id": "solution_architect",
+          "agent_name": "Solution Architect",
+          "agent_title": "Solution Architect",
+          "timestamp": "2024-01-15T10:02:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "smart_planner_msg_001",
+          "content": "Based on my analysis of the problem scope, I can see this is a high-complexity healthcare system modernization project. The problem involves multiple interconnected systems, regulatory compliance requirements, and stakeholder coordination. We have sufficient information to proceed to the next stage.",
+          "agent_id": "smart_planner",
+          "agent_name": "Smart Planner",
+          "agent_title": "Smart Planner",
+          "timestamp": "2024-01-15T10:03:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        }
+      ],
+      "stage_progress": {
+        "PROBLEM_CAPTURE": {
+          "status": "awaiting_decision",
+          "message_count": 4,
+          "completed": true
+        }
+      },
+      "pending_decision": true,
+      "decision_options": ["APPROVE", "REFINE", "REJECT", "PAUSE"]
+    }
+  },
+  "decision_processing": {
+    "approve_decision": {
+      "session_id": "session_1234567890_1234567890",
+      "current_stage": "PROBLEM_CLARIFICATION",
+      "stage_status": "in_progress",
+      "messages": [
+        {
+          "id": "welcome_msg_001",
+          "content": "Welcome to the BeBrahma AI Workflow! I'm here to help you analyze and solve complex problems through a structured, multi-stage approach. We'll work together through 7 stages to ensure comprehensive problem understanding and solution development. Let's start with Problem Capture - please tell me about the challenge you're facing.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T10:00:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "business_analyst_msg_001",
+          "content": "As a Business Analyst, I can see you're working on a healthcare system analysis. This is a complex domain with multiple stakeholders and regulatory requirements. To properly capture the problem, I need to understand: What specific healthcare system are we analyzing? What are the main pain points or challenges you're experiencing? Who are the primary users and what are their needs?",
+          "agent_id": "business_analyst",
+          "agent_name": "Business Analyst",
+          "agent_title": "Business Analyst",
+          "timestamp": "2024-01-15T10:01:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "solution_architect_msg_001",
+          "content": "From a technical architecture perspective, I can see several areas that need attention in your healthcare system. The current system appears to have scalability issues, security vulnerabilities, and integration challenges with existing hospital infrastructure. We need to address these technical debt items while maintaining HIPAA compliance.",
+          "agent_id": "solution_architect",
+          "agent_name": "Solution Architect",
+          "agent_title": "Solution Architect",
+          "timestamp": "2024-01-15T10:02:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "smart_planner_msg_001",
+          "content": "Based on my analysis of the problem scope, I can see this is a high-complexity healthcare system modernization project. The problem involves multiple interconnected systems, regulatory compliance requirements, and stakeholder coordination. We have sufficient information to proceed to the next stage.",
+          "agent_id": "smart_planner",
+          "agent_name": "Smart Planner",
+          "agent_title": "Smart Planner",
+          "timestamp": "2024-01-15T10:03:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "decision_msg_001",
+          "content": "Decision: APPROVE - Problem Capture stage completed successfully. Moving to Problem Clarification stage to dive deeper into the identified issues and gather more specific requirements.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T10:04:00Z",
+          "stage": "PROBLEM_CAPTURE",
+          "metadata": {
+            "decision_type": "APPROVE",
+            "feedback": "Problem Capture stage completed successfully",
+            "stage_transition": true
+          }
+        }
+      ],
+      "stage_progress": {
+        "PROBLEM_CAPTURE": {
+          "status": "completed",
+          "message_count": 5,
+          "completed": true
+        },
+        "PROBLEM_CLARIFICATION": {
+          "status": "in_progress",
+          "message_count": 0,
+          "completed": false
+        }
+      },
+      "pending_decision": false,
+      "decision_options": []
+    },
+    "refine_decision": {
+      "session_id": "session_1234567890_1234567890",
+      "current_stage": "PROBLEM_CAPTURE",
+      "stage_status": "in_progress",
+      "messages": [
+        {
+          "id": "welcome_msg_001",
+          "content": "Welcome to the BeBrahma AI Workflow! I'm here to help you analyze and solve complex problems through a structured, multi-stage approach. We'll work together through 7 stages to ensure comprehensive problem understanding and solution development. Let's start with Problem Capture - please tell me about the challenge you're facing.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T10:00:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "decision_msg_001",
+          "content": "Decision: REFINE - Need more specific details about the healthcare system challenges. Please provide more information about the current system architecture, specific pain points, and user feedback.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T10:04:00Z",
+          "stage": "PROBLEM_CAPTURE",
+          "metadata": {
+            "decision_type": "REFINE",
+            "feedback": "Need more specific details about the healthcare system challenges",
+            "stage_transition": false
+          }
+        }
+      ],
+      "stage_progress": {
+        "PROBLEM_CAPTURE": {
+          "status": "in_progress",
+          "message_count": 2,
+          "completed": false
+        }
+      },
+      "pending_decision": false,
+      "decision_options": []
+    }
+  },
+  "workflow_status": {
+    "in_progress": {
+      "session_id": "session_1234567890_1234567890",
+      "current_stage": "PROBLEM_CAPTURE",
+      "stage_status": "in_progress",
+      "workflow_name": "Healthcare System Analysis",
+      "messages": [
+        {
+          "id": "welcome_msg_001",
+          "content": "Welcome to the BeBrahma AI Workflow! I'm here to help you analyze and solve complex problems through a structured, multi-stage approach. We'll work together through 7 stages to ensure comprehensive problem understanding and solution development. Let's start with Problem Capture - please tell me about the challenge you're facing.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T10:00:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "business_analyst_msg_001",
+          "content": "As a Business Analyst, I can see you're working on a healthcare system analysis. This is a complex domain with multiple stakeholders and regulatory requirements. To properly capture the problem, I need to understand: What specific healthcare system are we analyzing? What are the main pain points or challenges you're experiencing? Who are the primary users and what are their needs?",
+          "agent_id": "business_analyst",
+          "agent_name": "Business Analyst",
+          "agent_title": "Business Analyst",
+          "timestamp": "2024-01-15T10:01:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        }
+      ],
+      "stage_progress": {
+        "PROBLEM_CAPTURE": {
+          "status": "in_progress",
+          "message_count": 2,
+          "completed": false,
+          "progress_percentage": 40
+        }
+      },
+      "pending_decision": false,
+      "decision_options": [],
+      "overall_progress": 14,
+      "estimated_completion": "2024-01-15T12:00:00Z"
+    },
+    "completed": {
+      "session_id": "session_1234567890_1234567890",
+      "current_stage": "MONITORING_SETUP",
+      "stage_status": "completed",
+      "workflow_name": "Healthcare System Analysis",
+      "messages": [
+        {
+          "id": "completion_msg_001",
+          "content": "Congratulations! The BeBrahma AI Workflow has been completed successfully. We've analyzed your healthcare system challenges, designed comprehensive solutions, created implementation plans, and established monitoring strategies. Your project is now ready for execution with a clear roadmap and success metrics.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T12:00:00Z",
+          "stage": "MONITORING_SETUP",
+          "metadata": {
+            "message_type": "completion",
+            "workflow_finished": true
+          }
+        }
+      ],
+      "stage_progress": {
+        "PROBLEM_CAPTURE": {
+          "status": "completed",
+          "message_count": 4,
+          "completed": true
+        },
+        "PROBLEM_CLARIFICATION": {
+          "status": "completed",
+          "message_count": 3,
+          "completed": true
+        },
+        "SOLUTION_DESIGN": {
+          "status": "completed",
+          "message_count": 5,
+          "completed": true
+        },
+        "IMPLEMENTATION_PLAN": {
+          "status": "completed",
+          "message_count": 4,
+          "completed": true
+        },
+        "TESTING_STRATEGY": {
+          "status": "completed",
+          "message_count": 3,
+          "completed": true
+        },
+        "DEPLOYMENT_PLAN": {
+          "status": "completed",
+          "message_count": 4,
+          "completed": true
+        },
+        "MONITORING_SETUP": {
+          "status": "completed",
+          "message_count": 2,
+          "completed": true
+        }
+      },
+      "pending_decision": false,
+      "decision_options": [],
+      "overall_progress": 100,
+      "completion_summary": {
+        "total_messages": 25,
+        "stages_completed": 7,
+        "key_deliverables": [
+          "Problem analysis document",
+          "Solution architecture",
+          "Implementation roadmap",
+          "Testing strategy",
+          "Deployment plan",
+          "Monitoring framework"
+        ]
+      }
+    }
+  },
+  "error_responses": {
+    "session_not_found": {
+      "detail": "Session not found",
+      "error_code": "SESSION_404",
+      "suggestions": [
+        "Check if the session ID is correct",
+        "The session may have expired",
+        "Try starting a new workflow"
+      ]
+    },
+    "invalid_decision": {
+      "detail": "Invalid decision type",
+      "error_code": "INVALID_DECISION",
+      "allowed_decisions": ["APPROVE", "REFINE", "REJECT", "PAUSE"]
+    },
+    "service_unavailable": {
+      "detail": "Service temporarily unavailable",
+      "error_code": "SERVICE_503",
+      "retry_after": 30,
+      "status": "maintenance"
+    },
+    "timeout_error": {
+      "detail": "Request timeout",
+      "error_code": "TIMEOUT_408",
+      "timeout_duration": 10000,
+      "suggestions": [
+        "Check your internet connection",
+        "Try again in a few moments",
+        "Contact support if the issue persists"
+      ]
+    }
+  },
+  "stage_specific_data": {
+    "problem_capture": {
+      "title": "Problem Capture",
+      "description": "Define and understand the core problem or challenge",
+      "objectives": [
+        "Clearly articulate the problem statement",
+        "Identify key stakeholders and their needs",
+        "Understand problem scope and impact",
+        "Document current state and pain points"
+      ],
+      "required_agents": ["business_analyst", "smart_planner"],
+      "min_messages": 3,
+      "max_messages": 5,
+      "requires_decision": true,
+      "deliverables": [
+        "Problem statement document",
+        "Stakeholder analysis",
+        "Impact assessment",
+        "Current state documentation"
+      ]
+    },
+    "problem_clarification": {
+      "title": "Problem Clarification",
+      "description": "Dive deeper into the problem to gather detailed requirements",
+      "objectives": [
+        "Gather detailed requirements",
+        "Analyze root causes",
+        "Identify constraints and dependencies",
+        "Validate problem understanding"
+      ],
+      "required_agents": ["business_analyst", "solution_architect"],
+      "min_messages": 3,
+      "max_messages": 6,
+      "requires_decision": true,
+      "deliverables": [
+        "Detailed requirements document",
+        "Root cause analysis",
+        "Constraint analysis",
+        "Problem validation report"
+      ]
+    },
+    "solution_design": {
+      "title": "Solution Design",
+      "description": "Design comprehensive solutions to address the identified problems",
+      "objectives": [
+        "Design solution architecture",
+        "Identify solution alternatives",
+        "Evaluate trade-offs and risks",
+        "Create solution roadmap"
+      ],
+      "required_agents": ["solution_architect", "smart_planner"],
+      "min_messages": 4,
+      "max_messages": 7,
+      "requires_decision": true,
+      "deliverables": [
+        "Solution architecture document",
+        "Alternative solutions analysis",
+        "Risk assessment",
+        "Solution roadmap"
+      ]
+    }
+  },
+  "agent_metadata": {
+    "business_analyst": {
+      "id": "business_analyst",
+      "name": "Business Analyst",
+      "title": "Business Analyst",
+      "role": "Analyze business requirements and stakeholder needs",
+      "expertise": [
+        "Requirements gathering",
+        "Stakeholder analysis",
+        "Business process modeling",
+        "Impact assessment"
+      ],
+      "communication_style": "Analytical and structured",
+      "typical_messages": [
+        "What are the main business objectives?",
+        "Who are the key stakeholders?",
+        "What are the current pain points?",
+        "What are the success criteria?"
+      ]
+    },
+    "solution_architect": {
+      "id": "solution_architect",
+      "name": "Solution Architect",
+      "title": "Solution Architect",
+      "role": "Design technical solutions and architecture",
+      "expertise": [
+        "System architecture design",
+        "Technology selection",
+        "Integration planning",
+        "Performance optimization"
+      ],
+      "communication_style": "Technical and detailed",
+      "typical_messages": [
+        "What are the technical requirements?",
+        "How will this integrate with existing systems?",
+        "What are the scalability considerations?",
+        "What security measures are needed?"
+      ]
+    },
+    "smart_planner": {
+      "id": "smart_planner",
+      "name": "Smart Planner",
+      "title": "Smart Planner",
+      "role": "Plan and coordinate project execution",
+      "expertise": [
+        "Project planning",
+        "Resource allocation",
+        "Timeline management",
+        "Risk mitigation"
+      ],
+      "communication_style": "Strategic and organized",
+      "typical_messages": [
+        "What is the project timeline?",
+        "What resources are required?",
+        "What are the key milestones?",
+        "How do we manage risks?"
+      ]
+    },
+    "developer": {
+      "id": "developer",
+      "name": "Developer",
+      "title": "Developer",
+      "role": "Implement technical solutions",
+      "expertise": [
+        "Software development",
+        "Code implementation",
+        "Testing and debugging",
+        "Performance optimization"
+      ],
+      "communication_style": "Practical and technical",
+      "typical_messages": [
+        "What are the implementation details?",
+        "What technologies should we use?",
+        "How do we handle edge cases?",
+        "What testing approach should we take?"
+      ]
+    },
+    "qa_tester": {
+      "id": "qa_tester",
+      "name": "QA Tester",
+      "title": "QA Tester",
+      "role": "Ensure quality and validate solutions",
+      "expertise": [
+        "Test planning",
+        "Quality assurance",
+        "Bug identification",
+        "User acceptance testing"
+      ],
+      "communication_style": "Detail-oriented and thorough",
+      "typical_messages": [
+        "What are the acceptance criteria?",
+        "How do we test this functionality?",
+        "What are the quality standards?",
+        "How do we validate user requirements?"
+      ]
+    }
+  }
+}

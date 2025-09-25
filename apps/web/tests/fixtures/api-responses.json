@@ -1,0 +1,472 @@
+{
+  "crewStart": {
+    "success": true,
+    "messages": [
+      {"id": "m1", "content": "Welcome from crew", "sender": "system", "timestamp": 1710000000000, "agentMetadata": {"agentId": "system", "agentName": "System", "agentTitle": "Workflow Orchestrator"}}
+    ],
+    "sessionId": "test-session-123",
+    "status": "active",
+    "currentStage": "PROBLEM_CAPTURE"
+  },
+  "crewNext": {
+    "success": true,
+    "messages": [
+      {"id": "m2", "content": "Next message", "sender": "agent", "timestamp": 1710000001000, "agentMetadata": {"agentId": "business-analyst", "agentName": "Business Analyst", "agentTitle": "Research Specialist"}}
+    ],
+    "sessionId": "test-session-123",
+    "status": "active",
+    "currentStage": "PROBLEM_CLARIFICATION"
+  },
+  "status": {
+    "sessionId": "test-session-123",
+    "status": "active",
+    "currentStage": "PROBLEM_CAPTURE",
+    "messages": [
+      {"id": "status1", "content": "Current workflow status", "sender": "system", "timestamp": 1710000002000}
+    ]
+  },
+  "decision": { 
+    "success": true, 
+    "sessionId": "test-session-123", 
+    "messages": [
+      {"id": "decision-response", "content": "Decision processed successfully", "sender": "system", "timestamp": 1710000003000}
+    ],
+    "status": "active", 
+    "currentStage": "PROBLEM_CLARIFICATION" 
+  },
+  "progress": {
+    "success": true,
+    "progressState": {
+      "phase": "planning",
+      "currentPhase": "Initializing",
+      "overallProgress": 10,
+      "agents": [],
+      "estimatedTotalTime": 0,
+      "currentBudget": 0,
+      "totalBudget": 200
+    }
+  },
+  "ai": { "response": "Mocked AI response" },
+  "workflow": { "success": true },
+  "langgraph": {
+    "workflow_start": {
+      "session_id": "test_session_123456789",
+      "current_stage": "PROBLEM_CAPTURE",
+      "stage_status": "IN_PROGRESS",
+      "workflow_name": "Test Workflow",
+      "initial_context": {
+        "domain": "testing",
+        "complexity": "medium"
+      },
+      "messages": [
+        {
+          "id": "welcome_msg_test",
+          "content": "Welcome to the BeBrahma AI Workflow! Let's start with Problem Capture.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T10:00:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        }
+      ],
+      "stage_progress": {
+        "PROBLEM_CAPTURE": {
+          "status": "IN_PROGRESS",
+          "message_count": 1,
+          "completed": false,
+          "progress_percentage": 20
+        }
+      },
+      "pending_decision": false,
+      "decision_options": [],
+      "created_at": "2024-01-15T10:00:00Z",
+      "updated_at": "2024-01-15T10:00:00Z"
+    },
+    "step_progression": {
+      "session_id": "test_session_123456789",
+      "current_stage": "PROBLEM_CAPTURE",
+      "stage_status": "IN_PROGRESS",
+      "messages": [
+        {
+          "id": "welcome_msg_test",
+          "content": "Welcome to the BeBrahma AI Workflow! Let's start with Problem Capture.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T10:00:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "agent_msg_test",
+          "content": "As a Business Analyst, I need to understand your specific challenges.",
+          "agent_id": "business_analyst",
+          "agent_name": "Business Analyst",
+          "agent_title": "Business Analyst",
+          "timestamp": "2024-01-15T10:01:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        }
+      ],
+      "stage_progress": {
+        "PROBLEM_CAPTURE": {
+          "status": "IN_PROGRESS",
+          "message_count": 2,
+          "completed": false,
+          "progress_percentage": 40
+        }
+      },
+      "pending_decision": false,
+      "decision_options": []
+    },
+    "decision_ready": {
+      "session_id": "test_session_123456789",
+      "current_stage": "PROBLEM_CAPTURE",
+      "stage_status": "READY_FOR_DECISION",
+      "messages": [
+        {
+          "id": "welcome_msg_test",
+          "content": "Welcome to the BeBrahma AI Workflow! Let's start with Problem Capture.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T10:00:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "agent_msg_test",
+          "content": "As a Business Analyst, I need to understand your specific challenges.",
+          "agent_id": "business_analyst",
+          "agent_name": "Business Analyst",
+          "agent_title": "Business Analyst",
+          "timestamp": "2024-01-15T10:01:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "completion_msg_test",
+          "content": "We have sufficient information to proceed to the next stage.",
+          "agent_id": "smart_planner",
+          "agent_name": "Smart Planner",
+          "agent_title": "Smart Planner",
+          "timestamp": "2024-01-15T10:02:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        }
+      ],
+      "stage_progress": {
+        "PROBLEM_CAPTURE": {
+          "status": "READY_FOR_DECISION",
+          "message_count": 3,
+          "completed": true,
+          "progress_percentage": 100
+        }
+      },
+      "pending_decision": true,
+      "decision_options": ["APPROVE", "REFINE", "REJECT", "PAUSE"]
+    },
+    "decision_processed": {
+      "session_id": "test_session_123456789",
+      "current_stage": "PROBLEM_CLARIFICATION",
+      "stage_status": "IN_PROGRESS",
+      "messages": [
+        {
+          "id": "welcome_msg_test",
+          "content": "Welcome to the BeBrahma AI Workflow! Let's start with Problem Capture.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T10:00:00Z",
+          "stage": "PROBLEM_CAPTURE"
+        },
+        {
+          "id": "decision_msg_test",
+          "content": "Decision: APPROVE - Problem Capture completed successfully. Moving to Problem Clarification.",
+          "agent_id": "system",
+          "agent_name": "System",
+          "agent_title": "Workflow Orchestrator",
+          "timestamp": "2024-01-15T10:03:00Z",
+          "stage": "PROBLEM_CAPTURE",
+          "metadata": {
+            "decision_type": "APPROVE",
+            "stage_transition": true
+          }
+        }
+      ],
+      "stage_progress": {
+        "PROBLEM_CAPTURE": {
+          "status": "COMPLETED",
+          "message_count": 2,
+          "completed": true,
+          "progress_percentage": 100
+        },
+        "PROBLEM_CLARIFICATION": {
+          "status": "IN_PROGRESS",
+          "message_count": 0,
+          "completed": false,
+          "progress_percentage": 0
+        }
+      },
+      "pending_decision": false,
+      "decision_options": []
+    },
+    "error_responses": {
+      "session_not_found": {
+        "detail": "Session not found",
+        "error_code": "SESSION_404"
+      },
+      "invalid_decision": {
+        "detail": "Invalid decision type",
+        "error_code": "INVALID_DECISION"
+      },
+      "service_unavailable": {
+        "detail": "Service temporarily unavailable",
+        "error_code": "SERVICE_503",
+        "retry_after": 30
+      },
+      "timeout_error": {
+        "detail": "Request timeout",
+        "error_code": "TIMEOUT_408"
+      }
+    }
+  },
+  "crewai_multi_agent": {
+    "workflow_start_with_agents": {
+      "sessionId": "crewai-session-001",
+      "messages": [{
+        "id": "crewai-welcome-001",
+        "content": "Welcome! I've assembled a team of expert agents to help you with your project:\n\n• **Business Analyst** - Requirements gathering and stakeholder analysis\n• **Solution Architect** - Technical architecture and system design\n• **Smart Planner** - Project coordination and strategic planning\n• **Developer** - Implementation and technical solutions\n• **QA Tester** - Quality assurance and testing strategies",
+        "sender": "system",
+        "timestamp": 1710000000000,
+        "agentMetadata": {
+          "teamComposition": [
+            { "agentId": "business-analyst", "agentName": "Sarah Rodriguez", "agentTitle": "Senior Business Analyst", "department": "Strategy" },
+            { "agentId": "solution-architect", "agentName": "Michael Chen", "agentTitle": "Principal Solution Architect", "department": "Technical" },
+            { "agentId": "smart-planner", "agentName": "Emma Thompson", "agentTitle": "Strategic Project Planner", "department": "Strategy" },
+            { "agentId": "developer", "agentName": "Alex Kim", "agentTitle": "Senior Full-Stack Developer", "department": "Technical" },
+            { "agentId": "qa-tester", "agentName": "Maria Santos", "agentTitle": "Lead QA Engineer", "department": "Quality" }
+          ]
+        }
+      }],
+      "status": "active",
+      "currentStage": "PROBLEM_CAPTURE"
+    },
+    "agent_message_progression": [
+      {
+        "sessionId": "crewai-session-001",
+        "message": {
+          "id": "ba-msg-001",
+          "content": "As your Business Analyst, I need to understand your target market and key business objectives. What are the primary stakeholder groups and their specific requirements?",
+          "sender": "agent",
+          "timestamp": 1710000060000,
+          "agentMetadata": {
+            "agentId": "business-analyst",
+            "agentName": "Sarah Rodriguez", 
+            "agentTitle": "Senior Business Analyst",
+            "agentDepartment": "Strategy",
+            "expertise": ["Requirements Analysis", "Stakeholder Management", "Business Process Design"]
+          }
+        },
+        "status": "active",
+        "hasMore": true
+      },
+      {
+        "sessionId": "crewai-session-001",
+        "message": {
+          "id": "sa-msg-001",
+          "content": "From a technical perspective, I'm evaluating the architectural requirements. Based on the business context, what's your expected user volume and performance requirements?",
+          "sender": "agent",
+          "timestamp": 1710000120000,
+          "agentMetadata": {
+            "agentId": "solution-architect",
+            "agentName": "Michael Chen",
+            "agentTitle": "Principal Solution Architect", 
+            "agentDepartment": "Technical",
+            "expertise": ["System Architecture", "Cloud Infrastructure", "API Design", "Microservices"]
+          }
+        },
+        "status": "active",
+        "hasMore": true
+      }
+    ],
+    "collaborative_responses": {
+      "consensus_building": {
+        "sessionId": "crewai-consensus-session",
+        "message": {
+          "id": "consensus-msg-001",
+          "content": "**Agent Consensus Summary:**\n\n**Business Analyst (Sarah Rodriguez)**: ✅ Agrees with microservices approach for scalability\n**Solution Architect (Michael Chen)**: ✅ Confirms technical feasibility and recommends AWS\n**Smart Planner (Emma Thompson)**: ✅ Supports phased implementation strategy\n**Developer (Alex Kim)**: ✅ Validates implementation complexity as manageable\n**QA Tester (Maria Santos)**: ✅ Confirms testing strategy is comprehensive\n\n**Consensus Reached**: All agents agree to proceed with microservices architecture using AWS cloud platform.",
+          "sender": "system",
+          "timestamp": 1710000300000,
+          "messageType": "agent_consensus",
+          "consensusData": {
+            "agentVotes": {
+              "business-analyst": "approve",
+              "solution-architect": "approve", 
+              "smart-planner": "approve",
+              "developer": "approve",
+              "qa-tester": "approve"
+            },
+            "consensusLevel": "unanimous"
+          }
+        },
+        "status": "awaiting_decision",
+        "pendingDecision": true
+      },
+      "conflict_resolution": {
+        "sessionId": "crewai-conflict-session",
+        "message": {
+          "id": "conflict-resolution-001",
+          "content": "**Agent Discussion - Conflicting Views:**\n\n**Solution Architect (Michael Chen)**: 🔶 Recommends microservices for scalability\n**Developer (Alex Kim)**: ⚠️ Concerns about microservices complexity for initial launch\n**Smart Planner (Emma Thompson)**: 🔄 Suggests compromise: monolith-first approach with microservices migration plan\n\n**Resolution**: Hybrid approach - start with modular monolith for faster initial deployment, designed with microservices patterns for future migration.",
+          "sender": "system",
+          "timestamp": 1710000360000,
+          "messageType": "agent_conflict_resolution",
+          "conflictData": {
+            "originalPositions": {
+              "solution-architect": "microservices",
+              "developer": "monolith", 
+              "smart-planner": "hybrid"
+            },
+            "resolution": "modular_monolith_with_migration_plan"
+          }
+        },
+        "status": "active"
+      }
+    },
+    "decision_point_responses": {
+      "stage_completion_ready": {
+        "sessionId": "crewai-decision-session",
+        "message": {
+          "id": "stage-completion-001",
+          "content": "**Stage Analysis Complete**\n\nOur multi-agent team has completed the Problem Capture analysis. All agents are in agreement that we have sufficient information to proceed.",
+          "sender": "system",
+          "timestamp": 1710000400000,
+          "agentConsensus": {
+            "level": "unanimous",
+            "readyForAdvancement": true,
+            "stageCompletionCriteria": [
+              "Business requirements identified ✅",
+              "Technical constraints assessed ✅", 
+              "Project scope defined ✅",
+              "Stakeholder alignment confirmed ✅"
+            ]
+          }
+        },
+        "status": "awaiting_decision",
+        "pendingDecision": true,
+        "decisionOptions": [
+          { "type": "approve", "label": "Approve & Continue", "description": "Move to Problem Clarification stage" },
+          { "type": "refine", "label": "Request Refinement", "description": "Ask agents for additional analysis" },
+          { "type": "reject", "label": "Reject & Restart", "description": "Start over with different approach" },
+          { "type": "pause", "label": "Pause Workflow", "description": "Save progress and continue later" }
+        ]
+      }
+    },
+    "real_time_agent_status": {
+      "multi_agent_progress": {
+        "sessionId": "crewai-status-session",
+        "currentStage": "SOLUTION_DESIGN",
+        "progress": 60,
+        "agentStatus": {
+          "business-analyst": {
+            "status": "completed",
+            "lastActivity": 1710000500000,
+            "currentTask": "Requirements analysis complete",
+            "taskProgress": 100
+          },
+          "solution-architect": {
+            "status": "active", 
+            "lastActivity": 1710000550000,
+            "currentTask": "Designing system architecture",
+            "taskProgress": 75
+          },
+          "smart-planner": {
+            "status": "active",
+            "lastActivity": 1710000540000,
+            "currentTask": "Creating implementation roadmap", 
+            "taskProgress": 60
+          },
+          "developer": {
+            "status": "waiting",
+            "lastActivity": 1710000400000,
+            "currentTask": "Awaiting architecture design",
+            "taskProgress": 0
+          },
+          "qa-tester": {
+            "status": "idle",
+            "lastActivity": 1710000300000,
+            "currentTask": "Ready for testing phase",
+            "taskProgress": 0
+          }
+        },
+        "timestamp": 1710000600000
+      }
+    },
+    "session_recovery_data": {
+      "full_session_state": {
+        "sessionId": "crewai-recovery-session",
+        "messages": [
+          {
+            "id": "recovery-welcome",
+            "content": "Welcome! I've assembled your expert agent team.",
+            "sender": "system",
+            "timestamp": 1710000000000
+          },
+          {
+            "id": "recovery-ba-msg",
+            "content": "I've completed the stakeholder analysis for your e-commerce platform.",
+            "sender": "agent",
+            "timestamp": 1710000060000,
+            "agentMetadata": {
+              "agentId": "business-analyst",
+              "agentName": "Sarah Rodriguez",
+              "agentTitle": "Senior Business Analyst"
+            }
+          },
+          {
+            "id": "recovery-sa-msg", 
+            "content": "Based on Sarah's analysis, I recommend a cloud-native microservices architecture.",
+            "sender": "agent",
+            "timestamp": 1710000120000,
+            "agentMetadata": {
+              "agentId": "solution-architect",
+              "agentName": "Michael Chen",
+              "agentTitle": "Principal Solution Architect"
+            },
+            "contextReferences": ["business-analyst"]
+          }
+        ],
+        "status": "active",
+        "currentStage": "PROBLEM_CLARIFICATION",
+        "progress": 35,
+        "agentCollaboration": {
+          "messageCount": 2,
+          "agentContributions": {
+            "business-analyst": 1,
+            "solution-architect": 1
+          },
+          "contextReferences": ["business-analyst"]
+        },
+        "decisionHistory": [],
+        "recoveryMetadata": {
+          "lastSaved": 1710000180000,
+          "sessionDuration": 180000,
+          "totalInteractions": 3
+        }
+      }
+    },
+    "error_scenarios": {
+      "agent_service_failure": {
+        "error": "Business Analyst agent temporarily unavailable",
+        "code": "AGENT_SERVICE_ERROR",
+        "agentId": "business-analyst",
+        "retryable": true,
+        "fallbackMessage": "Continuing with available agents. Business Analyst will rejoin when ready.",
+        "affectedAgents": ["business-analyst"],
+        "timestamp": 1710000700000
+      },
+      "agent_coordination_conflict": {
+        "error": "Multiple agents attempting to respond simultaneously",
+        "code": "COORDINATION_CONFLICT",
+        "conflictingAgents": ["business-analyst", "solution-architect"],
+        "resolution": "Sequential response ordering applied",
+        "timestamp": 1710000800000
+      }
+    }
+  }
+}

@@ -1,0 +1,509 @@
+{
+  "deviceProfiles": {
+    "iPhone 12": {
+      "viewport": {
+        "width": 375,
+        "height": 812,
+        "deviceScaleFactor": 3,
+        "isMobile": true,
+        "hasTouch": true
+      },
+      "touchCapabilities": {
+        "maxTouchPoints": 5,
+        "touchAction": ["pan-x", "pan-y", "pinch-zoom"]
+      },
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
+      "safeArea": {
+        "top": 47,
+        "right": 0,
+        "bottom": 34,
+        "left": 0
+      },
+      "orientation": {
+        "portrait": { "width": 375, "height": 812 },
+        "landscape": { "width": 812, "height": 375 }
+      }
+    },
+    "iPhone 12 Pro": {
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 3,
+        "isMobile": true,
+        "hasTouch": true
+      },
+      "touchCapabilities": {
+        "maxTouchPoints": 5,
+        "touchAction": ["pan-x", "pan-y", "pinch-zoom"]
+      },
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
+      "safeArea": {
+        "top": 47,
+        "right": 0,
+        "bottom": 34,
+        "left": 0
+      },
+      "orientation": {
+        "portrait": { "width": 390, "height": 844 },
+        "landscape": { "width": 844, "height": 390 }
+      }
+    },
+    "Pixel 5": {
+      "viewport": {
+        "width": 393,
+        "height": 851,
+        "deviceScaleFactor": 2.75,
+        "isMobile": true,
+        "hasTouch": true
+      },
+      "touchCapabilities": {
+        "maxTouchPoints": 10,
+        "touchAction": ["pan-x", "pan-y", "pinch-zoom", "double-tap-zoom"]
+      },
+      "userAgent": "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.91 Mobile Safari/537.36",
+      "safeArea": {
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "orientation": {
+        "portrait": { "width": 393, "height": 851 },
+        "landscape": { "width": 851, "height": 393 }
+      }
+    },
+    "iPad Pro": {
+      "viewport": {
+        "width": 1024,
+        "height": 1366,
+        "deviceScaleFactor": 2,
+        "isMobile": false,
+        "hasTouch": true
+      },
+      "touchCapabilities": {
+        "maxTouchPoints": 11,
+        "touchAction": ["pan-x", "pan-y", "pinch-zoom", "rotation"]
+      },
+      "userAgent": "Mozilla/5.0 (iPad; CPU OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
+      "safeArea": {
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "orientation": {
+        "portrait": { "width": 1024, "height": 1366 },
+        "landscape": { "width": 1366, "height": 1024 }
+      }
+    },
+    "iPad Air": {
+      "viewport": {
+        "width": 820,
+        "height": 1180,
+        "deviceScaleFactor": 2,
+        "isMobile": false,
+        "hasTouch": true
+      },
+      "touchCapabilities": {
+        "maxTouchPoints": 11,
+        "touchAction": ["pan-x", "pan-y", "pinch-zoom", "rotation"]
+      },
+      "userAgent": "Mozilla/5.0 (iPad; CPU OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
+      "safeArea": {
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "orientation": {
+        "portrait": { "width": 820, "height": 1180 },
+        "landscape": { "width": 1180, "height": 820 }
+      }
+    },
+    "Desktop": {
+      "viewport": {
+        "width": 1920,
+        "height": 1080,
+        "deviceScaleFactor": 1,
+        "isMobile": false,
+        "hasTouch": false
+      },
+      "touchCapabilities": {
+        "maxTouchPoints": 0,
+        "touchAction": []
+      },
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.91 Safari/537.36",
+      "safeArea": {
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "orientation": {
+        "portrait": { "width": 1920, "height": 1080 },
+        "landscape": { "width": 1920, "height": 1080 }
+      }
+    }
+  },
+  "breakpoints": {
+    "mobile": {
+      "min": 320,
+      "max": 767,
+      "common": [320, 375, 390, 393, 414, 480, 640, 720, 750, 767]
+    },
+    "tablet": {
+      "min": 768,
+      "max": 1023,
+      "common": [768, 800, 820, 834, 900, 960, 1024]
+    },
+    "desktop": {
+      "min": 1024,
+      "max": 1920,
+      "common": [1024, 1200, 1280, 1366, 1440, 1536, 1600, 1680, 1920]
+    },
+    "largeDesktop": {
+      "min": 1921,
+      "max": 2560,
+      "common": [1921, 2048, 2560]
+    }
+  },
+  "touchTargetRequirements": {
+    "minimumSize": {
+      "width": 44,
+      "height": 44
+    },
+    "recommendedSize": {
+      "width": 48,
+      "height": 48
+    },
+    "spacing": {
+      "minimum": 8,
+      "recommended": 12
+    },
+    "elements": [
+      "button",
+      "a",
+      "input",
+      "select",
+      "textarea",
+      "label",
+      "[role='button']",
+      "[role='link']",
+      "[role='menuitem']"
+    ]
+  },
+  "orientationChanges": {
+    "portrait": {
+      "width": 375,
+      "height": 812,
+      "aspectRatio": "9:19.5"
+    },
+    "landscape": {
+      "width": 812,
+      "height": 375,
+      "aspectRatio": "19.5:9"
+    },
+    "transitionTime": {
+      "expected": 300,
+      "maximum": 500
+    }
+  },
+  "safeAreaInsets": {
+    "iPhone": {
+      "notch": {
+        "top": 47,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "homeIndicator": {
+        "top": 0,
+        "right": 0,
+        "bottom": 34,
+        "left": 0
+      }
+    },
+    "Android": {
+      "statusBar": {
+        "top": 24,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "navigationBar": {
+        "top": 0,
+        "right": 0,
+        "bottom": 48,
+        "left": 0
+      }
+    }
+  },
+  "viewportTransitions": {
+    "mobileToTablet": {
+      "from": { "width": 375, "height": 812 },
+      "to": { "width": 768, "height": 1024 },
+      "expectedDuration": 300,
+      "smoothness": "smooth"
+    },
+    "tabletToDesktop": {
+      "from": { "width": 768, "height": 1024 },
+      "to": { "width": 1024, "height": 768 },
+      "expectedDuration": 300,
+      "smoothness": "smooth"
+    },
+    "desktopToMobile": {
+      "from": { "width": 1920, "height": 1080 },
+      "to": { "width": 375, "height": 812 },
+      "expectedDuration": 300,
+      "smoothness": "smooth"
+    }
+  },
+  "layoutStability": {
+    "maximumLayoutShift": {
+      "score": 0.1,
+      "description": "Maximum acceptable layout shift score"
+    },
+    "stableElements": [
+      "header",
+      "footer",
+      "main navigation",
+      "sidebar",
+      "content area"
+    ],
+    "unstableElements": [
+      "dynamic content",
+      "loading states",
+      "animations",
+      "responsive images"
+    ]
+  },
+  "componentReflow": {
+    "navigation": {
+      "mobile": "hamburger menu",
+      "tablet": "horizontal menu",
+      "desktop": "full horizontal menu"
+    },
+    "sidebar": {
+      "mobile": "overlay/drawer",
+      "tablet": "collapsible sidebar",
+      "desktop": "persistent sidebar"
+    },
+    "content": {
+      "mobile": "single column",
+      "tablet": "two columns",
+      "desktop": "three columns"
+    }
+  },
+  "touchInteractions": {
+    "gestures": {
+      "tap": {
+        "description": "Single finger tap",
+        "responseTime": 100,
+        "targetSize": "44x44px minimum"
+      },
+      "doubleTap": {
+        "description": "Double finger tap",
+        "responseTime": 200,
+        "targetSize": "44x44px minimum"
+      },
+      "longPress": {
+        "description": "Press and hold",
+        "duration": 500,
+        "responseTime": 100
+      },
+      "swipe": {
+        "description": "Finger swipe gesture",
+        "minimumDistance": 50,
+        "responseTime": 150
+      },
+      "pinch": {
+        "description": "Two finger pinch",
+        "responseTime": 200,
+        "targetSize": "100x100px minimum"
+      }
+    },
+    "feedback": {
+      "visual": {
+        "required": true,
+        "types": ["color change", "opacity change", "scale change"]
+      },
+      "haptic": {
+        "required": false,
+        "types": ["light", "medium", "heavy"]
+      },
+      "audio": {
+        "required": false,
+        "types": ["click", "success", "error"]
+      }
+    }
+  },
+  "accessibilityRequirements": {
+    "touchTargets": {
+      "minimumSize": "44x44px",
+      "spacing": "8px minimum",
+      "contrast": "4.5:1 minimum"
+    },
+    "keyboardNavigation": {
+      "tabOrder": "logical",
+      "focusVisible": true,
+      "skipLinks": true
+    },
+    "screenReader": {
+      "ariaLabels": true,
+      "semanticHTML": true,
+      "altText": true
+    }
+  },
+  "progressiveEnhancement": {
+    "coreFeatures": [
+      "basic navigation",
+      "content display",
+      "form submission",
+      "basic interactions"
+    ],
+    "enhancedFeatures": [
+      "animations",
+      "real-time updates",
+      "advanced interactions",
+      "offline support"
+    ],
+    "fallbacks": {
+      "javascript": "server-side rendering",
+      "css": "basic styling",
+      "websocket": "polling",
+      "localStorage": "server-side storage"
+    }
+  },
+  "responsiveImages": {
+    "sizes": {
+      "mobile": {
+        "width": 375,
+        "height": 200,
+        "format": "webp",
+        "quality": 80
+      },
+      "tablet": {
+        "width": 768,
+        "height": 400,
+        "format": "webp",
+        "quality": 85
+      },
+      "desktop": {
+        "width": 1920,
+        "height": 600,
+        "format": "webp",
+        "quality": 90
+      }
+    },
+    "loading": {
+      "lazy": true,
+      "placeholder": true,
+      "progressive": true
+    }
+  },
+  "fontScaling": {
+    "baseSize": 16,
+    "scaleFactors": {
+      "mobile": 1,
+      "tablet": 1.1,
+      "desktop": 1.2
+    },
+    "lineHeight": {
+      "mobile": 1.4,
+      "tablet": 1.5,
+      "desktop": 1.6
+    },
+    "readability": {
+      "minimumSize": 14,
+      "maximumSize": 24,
+      "optimalSize": 16
+    }
+  },
+  "mediaQueries": {
+    "breakpoints": {
+      "mobile": "@media (max-width: 767px)",
+      "tablet": "@media (min-width: 768px) and (max-width: 1023px)",
+      "desktop": "@media (min-width: 1024px)",
+      "largeDesktop": "@media (min-width: 1921px)"
+    },
+    "orientation": {
+      "portrait": "@media (orientation: portrait)",
+      "landscape": "@media (orientation: landscape)"
+    },
+    "features": {
+      "touch": "@media (pointer: coarse)",
+      "mouse": "@media (pointer: fine)",
+      "hover": "@media (hover: hover)",
+      "noHover": "@media (hover: none)"
+    }
+  },
+  "performanceExpectations": {
+    "viewportChanges": {
+      "transitionTime": 300,
+      "fps": 60,
+      "memoryUsage": "no increase"
+    },
+    "touchResponsiveness": {
+      "responseTime": 100,
+      "accuracy": "95%",
+      "latency": "50ms"
+    },
+    "layoutStability": {
+      "layoutShift": "0.1 maximum",
+      "contentJump": "none",
+      "overflow": "none"
+    }
+  },
+  "testingScenarios": {
+    "deviceRotation": [
+      "portrait to landscape",
+      "landscape to portrait",
+      "rapid rotation changes"
+    ],
+    "viewportResizing": [
+      "gradual resizing",
+      "rapid resizing",
+      "extreme size changes"
+    ],
+    "touchInteractions": [
+      "single touch",
+      "multi-touch",
+      "gesture recognition",
+      "touch feedback"
+    ],
+    "accessibility": [
+      "keyboard navigation",
+      "screen reader compatibility",
+      "focus management",
+      "aria compliance"
+    ]
+  },
+  "commonIssues": {
+    "mobile": [
+      "touch target too small",
+      "content overflow",
+      "slow scrolling",
+      "battery drain"
+    ],
+    "tablet": [
+      "awkward touch interactions",
+      "layout inconsistencies",
+      "performance issues",
+      "orientation problems"
+    ],
+    "desktop": [
+      "poor mobile experience",
+      "accessibility issues",
+      "performance degradation",
+      "layout breakage"
+    ]
+  },
+  "bestPractices": {
+    "mobileFirst": "Design for mobile first, then enhance for larger screens",
+    "touchFriendly": "Ensure all interactive elements are touch-friendly",
+    "performance": "Optimize for mobile performance and battery life",
+    "accessibility": "Maintain accessibility across all device sizes",
+    "testing": "Test on real devices, not just emulators",
+    "progressiveEnhancement": "Build core functionality first, enhance progressively"
+  }
+}

@@ -1,0 +1,559 @@
+{
+  "websocketConnections": {
+    "chatService": {
+      "url": "ws://localhost:3000/chat",
+      "protocols": ["chat", "json"],
+      "expectedState": "OPEN",
+      "timeout": 5000,
+      "reconnectionAttempts": 3
+    },
+    "notificationService": {
+      "url": "ws://localhost:3000/notifications",
+      "protocols": ["notifications", "json"],
+      "expectedState": "OPEN",
+      "timeout": 5000,
+      "reconnectionAttempts": 3
+    },
+    "workflowService": {
+      "url": "ws://localhost:3000/workflow",
+      "protocols": ["workflow", "json"],
+      "expectedState": "OPEN",
+      "timeout": 5000,
+      "reconnectionAttempts": 3
+    },
+    "collaborationService": {
+      "url": "ws://localhost:3000/collaboration",
+      "protocols": ["collaboration", "json"],
+      "expectedState": "OPEN",
+      "timeout": 5000,
+      "reconnectionAttempts": 3
+    }
+  },
+  "connectionScenarios": {
+    "normalConnection": {
+      "description": "Standard connection establishment",
+      "expectedTime": 800,
+      "successRate": 0.99,
+      "errorHandling": "graceful"
+    },
+    "slowConnection": {
+      "description": "Connection with network latency",
+      "expectedTime": 2000,
+      "successRate": 0.95,
+      "errorHandling": "timeout"
+    },
+    "intermittentConnection": {
+      "description": "Connection with packet loss",
+      "expectedTime": 1500,
+      "successRate": 0.90,
+      "errorHandling": "retry"
+    },
+    "failedConnection": {
+      "description": "Connection failure scenario",
+      "expectedTime": 5000,
+      "successRate": 0.00,
+      "errorHandling": "fallback"
+    }
+  },
+  "messagePatterns": {
+    "chatMessages": {
+      "types": [
+        {
+          "type": "text",
+          "payload": {
+            "content": "Hello, how are you?",
+            "timestamp": "2024-01-01T12:00:00Z",
+            "sender": "user-123",
+            "room": "general"
+          },
+          "expectedDelivery": true,
+          "expectedLatency": 100
+        },
+        {
+          "type": "image",
+          "payload": {
+            "url": "https://example.com/image.jpg",
+            "alt": "Sample image",
+            "timestamp": "2024-01-01T12:01:00Z",
+            "sender": "user-123",
+            "room": "general"
+          },
+          "expectedDelivery": true,
+          "expectedLatency": 200
+        },
+        {
+          "type": "file",
+          "payload": {
+            "name": "document.pdf",
+            "size": 1024000,
+            "url": "https://example.com/document.pdf",
+            "timestamp": "2024-01-01T12:02:00Z",
+            "sender": "user-123",
+            "room": "general"
+          },
+          "expectedDelivery": true,
+          "expectedLatency": 300
+        }
+      ],
+      "frequency": {
+        "low": "1 message per 10 seconds",
+        "medium": "1 message per 2 seconds",
+        "high": "5 messages per second"
+      }
+    },
+    "agentStatusUpdates": {
+      "types": [
+        {
+          "type": "status_change",
+          "payload": {
+            "agentId": "agent-001",
+            "status": "online",
+            "timestamp": "2024-01-01T12:00:00Z",
+            "capabilities": ["chat", "email", "phone"]
+          },
+          "expectedDelivery": true,
+          "expectedLatency": 50
+        },
+        {
+          "type": "status_change",
+          "payload": {
+            "agentId": "agent-001",
+            "status": "busy",
+            "timestamp": "2024-01-01T12:01:00Z",
+            "currentTask": "helping customer"
+          },
+          "expectedDelivery": true,
+          "expectedLatency": 50
+        },
+        {
+          "type": "status_change",
+          "payload": {
+            "agentId": "agent-001",
+            "status": "offline",
+            "timestamp": "2024-01-01T12:02:00Z",
+            "reason": "end of shift"
+          },
+          "expectedDelivery": true,
+          "expectedLatency": 50
+        }
+      ],
+      "frequency": {
+        "update": "every 30 seconds",
+        "change": "immediate on status change"
+      }
+    },
+    "workflowProgress": {
+      "types": [
+        {
+          "type": "step_completed",
+          "payload": {
+            "workflowId": "wf-001",
+            "step": 1,
+            "progress": 25,
+            "status": "completed",
+            "timestamp": "2024-01-01T12:00:00Z",
+            "details": "User information collected"
+          },
+          "expectedDelivery": true,
+          "expectedLatency": 75
+        },
+        {
+          "type": "step_completed",
+          "payload": {
+            "workflowId": "wf-001",
+            "step": 2,
+            "progress": 50,
+            "status": "completed",
+            "timestamp": "2024-01-01T12:01:00Z",
+            "details": "Requirements analyzed"
+          },
+          "expectedDelivery": true,
+          "expectedLatency": 75
+        },
+        {
+          "type": "workflow_completed",
+          "payload": {
+            "workflowId": "wf-001",
+            "step": 4,
+            "progress": 100,
+            "status": "completed",
+            "timestamp": "2024-01-01T12:03:00Z",
+            "details": "All steps completed successfully"
+          },
+          "expectedDelivery": true,
+          "expectedLatency": 75
+        }
+      ],
+      "frequency": {
+        "update": "every step completion",
+        "progress": "real-time updates"
+      }
+    },
+    "notifications": {
+      "types": [
+        {
+          "type": "info",
+          "payload": {
+            "id": "notif-001",
+            "title": "System Update",
+            "message": "New features available",
+            "priority": "low",
+            "timestamp": "2024-01-01T12:00:00Z",
+            "actionable": false
+          },
+          "expectedDelivery": true,
+          "expectedLatency": 50
+        },
+        {
+          "type": "warning",
+          "payload": {
+            "id": "notif-002",
+            "title": "Storage Warning",
+            "message": "Storage space is running low",
+            "priority": "medium",
+            "timestamp": "2024-01-01T12:01:00Z",
+            "actionable": true
+          },
+          "expectedDelivery": true,
+          "expectedLatency": 50
+        },
+        {
+          "type": "error",
+          "payload": {
+            "id": "notif-003",
+            "title": "Connection Error",
+            "message": "Lost connection to server",
+            "priority": "high",
+            "timestamp": "2024-01-01T12:02:00Z",
+            "actionable": true
+          },
+          "expectedDelivery": true,
+          "expectedLatency": 50
+        }
+      ],
+      "frequency": {
+        "info": "as needed",
+        "warning": "immediate",
+        "error": "immediate"
+      }
+    }
+  },
+  "realTimeFeatures": {
+    "collaborativeEditing": {
+      "features": [
+        {
+          "name": "cursor_position",
+          "payload": {
+            "userId": "user-123",
+            "position": { "x": 100, "y": 200 },
+            "documentId": "doc-001",
+            "timestamp": "2024-01-01T12:00:00Z"
+          },
+          "expectedLatency": 50,
+          "frequency": "every cursor move"
+        },
+        {
+          "name": "text_selection",
+          "payload": {
+            "userId": "user-123",
+            "selection": { "start": 10, "end": 25 },
+            "documentId": "doc-001",
+            "timestamp": "2024-01-01T12:00:00Z"
+          },
+          "expectedLatency": 50,
+          "frequency": "on selection change"
+        },
+        {
+          "name": "typing_indicator",
+          "payload": {
+            "userId": "user-123",
+            "isTyping": true,
+            "documentId": "doc-001",
+            "timestamp": "2024-01-01T12:00:00Z"
+          },
+          "expectedLatency": 100,
+          "frequency": "on typing start/stop"
+        }
+      ]
+    },
+    "livePresence": {
+      "features": [
+        {
+          "name": "user_online",
+          "payload": {
+            "userId": "user-123",
+            "status": "online",
+            "lastSeen": "2024-01-01T12:00:00Z",
+            "device": "desktop"
+          },
+          "expectedLatency": 100,
+          "frequency": "on status change"
+        },
+        {
+          "name": "user_typing",
+          "payload": {
+            "userId": "user-123",
+            "isTyping": true,
+            "room": "general",
+            "timestamp": "2024-01-01T12:00:00Z"
+          },
+          "expectedLatency": 100,
+          "frequency": "on typing start/stop"
+        },
+        {
+          "name": "user_viewing",
+          "payload": {
+            "userId": "user-123",
+            "viewing": "document-001",
+            "timestamp": "2024-01-01T12:00:00Z"
+          },
+          "expectedLatency": 200,
+          "frequency": "on view change"
+        }
+      ]
+    }
+  },
+  "performanceBenchmarks": {
+    "connectionEstablishment": {
+      "fast": {
+        "time": 500,
+        "description": "Local network, no latency"
+      },
+      "normal": {
+        "time": 1000,
+        "description": "Standard internet connection"
+      },
+      "slow": {
+        "time": 3000,
+        "description": "Slow network, high latency"
+      }
+    },
+    "messageLatency": {
+      "local": {
+        "time": 25,
+        "description": "Local network"
+      },
+      "regional": {
+        "time": 75,
+        "description": "Same region"
+      },
+      "global": {
+        "time": 150,
+        "description": "Different continent"
+      }
+    },
+    "throughput": {
+      "low": {
+        "messagesPerSecond": 10,
+        "description": "Basic chat functionality"
+      },
+      "medium": {
+        "messagesPerSecond": 100,
+        "description": "Active chat room"
+      },
+      "high": {
+        "messagesPerSecond": 1000,
+        "description": "High-traffic application"
+      }
+    }
+  },
+  "errorScenarios": {
+    "networkErrors": [
+      {
+        "type": "connection_timeout",
+        "description": "Connection attempt times out",
+        "expectedBehavior": "retry with exponential backoff",
+        "fallback": "polling"
+      },
+      {
+        "type": "connection_refused",
+        "description": "Server refuses connection",
+        "expectedBehavior": "show error message, retry later",
+        "fallback": "offline mode"
+      },
+      {
+        "type": "network_unreachable",
+        "description": "Network is unreachable",
+        "expectedBehavior": "show offline indicator",
+        "fallback": "cached content"
+      }
+    ],
+    "messageErrors": [
+      {
+        "type": "message_timeout",
+        "description": "Message delivery times out",
+        "expectedBehavior": "retry delivery",
+        "fallback": "store for later delivery"
+      },
+      {
+        "type": "message_corruption",
+        "description": "Message data is corrupted",
+        "expectedBehavior": "request retransmission",
+        "fallback": "skip message"
+      },
+      {
+        "type": "message_overflow",
+        "description": "Message size exceeds limit",
+        "expectedBehavior": "reject message",
+        "fallback": "split into smaller messages"
+      }
+    ],
+    "protocolErrors": [
+      {
+        "type": "protocol_mismatch",
+        "description": "Client and server protocol versions don't match",
+        "expectedBehavior": "negotiate protocol version",
+        "fallback": "use basic protocol"
+      },
+      {
+        "type": "unsupported_message_type",
+        "description": "Message type not supported by server",
+        "expectedBehavior": "ignore message, log error",
+        "fallback": "continue with supported messages"
+      }
+    ]
+  },
+  "reconnectionStrategies": {
+    "immediate": {
+      "description": "Attempt reconnection immediately",
+      "delay": 0,
+      "maxAttempts": 3,
+      "useCase": "temporary network hiccup"
+    },
+    "exponential_backoff": {
+      "description": "Exponential backoff with jitter",
+      "initialDelay": 1000,
+      "maxDelay": 30000,
+      "maxAttempts": 10,
+      "useCase": "network instability"
+    },
+    "linear_backoff": {
+      "description": "Linear backoff strategy",
+      "initialDelay": 1000,
+      "increment": 1000,
+      "maxDelay": 10000,
+      "maxAttempts": 10,
+      "useCase": "predictable network issues"
+    },
+    "user_triggered": {
+      "description": "Reconnection triggered by user action",
+      "delay": 0,
+      "maxAttempts": 1,
+      "useCase": "user manually reconnects"
+    }
+  },
+  "fallbackMechanisms": {
+    "polling": {
+      "description": "Fallback to HTTP polling",
+      "interval": 5000,
+      "useCase": "WebSocket unavailable",
+      "performance": "lower than WebSocket"
+    },
+    "server_sent_events": {
+      "description": "Fallback to Server-Sent Events",
+      "useCase": "One-way communication",
+      "performance": "similar to WebSocket"
+    },
+    "long_polling": {
+      "description": "Fallback to long polling",
+      "timeout": 30000,
+      "useCase": "Real-time updates needed",
+      "performance": "lower than WebSocket"
+    }
+  },
+  "securityRequirements": {
+    "authentication": {
+      "required": true,
+      "methods": ["token", "session", "oauth"],
+      "tokenExpiry": 3600,
+      "refreshToken": true
+    },
+    "authorization": {
+      "required": true,
+      "levels": ["read", "write", "admin"],
+      "roleBased": true,
+      "permissionChecks": true
+    },
+    "encryption": {
+      "required": true,
+      "protocol": "WSS (WebSocket Secure)",
+      "certificateValidation": true,
+      "tlsVersion": "1.3"
+    },
+    "rateLimiting": {
+      "required": true,
+      "messagesPerSecond": 100,
+      "connectionsPerMinute": 60,
+      "burstLimit": 200
+    }
+  },
+  "monitoringMetrics": {
+    "connectionMetrics": [
+      "connection_count",
+      "connection_duration",
+      "reconnection_frequency",
+      "connection_success_rate"
+    ],
+    "messageMetrics": [
+      "messages_sent",
+      "messages_received",
+      "message_latency",
+      "message_delivery_rate",
+      "message_error_rate"
+    ],
+    "performanceMetrics": [
+      "memory_usage",
+      "cpu_usage",
+      "network_bandwidth",
+      "response_time"
+    ],
+    "errorMetrics": [
+      "connection_errors",
+      "message_errors",
+      "protocol_errors",
+      "timeout_errors"
+    ]
+  },
+  "testingScenarios": {
+    "loadTesting": [
+      {
+        "name": "concurrent_connections",
+        "description": "Test multiple simultaneous connections",
+        "connections": [10, 50, 100, 500, 1000],
+        "expectedBehavior": "stable performance under load"
+      },
+      {
+        "name": "message_throughput",
+        "description": "Test message sending/receiving capacity",
+        "messagesPerSecond": [10, 100, 1000, 10000],
+        "expectedBehavior": "maintain message order and delivery"
+      },
+      {
+        "name": "memory_usage",
+        "description": "Test memory consumption under load",
+        "duration": 300,
+        "expectedBehavior": "stable memory usage, no leaks"
+      }
+    ],
+    "stressTesting": [
+      {
+        "name": "rapid_connect_disconnect",
+        "description": "Test rapid connection establishment and closure",
+        "cycles": 1000,
+        "expectedBehavior": "handle rapid state changes gracefully"
+      },
+      {
+        "name": "network_instability",
+        "description": "Test behavior under unstable network conditions",
+        "scenarios": ["packet_loss", "high_latency", "bandwidth_limitation"],
+        "expectedBehavior": "graceful degradation and recovery"
+      },
+      {
+        "name": "server_overload",
+        "description": "Test behavior when server is overloaded",
+        "scenarios": ["high_cpu", "high_memory", "connection_limit"],
+        "expectedBehavior": "appropriate error handling and fallback"
+      }
+    ]
+  }
+}

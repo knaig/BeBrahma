@@ -1,0 +1,49 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - echo Build started on `date`
+      - export DOCKER_BUILDKIT=1
+      - export COMPOSE_DOCKER_CLI_BUILD=1
+      - echo Cleaning up Docker cache...
+      - docker system prune -f
+      - echo Building the Docker images...
+      
+  build:
+    commands:
+      - echo Building API image...
+      - docker buildx build --cache-from=type=registry,ref=$ECR_API_URL:buildcache --cache-to=type=registry,ref=$ECR_API_URL:buildcache,mode=max --progress=plain -f Dockerfile.api -t $ECR_API_URL:$IMAGE_TAG . || exit 1
+      - docker tag $ECR_API_URL:$IMAGE_TAG $ECR_API_URL:latest || exit 1
+      - echo API image build completed successfully at `date`
+      
+      - echo Building Crew Service image...
+      - docker buildx build --cache-from=type=registry,ref=$ECR_CREW_URL:buildcache --cache-to=type=registry,ref=$ECR_CREW_URL:buildcache,mode=max --progress=plain -f Dockerfile.crew-service -t $ECR_CREW_URL:$IMAGE_TAG . || exit 1
+      - docker tag $ECR_CREW_URL:$IMAGE_TAG $ECR_CREW_URL:latest || exit 1
+      - echo Crew Service image build completed successfully at `date`
+      
+      - echo Building Workflow Service image...
+      - docker buildx build --cache-from=type=registry,ref=$ECR_WORKFLOW_URL:buildcache --cache-to=type=registry,ref=$ECR_WORKFLOW_URL:buildcache,mode=max --progress=plain -f Dockerfile.workflow-service -t $ECR_WORKFLOW_URL:$IMAGE_TAG . || exit 1
+      - docker tag $ECR_WORKFLOW_URL:$IMAGE_TAG $ECR_WORKFLOW_URL:latest || exit 1
+      - echo Workflow Service image build completed successfully at `date`
+      
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $ECR_API_URL:$IMAGE_TAG || exit 1
+      - docker push $ECR_API_URL:latest || exit 1
+      - docker push $ECR_CREW_URL:$IMAGE_TAG || exit 1
+      - docker push $ECR_CREW_URL:latest || exit 1
+      - docker push $ECR_WORKFLOW_URL:$IMAGE_TAG || exit 1
+      - docker push $ECR_WORKFLOW_URL:latest || exit 1
+      - echo Writing image definitions file...
+      - printf '[{"name":"api","imageUri":"%s"},{"name":"crew","imageUri":"%s"},{"name":"workflow","imageUri":"%s"}]' $ECR_API_URL:$IMAGE_TAG $ECR_CREW_URL:$IMAGE_TAG $ECR_WORKFLOW_URL:$IMAGE_TAG > imagedefinitions.json
+      - echo All images pushed successfully at `date`
+      
+artifacts:
+  files:
+    - imagedefinitions.json
+  name: bebrahma-images-$(date +%Y-%m-%d-%H-%M-%S)

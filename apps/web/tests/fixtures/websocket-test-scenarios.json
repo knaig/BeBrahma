@@ -1,0 +1,224 @@
+{
+  "connection": {
+    "basic": {
+      "name": "Basic Connection",
+      "description": "Establish basic WebSocket connection",
+      "url": "ws://localhost:7071/ws",
+      "protocols": [],
+      "expectedState": "OPEN",
+      "timeout": 5000
+    },
+    "authenticated": {
+      "name": "Authenticated Connection",
+      "description": "Establish WebSocket connection with authentication",
+      "url": "ws://localhost:7071/ws/auth",
+      "protocols": ["auth-v1"],
+      "headers": {
+        "Authorization": "Bearer test-token",
+        "User-Id": "test-user-123"
+      },
+      "expectedState": "OPEN",
+      "timeout": 5000
+    },
+    "secure": {
+      "name": "Secure Connection",
+      "description": "Establish secure WebSocket connection",
+      "url": "wss://localhost:7071/ws/secure",
+      "protocols": ["secure-v1"],
+      "expectedState": "OPEN",
+      "timeout": 5000
+    }
+  },
+  "messaging": {
+    "simple": {
+      "name": "Simple Message",
+      "description": "Send and receive simple text message",
+      "message": "Hello, WebSocket!",
+      "expectedResponse": "Message received: Hello, WebSocket!",
+      "timeout": 3000
+    },
+    "json": {
+      "name": "JSON Message",
+      "description": "Send and receive JSON message",
+      "message": {
+        "type": "chat",
+        "content": "Hello from JSON",
+        "timestamp": "2024-01-01T00:00:00Z"
+      },
+      "expectedResponse": {
+        "type": "ack",
+        "status": "received",
+        "messageId": "msg-123"
+      },
+      "timeout": 3000
+    },
+    "binary": {
+      "name": "Binary Message",
+      "description": "Send and receive binary message",
+      "message": "binary-data",
+      "expectedResponse": "binary-ack",
+      "timeout": 3000
+    }
+  },
+  "real-time": {
+    "agent-status": {
+      "name": "Agent Status Updates",
+      "description": "Receive real-time agent status updates",
+      "subscribe": {
+        "type": "subscribe",
+        "channel": "agent-status",
+        "agentId": "agent-123"
+      },
+      "expectedUpdates": [
+        "idle",
+        "working",
+        "completed",
+        "error"
+      ],
+      "timeout": 10000
+    },
+    "workflow-progress": {
+      "name": "Workflow Progress Updates",
+      "description": "Receive real-time workflow progress updates",
+      "subscribe": {
+        "type": "subscribe",
+        "channel": "workflow-progress",
+        "workflowId": "workflow-456"
+      },
+      "expectedUpdates": [
+        { "step": 1, "progress": 25, "status": "in-progress" },
+        { "step": 2, "progress": 50, "status": "in-progress" },
+        { "step": 3, "progress": 75, "status": "in-progress" },
+        { "step": 4, "progress": 100, "status": "completed" }
+      ],
+      "timeout": 15000
+    },
+    "chat-messages": {
+      "name": "Real-time Chat Messages",
+      "description": "Send and receive real-time chat messages",
+      "messages": [
+        { "id": "msg-1", "content": "Hello", "timestamp": "2024-01-01T00:00:00Z" },
+        { "id": "msg-2", "content": "How are you?", "timestamp": "2024-01-01T00:00:01Z" },
+        { "id": "msg-3", "content": "I'm doing well!", "timestamp": "2024-01-01T00:00:02Z" }
+      ],
+      "expectedDelivery": true,
+      "timeout": 5000
+    }
+  },
+  "error-handling": {
+    "connection-failure": {
+      "name": "Connection Failure",
+      "description": "Handle WebSocket connection failure gracefully",
+      "url": "ws://invalid-host:9999/ws",
+      "expectedBehavior": "error-event",
+      "fallback": "polling",
+      "timeout": 5000
+    },
+    "authentication-failure": {
+      "name": "Authentication Failure",
+      "description": "Handle authentication failure gracefully",
+      "url": "ws://localhost:7071/ws/auth",
+      "headers": {
+        "Authorization": "Bearer invalid-token"
+      },
+      "expectedBehavior": "close-event",
+      "expectedCode": 1008,
+      "timeout": 5000
+    },
+    "message-failure": {
+      "name": "Message Failure",
+      "description": "Handle message sending failure gracefully",
+      "message": "invalid-message-format",
+      "expectedBehavior": "error-event",
+      "retry": true,
+      "timeout": 3000
+    }
+  },
+  "performance": {
+    "high-frequency": {
+      "name": "High Frequency Messaging",
+      "description": "Test high-frequency message sending",
+      "messageCount": 1000,
+      "messageInterval": 10,
+      "expectedThroughput": 100,
+      "maxLatency": 100,
+      "timeout": 30000
+    },
+    "large-messages": {
+      "name": "Large Message Handling",
+      "description": "Test handling of large messages",
+      "messageSize": "1MB",
+      "expectedBehavior": "successful-delivery",
+      "maxLatency": 5000,
+      "timeout": 10000
+    },
+    "concurrent-connections": {
+      "name": "Concurrent Connections",
+      "description": "Test multiple concurrent WebSocket connections",
+      "connectionCount": 10,
+      "expectedBehavior": "all-stable",
+      "maxMemoryUsage": "100MB",
+      "timeout": 20000
+    }
+  },
+  "reconnection": {
+    "automatic": {
+      "name": "Automatic Reconnection",
+      "description": "Test automatic reconnection after connection loss",
+      "disconnectMethod": "network-loss",
+      "reconnectionAttempts": 3,
+      "reconnectionDelay": 1000,
+      "expectedBehavior": "successful-reconnection",
+      "timeout": 15000
+    },
+    "manual": {
+      "name": "Manual Reconnection",
+      "description": "Test manual reconnection functionality",
+      "disconnectMethod": "user-initiated",
+      "reconnectionMethod": "user-triggered",
+      "expectedBehavior": "successful-reconnection",
+      "timeout": 10000
+    },
+    "exponential-backoff": {
+      "name": "Exponential Backoff",
+      "description": "Test exponential backoff reconnection strategy",
+      "initialDelay": 1000,
+      "maxDelay": 30000,
+      "backoffMultiplier": 2,
+      "expectedBehavior": "progressive-delays",
+      "timeout": 60000
+    }
+  },
+  "browser-compatibility": {
+    "chrome": {
+      "name": "Chrome Compatibility",
+      "description": "Test WebSocket functionality in Chrome",
+      "browser": "chrome",
+      "version": "91+",
+      "expectedFeatures": [
+        "binary-messages",
+        "compression",
+        "extensions"
+      ]
+    },
+    "firefox": {
+      "name": "Firefox Compatibility",
+      "description": "Test WebSocket functionality in Firefox",
+      "browser": "firefox",
+      "version": "89+",
+      "expectedFeatures": [
+        "binary-messages",
+        "compression"
+      ]
+    },
+    "safari": {
+      "name": "Safari Compatibility",
+      "description": "Test WebSocket functionality in Safari",
+      "browser": "safari",
+      "version": "14+",
+      "expectedFeatures": [
+        "binary-messages"
+      ]
+    }
+  }
+}

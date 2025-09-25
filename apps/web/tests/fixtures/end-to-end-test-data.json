@@ -1,0 +1,856 @@
+{
+  "completeWorkflowScenarios": {
+    "healthcareSystemAnalysis": {
+      "name": "Healthcare System Analysis",
+      "description": "Comprehensive analysis of healthcare system modernization",
+      "stages": [
+        "Problem Capture",
+        "Requirements Analysis",
+        "Solution Design",
+        "Implementation Planning",
+        "Quality Assurance",
+        "Deployment Strategy",
+        "Monitoring Setup"
+      ],
+      "agents": [
+        {
+          "name": "Business Analyst",
+          "title": "Senior Business Analyst",
+          "department": "Business Operations",
+          "expertise": "Healthcare workflows, process optimization",
+          "avatar": "business-analyst-avatar.png"
+        },
+        {
+          "name": "Solution Architect",
+          "title": "Enterprise Solution Architect",
+          "department": "Technology",
+          "expertise": "System architecture, integration patterns",
+          "avatar": "solution-architect-avatar.png"
+        },
+        {
+          "name": "Smart Planner",
+          "title": "Strategic Planning Specialist",
+          "department": "Strategy",
+          "expertise": "Strategic planning, resource allocation",
+          "avatar": "smart-planner-avatar.png"
+        },
+        {
+          "name": "Developer",
+          "title": "Full Stack Developer",
+          "department": "Engineering",
+          "expertise": "Modern web technologies, API development",
+          "avatar": "developer-avatar.png"
+        },
+        {
+          "name": "QA Tester",
+          "title": "Quality Assurance Engineer",
+          "department": "Quality Assurance",
+          "expertise": "Testing strategies, quality metrics",
+          "avatar": "qa-tester-avatar.png"
+        }
+      ],
+      "expectedOutcome": "Complete healthcare system modernization plan with implementation roadmap"
+    },
+    "ecommercePlatformDevelopment": {
+      "name": "E-commerce Platform Development",
+      "description": "Modern e-commerce platform with advanced features",
+      "stages": [
+        "Market Research",
+        "Feature Definition",
+        "Technical Architecture",
+        "Development Planning",
+        "Testing Strategy",
+        "Launch Planning",
+        "Performance Monitoring"
+      ],
+      "agents": [
+        {
+          "name": "Product Manager",
+          "title": "Senior Product Manager",
+          "department": "Product",
+          "expertise": "Product strategy, user experience",
+          "avatar": "product-manager-avatar.png"
+        },
+        {
+          "name": "UX Designer",
+          "title": "Lead UX Designer",
+          "department": "Design",
+          "expertise": "User experience, interface design",
+          "avatar": "ux-designer-avatar.png"
+        },
+        {
+          "name": "Backend Developer",
+          "title": "Senior Backend Developer",
+          "department": "Engineering",
+          "expertise": "API development, database design",
+          "avatar": "backend-developer-avatar.png"
+        },
+        {
+          "name": "DevOps Engineer",
+          "title": "DevOps Specialist",
+          "department": "Operations",
+          "expertise": "Infrastructure, deployment automation",
+          "avatar": "devops-engineer-avatar.png"
+        }
+      ],
+      "expectedOutcome": "Scalable e-commerce platform with modern architecture and user experience"
+    },
+    "financialServicesModernization": {
+      "name": "Financial Services Modernization",
+      "description": "Digital transformation of legacy financial systems",
+      "stages": [
+        "Current State Assessment",
+        "Compliance Requirements",
+        "Technology Selection",
+        "Migration Planning",
+        "Security Validation",
+        "Go-Live Strategy",
+        "Ongoing Compliance"
+      ],
+      "agents": [
+        {
+          "name": "Compliance Officer",
+          "title": "Chief Compliance Officer",
+          "department": "Compliance",
+          "expertise": "Regulatory compliance, risk management",
+          "avatar": "compliance-officer-avatar.png"
+        },
+        {
+          "name": "Security Architect",
+          "title": "Security Solutions Architect",
+          "department": "Security",
+          "expertise": "Security architecture, threat modeling",
+          "avatar": "security-architect-avatar.png"
+        },
+        {
+          "name": "Data Engineer",
+          "title": "Senior Data Engineer",
+          "department": "Data",
+          "expertise": "Data architecture, ETL processes",
+          "avatar": "data-engineer-avatar.png"
+        },
+        {
+          "name": "Business Continuity Specialist",
+          "title": "Business Continuity Manager",
+          "department": "Operations",
+          "expertise": "Disaster recovery, business continuity",
+          "avatar": "business-continuity-avatar.png"
+        }
+      ],
+      "expectedOutcome": "Compliant, secure, and modernized financial services platform"
+    },
+    "startupMVPDevelopment": {
+      "name": "Startup MVP Development",
+      "description": "Rapid development of minimum viable product",
+      "stages": [
+        "Idea Validation",
+        "Feature Prioritization",
+        "Prototype Development",
+        "User Testing",
+        "Iteration Planning",
+        "Launch Preparation",
+        "Growth Metrics"
+      ],
+      "agents": [
+        {
+          "name": "Startup Founder",
+          "title": "CEO & Founder",
+          "department": "Leadership",
+          "expertise": "Business strategy, market positioning",
+          "avatar": "founder-avatar.png"
+        },
+        {
+          "name": "Growth Hacker",
+          "title": "Growth Marketing Specialist",
+          "department": "Marketing",
+          "expertise": "User acquisition, growth strategies",
+          "avatar": "growth-hacker-avatar.png"
+        },
+        {
+          "name": "Full Stack Developer",
+          "title": "Lead Developer",
+          "department": "Engineering",
+          "expertise": "Rapid prototyping, modern frameworks",
+          "avatar": "fullstack-developer-avatar.png"
+        },
+        {
+          "name": "UX Researcher",
+          "title": "User Experience Researcher",
+          "department": "Research",
+          "expertise": "User research, usability testing",
+          "avatar": "ux-researcher-avatar.png"
+        }
+      ],
+      "expectedOutcome": "Validated MVP with clear growth path and user feedback"
+    }
+  },
+  "serviceCommunicationData": {
+    "requestResponsePayloads": {
+      "workflowStart": {
+        "request": {
+          "endpoint": "/api/chat/crew/start",
+          "method": "POST",
+          "payload": {
+            "workflowType": "healthcare-modernization",
+            "description": "Modernize healthcare system infrastructure",
+            "priority": "high",
+            "timeline": "6 months"
+          }
+        },
+        "response": {
+          "status": "success",
+          "sessionId": "session-12345-abcde",
+          "welcomeMessage": "Welcome to Healthcare System Modernization workflow",
+          "currentStage": "Problem Capture",
+          "progress": 0,
+          "agents": ["Business Analyst", "Solution Architect", "Smart Planner"]
+        }
+      },
+      "workflowNext": {
+        "request": {
+          "endpoint": "/api/chat/crew/next",
+          "method": "POST",
+          "payload": {
+            "sessionId": "session-12345-abcde",
+            "action": "next_message"
+          }
+        },
+        "response": {
+          "status": "success",
+          "message": {
+            "content": "I'll analyze the current healthcare system challenges and identify key modernization opportunities.",
+            "agent": {
+              "name": "Business Analyst",
+              "title": "Senior Business Analyst",
+              "department": "Business Operations"
+            },
+            "timestamp": "2024-01-15T10:30:00Z"
+          },
+          "stageProgress": 15,
+          "nextStage": "Requirements Analysis"
+        }
+      },
+      "decisionSubmission": {
+        "request": {
+          "endpoint": "/api/chat/crew/decision",
+          "method": "POST",
+          "payload": {
+            "sessionId": "session-12345-abcde",
+            "decision": "approve",
+            "feedback": "Excellent analysis, proceed to requirements phase"
+          }
+        },
+        "response": {
+          "status": "success",
+          "decision": "approved",
+          "stageTransition": "Requirements Analysis",
+          "progress": 25,
+          "nextAgent": "Solution Architect"
+        }
+      }
+    },
+    "messageTransformation": {
+      "frontendToBackend": {
+        "input": {
+          "userMessage": "Start healthcare modernization analysis",
+          "workflowType": "healthcare",
+          "priority": "high"
+        },
+        "transformed": {
+          "message": "Start healthcare modernization analysis",
+          "workflowType": "healthcare-modernization",
+          "priority": "high",
+          "timestamp": "2024-01-15T10:30:00Z",
+          "userId": "user-12345"
+        }
+      },
+      "backendToFrontend": {
+        "input": {
+          "agentMessage": "I'll analyze the current healthcare system challenges.",
+          "agent": {
+            "name": "Business Analyst",
+            "title": "Senior Business Analyst",
+            "department": "Business Operations"
+          },
+          "stage": "Problem Capture",
+          "progress": 15
+        },
+        "transformed": {
+          "content": "I'll analyze the current healthcare system challenges.",
+          "agent": {
+            "name": "Business Analyst",
+            "title": "Senior Business Analyst",
+            "department": "Business Operations",
+            "avatar": "business-analyst-avatar.png"
+          },
+          "stage": "Problem Capture",
+          "progress": 15,
+          "timestamp": "2024-01-15T10:30:00Z",
+          "messageId": "msg-67890-fghij"
+        }
+      }
+    },
+    "errorResponseFormats": {
+      "serviceUnavailable": {
+        "status": "error",
+        "code": "SERVICE_UNAVAILABLE",
+        "message": "LangGraph workflow service is currently unavailable",
+        "retryAfter": 30,
+        "fallback": "Using cached workflow state"
+      },
+      "validationError": {
+        "status": "error",
+        "code": "VALIDATION_ERROR",
+        "message": "Invalid workflow type specified",
+        "details": {
+          "field": "workflowType",
+          "value": "invalid-type",
+          "allowedValues": ["healthcare-modernization", "ecommerce-development", "financial-modernization"]
+        }
+      },
+      "timeoutError": {
+        "status": "error",
+        "code": "TIMEOUT_ERROR",
+        "message": "Request timed out after 10 seconds",
+        "retryCount": 2,
+        "maxRetries": 3
+      }
+    }
+  },
+  "multiAgentCollaborationScenarios": {
+    "agentConversationFlows": {
+      "healthcareWorkflow": [
+        {
+          "agent": "Business Analyst",
+          "message": "I'll analyze the current healthcare system challenges and identify key modernization opportunities.",
+          "stage": "Problem Capture",
+          "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+          "agent": "Solution Architect",
+          "message": "Based on the business analysis, I recommend a microservices architecture with API-first design for better scalability.",
+          "stage": "Solution Design",
+          "timestamp": "2024-01-15T10:35:00Z"
+        },
+        {
+          "agent": "Smart Planner",
+          "message": "I'll create a phased implementation plan with 6-month timeline and quarterly milestones.",
+          "stage": "Implementation Planning",
+          "timestamp": "2024-01-15T10:40:00Z"
+        }
+      ]
+    },
+    "agentCollaborationPatterns": {
+      "sequential": {
+        "pattern": "Each agent contributes sequentially based on workflow stage",
+        "example": "Business Analyst → Solution Architect → Smart Planner",
+        "benefits": "Clear progression, focused expertise",
+        "useCase": "Linear workflow stages"
+      },
+      "collaborative": {
+        "pattern": "Multiple agents work together on complex decisions",
+        "example": "Business Analyst + Solution Architect collaborate on requirements",
+        "benefits": "Better solutions, shared understanding",
+        "useCase": "Complex decision points"
+      },
+      "iterative": {
+        "pattern": "Agents iterate on solutions based on feedback",
+        "example": "Solution Architect refines design based on QA feedback",
+        "benefits": "Continuous improvement, quality assurance",
+        "useCase": "Solution refinement phases"
+      }
+    },
+    "decisionPointScenarios": {
+      "requirementsApproval": {
+        "context": "Business Analyst has completed requirements analysis",
+        "decision": "approve",
+        "outcome": "Proceed to Solution Design stage",
+        "nextAgent": "Solution Architect"
+      },
+      "solutionRefinement": {
+        "context": "Solution Architect has proposed initial architecture",
+        "decision": "refine",
+        "feedback": "Consider additional security requirements",
+        "outcome": "Architecture refinement with security focus"
+      },
+      "implementationPause": {
+        "context": "Implementation planning reveals resource constraints",
+        "decision": "pause",
+        "reason": "Resource allocation review needed",
+        "outcome": "Workflow paused pending resource approval"
+      }
+    }
+  },
+  "sessionManagementTestData": {
+    "sessionCreation": {
+      "initialData": {
+        "workflowType": "healthcare-modernization",
+        "userId": "user-12345",
+        "timestamp": "2024-01-15T10:30:00Z",
+        "preferences": {
+          "language": "en",
+          "timezone": "UTC",
+          "notifications": true
+        }
+      },
+      "expectedSessionId": "session-12345-abcde",
+      "expectedState": "initialized"
+    },
+    "sessionStateSnapshots": {
+      "stage1": {
+        "sessionId": "session-12345-abcde",
+        "currentStage": "Problem Capture",
+        "progress": 15,
+        "messages": [
+          {
+            "id": "msg-1",
+            "content": "Welcome to Healthcare System Modernization workflow",
+            "type": "system",
+            "timestamp": "2024-01-15T10:30:00Z"
+          },
+          {
+            "id": "msg-2",
+            "content": "I'll analyze the current healthcare system challenges.",
+            "type": "agent",
+            "agent": "Business Analyst",
+            "timestamp": "2024-01-15T10:32:00Z"
+          }
+        ],
+        "agents": ["Business Analyst"],
+        "lastActivity": "2024-01-15T10:32:00Z"
+      },
+      "stage2": {
+        "sessionId": "session-12345-abcde",
+        "currentStage": "Requirements Analysis",
+        "progress": 35,
+        "messages": [
+          {
+            "id": "msg-3",
+            "content": "Based on the analysis, here are the key requirements...",
+            "type": "agent",
+            "agent": "Business Analyst",
+            "timestamp": "2024-01-15T10:35:00Z"
+          }
+        ],
+        "agents": ["Business Analyst", "Solution Architect"],
+        "lastActivity": "2024-01-15T10:35:00Z"
+      }
+    },
+    "sessionRecoveryScenarios": {
+      "partialData": {
+        "sessionId": "session-12345-abcde",
+        "availableData": {
+          "workflowType": "healthcare-modernization",
+          "currentStage": "Requirements Analysis",
+          "progress": 35
+        },
+        "missingData": {
+          "messageHistory": "partial",
+          "agentStates": "unknown",
+          "userPreferences": "unknown"
+        },
+        "recoveryStrategy": "reconstruct_from_backend"
+      },
+      "corruptedData": {
+        "sessionId": "session-12345-abcde",
+        "corruptionType": "message_history_corruption",
+        "affectedData": "messages after timestamp 2024-01-15T10:35:00Z",
+        "recoveryStrategy": "restore_from_backup"
+      }
+    },
+    "concurrentSessionData": {
+      "session1": {
+        "sessionId": "session-12345-abcde",
+        "workflowType": "healthcare-modernization",
+        "userId": "user-12345",
+        "currentStage": "Requirements Analysis",
+        "progress": 35
+      },
+      "session2": {
+        "sessionId": "session-67890-fghij",
+        "workflowType": "ecommerce-development",
+        "userId": "user-12345",
+        "currentStage": "Feature Definition",
+        "progress": 20
+      },
+      "session3": {
+        "sessionId": "session-11111-klmno",
+        "workflowType": "financial-modernization",
+        "userId": "user-67890",
+        "currentStage": "Current State Assessment",
+        "progress": 10
+      }
+    }
+  },
+  "errorAndRecoveryScenarios": {
+    "serviceFailureScenarios": {
+      "langGraphServiceDown": {
+        "failureType": "service_unavailable",
+        "service": "langgraph-workflow-service",
+        "symptoms": [
+          "503 Service Unavailable",
+          "Connection timeout",
+          "No response from workflow service"
+        ],
+        "impact": "Workflow progression halted",
+        "recoverySteps": [
+          "Service health check",
+          "Automatic retry with exponential backoff",
+          "Fallback to cached workflow state",
+          "User notification of service issue"
+        ],
+        "expectedRecoveryTime": "30 seconds"
+      },
+      "crewAIServiceUnavailable": {
+        "failureType": "service_unavailable",
+        "service": "crewai-service",
+        "symptoms": [
+          "500 Internal Server Error",
+          "Agent coordination failure",
+          "No agent responses"
+        ],
+        "impact": "Multi-agent collaboration disabled",
+        "recoverySteps": [
+          "Service health check",
+          "Fallback to simplified workflow mode",
+          "User notification of limited functionality",
+          "Automatic retry when service available"
+        ],
+        "expectedRecoveryTime": "60 seconds"
+      },
+      "apiProxyError": {
+        "failureType": "proxy_error",
+        "service": "api-proxy",
+        "symptoms": [
+          "502 Bad Gateway",
+          "Routing failure",
+          "Service discovery issues"
+        ],
+        "impact": "Frontend-backend communication disrupted",
+        "recoverySteps": [
+          "Proxy health check",
+          "Alternative routing paths",
+          "Service endpoint validation",
+          "Automatic failover"
+        ],
+        "expectedRecoveryTime": "15 seconds"
+      }
+    },
+    "networkFailurePatterns": {
+      "intermittentConnectivity": {
+        "pattern": "Network connection drops intermittently",
+        "frequency": "Every 2-5 minutes",
+        "duration": "10-30 seconds",
+        "impact": "Intermittent workflow interruptions",
+        "recoveryStrategy": "Automatic retry with exponential backoff"
+      },
+      "highLatency": {
+        "pattern": "Network response times increase significantly",
+        "baseline": "100ms",
+        "peak": "5000ms",
+        "impact": "Slow workflow progression",
+        "recoveryStrategy": "Timeout handling and user feedback"
+      },
+      "completeOutage": {
+        "pattern": "Complete network connectivity loss",
+        "duration": "5-15 minutes",
+        "impact": "Workflow completely halted",
+        "recoveryStrategy": "Offline mode with local state preservation"
+      }
+    },
+    "dataCorruptionScenarios": {
+      "workflowStateCorruption": {
+        "corruptionType": "state_data_corruption",
+        "affectedData": "Workflow stage progression state",
+        "symptoms": [
+          "Invalid stage transitions",
+          "Progress calculation errors",
+          "Agent coordination failures"
+        ],
+        "recoveryStrategy": "State validation and rollback to last known good state"
+      },
+      "messageHistoryCorruption": {
+        "corruptionType": "message_data_corruption",
+        "affectedData": "Agent message history",
+        "symptoms": [
+          "Missing messages",
+          "Corrupted message content",
+          "Chronological ordering issues"
+        ],
+        "recoveryStrategy": "Message integrity validation and reconstruction from backup"
+      },
+      "sessionDataCorruption": {
+        "corruptionType": "session_data_corruption",
+        "affectedData": "User session information",
+        "symptoms": [
+          "Session state inconsistencies",
+          "User preference loss",
+          "Authentication issues"
+        ],
+        "recoveryStrategy": "Session validation and user re-authentication"
+      }
+    },
+    "partialFailureScenarios": {
+      "mixedSuccessFailure": {
+        "scenario": "Some services available, others failing",
+        "availableServices": ["frontend", "api-proxy"],
+        "failingServices": ["langgraph-service", "crewai-service"],
+        "userExperience": "Limited functionality with clear status indicators",
+        "recoveryStrategy": "Graceful degradation with user guidance"
+      },
+      "degradedPerformance": {
+        "scenario": "Services available but performing poorly",
+        "performanceMetrics": {
+          "responseTime": "5x normal",
+          "throughput": "20% of normal",
+          "errorRate": "15%"
+        },
+        "userExperience": "Slow but functional workflow with performance warnings",
+        "recoveryStrategy": "Performance monitoring and automatic optimization"
+      }
+    }
+  },
+  "performanceTestData": {
+    "largeWorkflowDatasets": {
+      "hundredPlusMessages": {
+        "messageCount": 150,
+        "workflowDuration": "2 hours",
+        "agentInteractions": 45,
+        "decisionPoints": 8,
+        "stageTransitions": 7,
+        "expectedPerformance": {
+          "responseTime": "< 2 seconds per message",
+          "memoryUsage": "< 500MB",
+          "cpuUsage": "< 30%"
+        }
+      },
+      "complexMultiAgentInteractions": {
+        "agentCount": 8,
+        "concurrentAgents": 3,
+        "interactionComplexity": "high",
+        "decisionTreeDepth": 5,
+        "expectedPerformance": {
+          "coordinationTime": "< 3 seconds",
+          "decisionProcessing": "< 1 second",
+          "stateSynchronization": "< 500ms"
+        }
+      }
+    },
+    "concurrentSessionData": {
+      "sessionCounts": [1, 5, 10, 25, 50, 100],
+      "expectedPerformance": {
+        "responseTimeDegradation": "< 20% at 50 sessions",
+        "memoryUsageScaling": "linear with session count",
+        "cpuUsageScaling": "sub-linear with session count"
+      },
+      "resourceLimits": {
+        "maxConcurrentSessions": 100,
+        "maxMemoryPerSession": "50MB",
+        "maxCpuPerSession": "5%"
+      }
+    },
+    "performanceBenchmarks": {
+      "workflowInitialization": "< 1 second",
+      "agentMessageGeneration": "< 2 seconds",
+      "decisionPointProcessing": "< 1 second",
+      "stageTransition": "< 500ms",
+      "sessionRecovery": "< 2 seconds",
+      "errorRecovery": "< 5 seconds"
+    },
+    "resourceUsageThresholds": {
+      "memory": {
+        "baseline": "100MB",
+        "warning": "300MB",
+        "critical": "500MB"
+      },
+      "cpu": {
+        "baseline": "5%",
+        "warning": "20%",
+        "critical": "40%"
+      },
+      "network": {
+        "baseline": "1MB/s",
+        "warning": "5MB/s",
+        "critical": "10MB/s"
+      }
+    }
+  },
+  "integrationTestScenarios": {
+    "completeUserJourney": {
+      "onboarding": {
+        "step": "User registration and authentication",
+        "expectedOutcome": "User successfully logged in with session created",
+        "validationPoints": [
+          "Authentication successful",
+          "Session ID generated",
+          "User preferences loaded"
+        ]
+      },
+      "workflowSelection": {
+        "step": "Choose workflow type and parameters",
+        "expectedOutcome": "Workflow initialized with correct configuration",
+        "validationPoints": [
+          "Workflow type selected",
+          "Parameters configured",
+          "Initial stage displayed"
+        ]
+      },
+      "workflowProgression": {
+        "step": "Progress through workflow stages",
+        "expectedOutcome": "Complete workflow execution with all stages",
+        "validationPoints": [
+          "All stages completed",
+          "Agent coordination successful",
+          "Decisions processed correctly"
+        ]
+      },
+      "completion": {
+        "step": "Workflow completion and results",
+        "expectedOutcome": "Final deliverables and summary provided",
+        "validationPoints": [
+          "Final results generated",
+          "Summary report available",
+          "Export options provided"
+        ]
+      }
+    },
+    "crossServiceDataValidation": {
+      "dataFlow": "Frontend → API Proxy → LangGraph → CrewAI → Response Flow",
+      "validationPoints": [
+        "Data format consistency across all layers",
+        "Message integrity preservation",
+        "State synchronization accuracy",
+        "Error propagation consistency"
+      ],
+      "expectedOutcome": "Complete data consistency across all service boundaries"
+    },
+    "businessLogicIntegration": {
+      "workflowRules": [
+        "Stage progression based on completion criteria",
+        "Agent selection based on expertise and availability",
+        "Decision point triggering based on workflow state",
+        "Error handling based on failure type and severity"
+      ],
+      "validationPoints": [
+        "Business rules enforced correctly",
+        "Workflow logic executed accurately",
+        "Decision trees followed properly",
+        "Exception handling works as expected"
+      ]
+    },
+    "edgeCaseScenarios": {
+      "boundaryConditions": [
+        "Maximum workflow complexity",
+        "Extreme session durations",
+        "High concurrent user loads",
+        "Network edge cases (3G, high latency)"
+      ],
+      "validationPoints": [
+        "System handles edge cases gracefully",
+        "Performance remains acceptable",
+        "User experience maintained",
+        "Error recovery successful"
+      ]
+    }
+  },
+  "realTimeFeatureData": {
+    "progressUpdateSequences": {
+      "workflowProgression": [
+        {
+          "timestamp": "2024-01-15T10:30:00Z",
+          "progress": 0,
+          "stage": "Problem Capture",
+          "status": "initialized"
+        },
+        {
+          "timestamp": "2024-01-15T10:32:00Z",
+          "progress": 15,
+          "stage": "Problem Capture",
+          "status": "in_progress"
+        },
+        {
+          "timestamp": "2024-01-15T10:35:00Z",
+          "progress": 25,
+          "stage": "Requirements Analysis",
+          "status": "stage_completed"
+        },
+        {
+          "timestamp": "2024-01-15T10:38:00Z",
+          "progress": 35,
+          "stage": "Requirements Analysis",
+          "status": "in_progress"
+        }
+      ]
+    },
+    "realTimeAgentStatusChanges": {
+      "agentStatusUpdates": [
+        {
+          "agent": "Business Analyst",
+          "status": "active",
+          "currentTask": "Analyzing healthcare system challenges",
+          "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+          "agent": "Solution Architect",
+          "status": "waiting",
+          "currentTask": "Awaiting requirements analysis completion",
+          "timestamp": "2024-01-15T10:30:00Z"
+        },
+        {
+          "agent": "Business Analyst",
+          "status": "completed",
+          "currentTask": "Requirements analysis completed",
+          "timestamp": "2024-01-15T10:35:00Z"
+        },
+        {
+          "agent": "Solution Architect",
+          "status": "active",
+          "currentTask": "Designing solution architecture",
+          "timestamp": "2024-01-15T10:35:00Z"
+        }
+      ]
+    },
+    "liveWorkflowStateTransitions": {
+      "stateChanges": [
+        {
+          "fromStage": "Problem Capture",
+          "toStage": "Requirements Analysis",
+          "trigger": "user_decision_approve",
+          "timestamp": "2024-01-15T10:35:00Z",
+          "progress": "25%"
+        },
+        {
+          "fromStage": "Requirements Analysis",
+          "toStage": "Solution Design",
+          "trigger": "requirements_completion",
+          "timestamp": "2024-01-15T10:40:00Z",
+          "progress": "50%"
+        }
+      ]
+    },
+    "webSocketMessagePatterns": {
+      "connectionScenarios": [
+        {
+          "scenario": "Initial connection",
+          "message": "WebSocket connection established",
+          "expectedResponse": "Connection confirmation with session data"
+        },
+        {
+          "scenario": "Real-time updates",
+          "message": "Progress update notification",
+          "expectedResponse": "Updated progress data and UI refresh"
+        },
+        {
+          "scenario": "Error notification",
+          "message": "Service failure alert",
+          "expectedResponse": "Error details and recovery options"
+        },
+        {
+          "scenario": "Connection recovery",
+          "message": "Reconnection attempt",
+          "expectedResponse": "Session restoration and state sync"
+        }
+      ]
+    }
+  }
+}

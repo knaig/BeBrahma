@@ -1,0 +1,696 @@
+{
+  "problemClarification": {
+    "success": {
+      "simple": {
+        "success": true,
+        "clarifiedProblem": "Small businesses need a comprehensive project management solution that simplifies task tracking, team collaboration, and deadline management while remaining cost-effective and easy to use.",
+        "originalProblem": "Small businesses struggle with project management",
+        "targetAudience": "Small to medium-sized businesses (5-50 employees)",
+        "painPoints": [
+          "Inefficient task tracking across team members",
+          "Poor visibility into project progress and deadlines", 
+          "Lack of centralized communication",
+          "Time wasted on status meetings and updates",
+          "Difficulty prioritizing tasks and resources"
+        ],
+        "marketOpportunity": "The global project management software market is expected to reach $9.81 billion by 2026, with SMB segment showing 12.2% CAGR",
+        "nextSteps": [
+          "Conduct user interviews with 10-15 small business owners",
+          "Analyze competitor solutions and pricing models",
+          "Define MVP feature set based on core pain points",
+          "Create user journey maps and wireframes"
+        ],
+        "coreValue": "Streamline project workflows to save time and increase team productivity",
+        "successMetrics": [
+          "30% reduction in time spent on project coordination",
+          "50% improvement in deadline adherence",
+          "25% increase in team collaboration scores"
+        ]
+      },
+      "complex": {
+        "success": true,
+        "clarifiedProblem": "Healthcare providers lack an integrated platform for patient data management, appointment scheduling, billing, and regulatory compliance that works seamlessly across multiple locations while ensuring HIPAA compliance and interoperability with existing EMR systems.",
+        "originalProblem": "Healthcare clinics need better patient management",
+        "targetAudience": "Multi-location healthcare practices (2-10 locations, 20-200 staff)",
+        "painPoints": [
+          "Fragmented patient data across different systems",
+          "Complex appointment scheduling across multiple providers",
+          "Manual billing processes prone to errors",
+          "Compliance reporting requires significant manual effort",
+          "Poor integration with existing EMR and insurance systems",
+          "Staff spend 40% of time on administrative tasks"
+        ],
+        "marketOpportunity": "Healthcare IT market projected to reach $659.8 billion by 2025, with practice management solutions growing at 9.1% CAGR",
+        "nextSteps": [
+          "Conduct field research at 5-8 multi-location practices",
+          "Map current workflows and identify integration touchpoints",
+          "Assess regulatory compliance requirements by state/region",
+          "Evaluate EMR integration capabilities and standards",
+          "Define technical architecture for multi-tenant deployment"
+        ],
+        "coreValue": "Unify healthcare operations to reduce administrative burden and improve patient care quality",
+        "successMetrics": [
+          "50% reduction in administrative task time",
+          "95% appointment scheduling accuracy",
+          "100% HIPAA compliance maintenance",
+          "80% improvement in billing cycle time"
+        ],
+        "technicalRequirements": {
+          "security": ["HIPAA compliance", "End-to-end encryption", "Audit logging"],
+          "integration": ["HL7 FHIR", "EMR APIs", "Insurance claim systems"],
+          "scalability": ["Multi-tenant architecture", "Cloud-first deployment", "API-first design"]
+        },
+        "riskFactors": [
+          "Regulatory compliance complexity",
+          "EMR integration challenges",
+          "Long sales cycles in healthcare",
+          "Data migration complexity"
+        ]
+      }
+    },
+    "errors": {
+      "missingFields": {
+        "error": "Missing required fields: problemStatement, projectId, projectName, context",
+        "code": "VALIDATION_ERROR",
+        "details": "All fields are required for problem clarification analysis"
+      },
+      "analysisFailure": {
+        "error": "Unable to analyze problem statement",
+        "code": "ANALYSIS_ERROR",
+        "details": "The provided context is insufficient for comprehensive problem analysis"
+      },
+      "serviceUnavailable": {
+        "error": "AI analysis service temporarily unavailable",
+        "code": "SERVICE_UNAVAILABLE",
+        "retryAfter": 30,
+        "details": "The AI analysis service is undergoing maintenance"
+      }
+    }
+  },
+  "scaAnalysis": {
+    "success": {
+      "comprehensive": {
+        "success": true,
+        "scaFactors": [
+          {
+            "id": "sca-tech-1",
+            "category": "TECHNICAL",
+            "factor": "Full-Stack Development Expertise",
+            "description": "Strong technical capabilities across modern web technologies, cloud infrastructure, and scalable architecture patterns",
+            "strength": "HIGH",
+            "sustainability": "LONG_TERM",
+            "evidence": [
+              "5+ years experience with React, Node.js, and cloud platforms",
+              "Proven track record of scalable SaaS applications",
+              "Deep knowledge of microservices architecture",
+              "Experience with DevOps and CI/CD pipelines"
+            ],
+            "actionItems": [
+              "Continue investing in emerging technologies (AI/ML integration)",
+              "Build technical documentation and knowledge base",
+              "Establish code review and quality standards",
+              "Implement automated testing and deployment processes"
+            ],
+            "relatedFactors": ["sca-res-1", "sca-net-1"]
+          },
+          {
+            "id": "sca-biz-1", 
+            "category": "BUSINESS_MODEL",
+            "factor": "SaaS Subscription Revenue Model",
+            "description": "Recurring revenue model with high customer lifetime value and predictable cash flows",
+            "strength": "HIGH",
+            "sustainability": "LONG_TERM",
+            "evidence": [
+              "SaaS models show 85%+ retention rates in target market",
+              "Monthly recurring revenue provides predictable growth",
+              "Tiered pricing allows customer expansion",
+              "Strong unit economics with 3:1 LTV:CAC ratio potential"
+            ],
+            "actionItems": [
+              "Optimize pricing tiers based on customer value",
+              "Implement usage-based pricing for enterprise customers",
+              "Develop customer success programs to reduce churn",
+              "Create upsell and cross-sell opportunities"
+            ],
+            "metrics": {
+              "targetMRR": 50000,
+              "churnRate": 5.0,
+              "expectedLTV": 2400,
+              "paybackPeriod": 8
+            }
+          },
+          {
+            "id": "sca-net-1",
+            "category": "NETWORK_EFFECTS",
+            "factor": "API Ecosystem and Integration Platform", 
+            "description": "Platform becomes more valuable as more integrations and third-party developers join the ecosystem",
+            "strength": "MEDIUM",
+            "sustainability": "LONG_TERM",
+            "evidence": [
+              "Open API architecture enables third-party integrations",
+              "Partner ecosystem creates lock-in effects",
+              "Data network effects improve AI recommendations",
+              "Marketplace potential for add-on services"
+            ],
+            "actionItems": [
+              "Launch developer program with comprehensive APIs",
+              "Create integration marketplace",
+              "Build partner channel program",
+              "Implement data sharing incentives for users"
+            ],
+            "networkMetrics": {
+              "currentIntegrations": 5,
+              "targetIntegrations": 50,
+              "partnerPipeline": 15,
+              "apiUsage": "1M calls/month"
+            }
+          },
+          {
+            "id": "sca-brand-1",
+            "category": "BRAND",
+            "factor": "Thought Leadership in SMB Software",
+            "description": "Establishing authority and trust through content, speaking, and community building in the small business software space",
+            "strength": "MEDIUM",
+            "sustainability": "MEDIUM_TERM", 
+            "evidence": [
+              "Regular content creation on SMB challenges",
+              "Speaking engagements at industry conferences",
+              "Growing social media following",
+              "Customer success stories and case studies"
+            ],
+            "actionItems": [
+              "Develop comprehensive content marketing strategy",
+              "Build strategic partnerships with industry influencers",
+              "Create educational resources and toolkits",
+              "Establish awards and recognition programs"
+            ],
+            "brandMetrics": {
+              "brandAwareness": "15%",
+              "socialFollowers": 5000,
+              "contentEngagement": "4.2%",
+              "industryMentions": 25
+            }
+          },
+          {
+            "id": "sca-reg-1",
+            "category": "REGULATORY", 
+            "factor": "Data Privacy and Security Compliance",
+            "description": "Strong compliance framework for data protection regulations across multiple jurisdictions",
+            "strength": "HIGH",
+            "sustainability": "LONG_TERM",
+            "evidence": [
+              "GDPR and CCPA compliant architecture",
+              "SOC 2 Type II certification achieved",
+              "Privacy by design implementation",
+              "Regular security audits and penetration testing"
+            ],
+            "actionItems": [
+              "Maintain and update compliance certifications",
+              "Implement automated compliance monitoring",
+              "Create compliance training programs for team",
+              "Establish data governance policies and procedures"
+            ],
+            "complianceFrameworks": ["GDPR", "CCPA", "SOC 2", "ISO 27001"]
+          },
+          {
+            "id": "sca-res-1",
+            "category": "RESOURCE_BASED",
+            "factor": "Proprietary Customer Data and Analytics",
+            "description": "Unique dataset and analytics capabilities that improve product intelligence and create competitive moats",
+            "strength": "MEDIUM",
+            "sustainability": "LONG_TERM",
+            "evidence": [
+              "Aggregated customer usage patterns and benchmarks",
+              "Proprietary algorithms for recommendations",
+              "Industry-specific templates and best practices",
+              "Customer behavior prediction models"
+            ],
+            "actionItems": [
+              "Expand data collection and analytics capabilities",
+              "Develop predictive analytics features",
+              "Create industry benchmarking reports",
+              "Build AI-powered recommendation engines"
+            ],
+            "dataAssets": {
+              "customerRecords": 10000,
+              "dataPoints": "50M+",
+              "modelAccuracy": "92%",
+              "insights": 150
+            }
+          }
+        ],
+        "analysisMetrics": {
+          "totalFactors": 6,
+          "averageStrength": "HIGH",
+          "sustainabilityDistribution": {
+            "SHORT_TERM": 0,
+            "MEDIUM_TERM": 2, 
+            "LONG_TERM": 4
+          },
+          "categoryDistribution": {
+            "TECHNICAL": 1,
+            "BUSINESS_MODEL": 1,
+            "NETWORK_EFFECTS": 1,
+            "BRAND": 1,
+            "REGULATORY": 1,
+            "RESOURCE_BASED": 1
+          },
+          "overallCompetitivePosition": "STRONG"
+        }
+      },
+      "minimal": {
+        "success": true,
+        "scaFactors": [
+          {
+            "id": "sca-tech-simple",
+            "category": "TECHNICAL",
+            "factor": "Technical Skills",
+            "description": "Basic web development capabilities",
+            "strength": "MEDIUM",
+            "sustainability": "MEDIUM_TERM",
+            "evidence": ["Some programming experience"],
+            "actionItems": ["Improve technical skills"]
+          }
+        ]
+      }
+    },
+    "errors": {
+      "insufficientContext": {
+        "error": "Insufficient context for comprehensive SCA analysis",
+        "code": "ANALYSIS_INSUFFICIENT_DATA",
+        "details": "Please provide more detailed information about the project, market, and capabilities",
+        "requiredFields": ["industry", "targetMarket", "teamCapabilities", "resources"]
+      },
+      "analysisTimeout": {
+        "error": "SCA analysis timed out",
+        "code": "ANALYSIS_TIMEOUT",
+        "details": "The analysis is taking longer than expected. Please try again.",
+        "retryAfter": 60
+      }
+    }
+  },
+  "mvpPlanning": {
+    "success": {
+      "comprehensive": {
+        "success": true,
+        "mvpFeatures": [
+          {
+            "id": "mvp-auth-001",
+            "name": "User Authentication & Authorization",
+            "description": "Secure user registration, login, password reset, and role-based access control system",
+            "priority": "MUST_HAVE",
+            "effort": "MEDIUM",
+            "impact": "HIGH", 
+            "userStories": [
+              "As a business owner, I want to create an account so I can access the platform",
+              "As a team member, I want to log in securely so I can access my assigned projects",
+              "As an admin, I want to manage user roles so I can control access permissions"
+            ],
+            "acceptanceCriteria": [
+              "Users can register with email and password",
+              "Email verification is required for account activation",
+              "Password reset functionality works via email",
+              "Role-based permissions (Admin, Manager, Member) are enforced",
+              "Session management with automatic logout after inactivity"
+            ],
+            "estimatedHours": 40,
+            "estimatedCost": 2000,
+            "technicalRequirements": [
+              "JWT-based authentication",
+              "BCrypt password hashing", 
+              "Email service integration",
+              "Role-based access control (RBAC)"
+            ],
+            "dependencies": [],
+            "risks": ["Security vulnerabilities", "GDPR compliance requirements"],
+            "scaAlignment": ["sca-tech-1", "sca-reg-1"],
+            "testingRequirements": [
+              "Security testing for authentication flows",
+              "Role permission testing",
+              "Password policy enforcement testing"
+            ]
+          },
+          {
+            "id": "mvp-proj-001", 
+            "name": "Project Management Dashboard",
+            "description": "Central dashboard for creating, viewing, and managing projects with task overview and progress tracking",
+            "priority": "MUST_HAVE",
+            "effort": "HIGH",
+            "impact": "HIGH",
+            "userStories": [
+              "As a project manager, I want a dashboard overview so I can see all project statuses at a glance",
+              "As a team member, I want to see my assigned projects so I know what to work on",
+              "As a business owner, I want project analytics so I can track business performance"
+            ],
+            "acceptanceCriteria": [
+              "Dashboard shows all projects with status indicators",
+              "Projects can be created with name, description, and deadline",
+              "Project progress is calculated from completed tasks",
+              "Filter and search projects by status, team, or date",
+              "Export project reports in PDF/CSV format"
+            ],
+            "estimatedHours": 80,
+            "estimatedCost": 4000,
+            "technicalRequirements": [
+              "React dashboard components",
+              "Real-time updates via WebSocket",
+              "Chart.js for analytics visualization",
+              "PDF generation library"
+            ],
+            "dependencies": ["mvp-auth-001"],
+            "risks": ["Performance with large project counts", "Real-time sync complexity"],
+            "scaAlignment": ["sca-tech-1", "sca-biz-1", "sca-res-1"],
+            "testingRequirements": [
+              "Performance testing with 100+ projects",
+              "Real-time update synchronization testing",
+              "Cross-browser compatibility testing"
+            ]
+          },
+          {
+            "id": "mvp-task-001",
+            "name": "Task Management System", 
+            "description": "Complete task lifecycle management with creation, assignment, status tracking, and collaboration features",
+            "priority": "MUST_HAVE",
+            "effort": "HIGH",
+            "impact": "HIGH",
+            "userStories": [
+              "As a project manager, I want to create and assign tasks so work can be distributed effectively",
+              "As a team member, I want to update task status so everyone knows my progress",
+              "As a stakeholder, I want to comment on tasks so I can provide feedback and clarification"
+            ],
+            "acceptanceCriteria": [
+              "Tasks have title, description, assignee, due date, and priority",
+              "Task status workflow: To Do → In Progress → Review → Done",
+              "Bulk task operations (assign, update status, set deadlines)",
+              "Task comments and file attachments",
+              "Email notifications for task assignments and status changes"
+            ],
+            "estimatedHours": 100,
+            "estimatedCost": 5000,
+            "technicalRequirements": [
+              "Drag-and-drop task boards",
+              "File upload and storage (AWS S3)",
+              "Email notification service",
+              "Real-time collaboration features"
+            ],
+            "dependencies": ["mvp-proj-001"],
+            "risks": ["File storage costs", "Email delivery reliability", "Real-time performance"],
+            "scaAlignment": ["sca-tech-1", "sca-biz-1"],
+            "testingRequirements": [
+              "Task workflow state machine testing", 
+              "File upload security and size limit testing",
+              "Notification delivery testing"
+            ]
+          },
+          {
+            "id": "mvp-team-001",
+            "name": "Team Collaboration Hub",
+            "description": "Team member management, communication channels, and activity tracking for effective collaboration",
+            "priority": "SHOULD_HAVE",
+            "effort": "MEDIUM",
+            "impact": "MEDIUM",
+            "userStories": [
+              "As a team lead, I want to invite team members so they can join projects",
+              "As a team member, I want to see team activity so I stay informed about project progress",
+              "As a manager, I want team performance insights so I can identify bottlenecks"
+            ],
+            "acceptanceCriteria": [
+              "Send team invitations via email with role assignment",
+              "Team activity feed showing task updates, comments, and deadlines",
+              "Team member profiles with contact info and role descriptions",
+              "Team performance metrics (tasks completed, average completion time)",
+              "Direct messaging between team members"
+            ],
+            "estimatedHours": 60,
+            "estimatedCost": 3000,
+            "technicalRequirements": [
+              "Email invitation system",
+              "Activity feed with real-time updates",
+              "User profile management",
+              "Basic messaging functionality"
+            ],
+            "dependencies": ["mvp-auth-001", "mvp-task-001"],
+            "risks": ["Messaging scalability", "Activity feed performance"],
+            "scaAlignment": ["sca-tech-1", "sca-net-1"],
+            "testingRequirements": [
+              "Invitation flow testing",
+              "Activity feed performance with high volume",
+              "Messaging delivery and threading tests"
+            ]
+          },
+          {
+            "id": "mvp-mobile-001",
+            "name": "Mobile-Responsive Interface",
+            "description": "Fully responsive web interface optimized for mobile devices and tablets",
+            "priority": "SHOULD_HAVE", 
+            "effort": "MEDIUM",
+            "impact": "HIGH",
+            "userStories": [
+              "As a remote worker, I want to access projects on my phone so I can stay updated anywhere",
+              "As a field worker, I want to update task status on my tablet so I can work efficiently on-site",
+              "As a manager, I want to review project status on mobile so I can make quick decisions"
+            ],
+            "acceptanceCriteria": [
+              "Responsive design works on screen sizes from 320px to 1920px",
+              "Touch-friendly interface elements and gestures",
+              "Offline functionality for viewing recent projects and tasks",
+              "Mobile-optimized forms and data entry",
+              "Fast loading on mobile networks (< 3 seconds)"
+            ],
+            "estimatedHours": 50,
+            "estimatedCost": 2500,
+            "technicalRequirements": [
+              "CSS Grid and Flexbox for responsive layouts",
+              "Service worker for offline functionality",
+              "Progressive Web App (PWA) features",
+              "Image optimization and lazy loading"
+            ],
+            "dependencies": ["mvp-proj-001", "mvp-task-001"],
+            "risks": ["Offline sync complexity", "Cross-device browser compatibility"],
+            "scaAlignment": ["sca-tech-1", "sca-biz-1"],
+            "testingRequirements": [
+              "Cross-device responsive testing",
+              "Offline functionality testing",
+              "Mobile performance testing"
+            ]
+          },
+          {
+            "id": "mvp-int-001",
+            "name": "Third-Party Integrations",
+            "description": "Basic integrations with popular tools like Google Calendar, Slack, and email services",
+            "priority": "COULD_HAVE",
+            "effort": "MEDIUM", 
+            "impact": "MEDIUM",
+            "userStories": [
+              "As a user, I want calendar integration so project deadlines appear in my Google Calendar",
+              "As a team, we want Slack notifications so we stay informed about project updates",
+              "As a manager, I want email reports so I can share progress with stakeholders"
+            ],
+            "acceptanceCriteria": [
+              "Google Calendar sync for project deadlines and milestones",
+              "Slack webhook integration for task and project notifications",
+              "Automated email reports (daily, weekly, monthly)",
+              "CSV/PDF export for project data",
+              "API endpoints for custom integrations"
+            ],
+            "estimatedHours": 45,
+            "estimatedCost": 2250,
+            "technicalRequirements": [
+              "Google Calendar API integration",
+              "Slack API and webhook setup",
+              "Email template system",
+              "RESTful API with authentication"
+            ],
+            "dependencies": ["mvp-proj-001", "mvp-task-001"],
+            "risks": ["Third-party API changes", "Rate limiting issues", "Authentication complexity"],
+            "scaAlignment": ["sca-net-1", "sca-tech-1"],
+            "testingRequirements": [
+              "Integration API testing", 
+              "Rate limiting and error handling tests",
+              "Authentication flow testing"
+            ]
+          }
+        ],
+        "projectMetrics": {
+          "totalEstimatedHours": 375,
+          "totalEstimatedCost": 18750,
+          "estimatedTimelineWeeks": 16,
+          "teamSizeRecommendation": 3,
+          "riskScore": "MEDIUM"
+        },
+        "implementationPhases": [
+          {
+            "phase": 1,
+            "name": "Core Foundation",
+            "duration": "6 weeks",
+            "features": ["mvp-auth-001", "mvp-proj-001"],
+            "deliverables": ["User authentication system", "Basic project dashboard"],
+            "successCriteria": ["Users can register and create projects", "Dashboard shows project overview"]
+          },
+          {
+            "phase": 2,
+            "name": "Task Management", 
+            "duration": "5 weeks",
+            "features": ["mvp-task-001"],
+            "deliverables": ["Complete task management system"],
+            "successCriteria": ["Tasks can be created, assigned, and tracked through completion"]
+          },
+          {
+            "phase": 3,
+            "name": "Collaboration & Mobile",
+            "duration": "4 weeks", 
+            "features": ["mvp-team-001", "mvp-mobile-001"],
+            "deliverables": ["Team collaboration features", "Mobile-responsive interface"],
+            "successCriteria": ["Teams can collaborate effectively", "Interface works on all devices"]
+          },
+          {
+            "phase": 4,
+            "name": "Integrations & Polish",
+            "duration": "3 weeks",
+            "features": ["mvp-int-001"],
+            "deliverables": ["Third-party integrations", "Performance optimization"],
+            "successCriteria": ["Key integrations work reliably", "Application meets performance benchmarks"]
+          }
+        ],
+        "technologyStack": {
+          "frontend": ["React 18", "TypeScript", "Tailwind CSS", "React Query"],
+          "backend": ["Node.js", "Express", "TypeScript", "Prisma ORM"],
+          "database": ["PostgreSQL", "Redis (caching)"],
+          "infrastructure": ["AWS (EC2, S3, RDS)", "Docker", "GitHub Actions"],
+          "monitoring": ["Sentry", "LogRocket", "AWS CloudWatch"]
+        }
+      },
+      "simple": {
+        "success": true,
+        "mvpFeatures": [
+          {
+            "id": "mvp-simple-1",
+            "name": "Basic Login",
+            "description": "Simple user authentication",
+            "priority": "MUST_HAVE",
+            "effort": "LOW",
+            "impact": "HIGH",
+            "estimatedHours": 8,
+            "estimatedCost": 400
+          },
+          {
+            "id": "mvp-simple-2", 
+            "name": "Task List",
+            "description": "Basic task management",
+            "priority": "MUST_HAVE",
+            "effort": "MEDIUM",
+            "impact": "HIGH",
+            "estimatedHours": 16,
+            "estimatedCost": 800
+          }
+        ]
+      }
+    },
+    "errors": {
+      "planningSCAMissing": {
+        "error": "SCA factors are required for effective MVP planning",
+        "code": "MISSING_SCA_DATA", 
+        "details": "Please complete SCA analysis before proceeding to MVP planning",
+        "requiredData": ["scaFactors", "competitiveAdvantages", "resourceAssessment"]
+      },
+      "complexityTooHigh": {
+        "error": "Project complexity exceeds MVP scope recommendations",
+        "code": "SCOPE_TOO_LARGE",
+        "details": "Consider reducing scope or breaking into multiple MVP phases",
+        "recommendations": [
+          "Focus on core user journey only",
+          "Defer advanced features to post-MVP",
+          "Simplify technical architecture",
+          "Reduce integration complexity"
+        ]
+      }
+    }
+  },
+  "llmCompletion": {
+    "success": {
+      "chatCompletion": {
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "Based on the project context and SCA analysis, I recommend focusing your MVP on the core project management capabilities that directly address your target market's biggest pain points. Here's my analysis:\n\n**Key Recommendations:**\n1. Start with user authentication and basic project creation\n2. Implement essential task management with team collaboration\n3. Focus on mobile-responsive design from day one\n4. Defer complex integrations to post-MVP phases\n\n**Technical Approach:**\n- Use proven technology stack (React, Node.js, PostgreSQL)\n- Implement real-time features with WebSocket connections\n- Design for scalability but build for current needs\n\n**Go-to-Market Strategy:**\n- Target 20-50 employee businesses initially\n- Price competitively with freemium model\n- Focus on quick time-to-value (< 5 minutes to first project)\n\nThis approach leverages your technical strengths while minimizing market risks. The estimated 16-week development timeline is realistic for a team of 3 developers."
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 1250,
+          "completion_tokens": 185,
+          "total_tokens": 1435
+        },
+        "cache": {
+          "hit": false,
+          "key": "mvp_analysis_2024_001"
+        }
+      },
+      "streamingCompletion": {
+        "chunks": [
+          {
+            "choices": [
+              {
+                "delta": {
+                  "content": "Based on your"
+                },
+                "finish_reason": null
+              }
+            ]
+          },
+          {
+            "choices": [
+              {
+                "delta": {
+                  "content": " SCA analysis, here are the"
+                },
+                "finish_reason": null
+              }
+            ]
+          },
+          {
+            "choices": [
+              {
+                "delta": {
+                  "content": " key MVP recommendations:"
+                },
+                "finish_reason": null
+              }
+            ]
+          },
+          {
+            "choices": [
+              {
+                "delta": {
+                  "content": ""
+                },
+                "finish_reason": "stop"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "errors": {
+      "rateLimited": {
+        "error": "Rate limit exceeded for LLM API",
+        "code": "RATE_LIMIT_EXCEEDED", 
+        "retryAfter": 60,
+        "details": "Too many requests to the language model API. Please wait before retrying."
+      },
+      "contextTooLarge": {
+        "error": "Input context exceeds maximum token limit",
+        "code": "CONTEXT_TOO_LARGE",
+        "maxTokens": 4096,
+        "actualTokens": 5200,
+        "suggestions": [
+          "Reduce input text length",
+          "Summarize background context",
+          "Split into multiple smaller requests"
+        ]
+      }
+    }
+  }
+}

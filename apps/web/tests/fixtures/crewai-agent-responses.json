@@ -1,0 +1,457 @@
+{
+  "agent_message_templates": {
+    "business_analyst": {
+      "problem_capture": [
+        {
+          "id": "ba_pc_001",
+          "content": "I need to conduct a thorough stakeholder analysis for your e-commerce platform. Let me identify the key business requirements:\n\n**Primary Stakeholders:**\n• End customers (buyers)\n• Vendors/sellers\n• Platform administrators\n• Payment processors\n• Logistics partners\n\n**Core Business Requirements:**\n• Multi-vendor marketplace functionality\n• Secure payment processing\n• Inventory management system\n• Customer relationship management\n• Analytics and reporting dashboard\n\n**Success Criteria:**\n• User acquisition targets\n• Revenue goals\n• Performance benchmarks\n• Customer satisfaction metrics\n\nCould you provide more details about your target market and expected transaction volume?",
+          "agentMetadata": {
+            "agentId": "business-analyst",
+            "agentName": "Sarah Rodriguez",
+            "agentTitle": "Senior Business Analyst",
+            "agentDepartment": "Strategy",
+            "expertise": ["Requirements Analysis", "Stakeholder Management", "Business Process Design"],
+            "communicationStyle": "analytical"
+          },
+          "stage": "PROBLEM_CAPTURE",
+          "messageType": "requirements_gathering",
+          "contextTags": ["stakeholders", "requirements", "success_metrics"]
+        }
+      ],
+      "problem_clarification": [
+        {
+          "id": "ba_pcl_001", 
+          "content": "Based on our initial analysis, I need to clarify several business aspects:\n\n**Market Positioning:**\n• Are you targeting B2B, B2C, or both markets?\n• What's your competitive differentiation strategy?\n• How do you plan to attract and retain vendors?\n\n**Revenue Model:**\n• Commission-based or subscription model for vendors?\n• Transaction fees structure\n• Additional revenue streams (advertising, premium features)\n\n**Operational Considerations:**\n• Order fulfillment strategy (centralized vs. distributed)\n• Customer support model\n• Return and refund policies\n\n**Compliance Requirements:**\n• Industry regulations (PCI DSS, GDPR, etc.)\n• Tax calculation and reporting\n• International trade considerations\n\nThese clarifications will help us design the most suitable solution architecture.",
+          "agentMetadata": {
+            "agentId": "business-analyst",
+            "agentName": "Sarah Rodriguez",
+            "agentTitle": "Senior Business Analyst",
+            "agentDepartment": "Strategy",
+            "expertise": ["Market Analysis", "Business Model Design", "Regulatory Compliance"]
+          },
+          "stage": "PROBLEM_CLARIFICATION",
+          "messageType": "clarification_questions",
+          "buildOnPrevious": true
+        }
+      ]
+    },
+    "solution_architect": {
+      "solution_design": [
+        {
+          "id": "sa_sd_001",
+          "content": "Based on the business requirements, I recommend a microservices architecture approach for your e-commerce platform:\n\n**Technical Architecture:**\n• **API Gateway** - Request routing, authentication, rate limiting\n• **User Service** - Authentication, user profiles, preferences\n• **Product Catalog Service** - Product information, search, categories\n• **Order Management Service** - Order processing, workflow, status tracking\n• **Payment Service** - Transaction processing, security, fraud detection\n• **Notification Service** - Email, SMS, push notifications\n• **Analytics Service** - Data collection, reporting, insights\n\n**Technology Stack:**\n• **Backend**: Node.js with Express or Python with FastAPI\n• **Database**: PostgreSQL for transactions, Redis for caching\n• **Message Queue**: Apache Kafka for event streaming\n• **Container Orchestration**: Kubernetes\n• **Cloud Platform**: AWS or Google Cloud Platform\n\n**Scalability Considerations:**\n• Horizontal scaling with load balancers\n• Database sharding for high-volume transactions\n• CDN integration for static assets\n• Caching strategies for performance optimization\n\n**Security Framework:**\n• OAuth 2.0 for authentication\n• JWT tokens for session management\n• API rate limiting and DDoS protection\n• Data encryption at rest and in transit\n\nShould we explore specific technology choices for each service?",
+          "agentMetadata": {
+            "agentId": "solution-architect", 
+            "agentName": "Michael Chen",
+            "agentTitle": "Principal Solution Architect",
+            "agentDepartment": "Technical",
+            "expertise": ["System Architecture", "Cloud Infrastructure", "API Design", "Microservices"],
+            "communicationStyle": "technical_detailed"
+          },
+          "stage": "SOLUTION_DESIGN",
+          "messageType": "architecture_proposal",
+          "contextTags": ["microservices", "scalability", "security", "technology_stack"]
+        }
+      ],
+      "deployment_plan": [
+        {
+          "id": "sa_dp_001",
+          "content": "Here's a comprehensive deployment strategy for your e-commerce platform:\n\n**Infrastructure as Code (IaC):**\n• Terraform for cloud resource provisioning\n• Kubernetes manifests for application deployment\n• Helm charts for package management\n• GitOps workflow with ArgoCD\n\n**Environment Strategy:**\n• **Development**: Single-node cluster for rapid iteration\n• **Staging**: Production-like environment for integration testing\n• **Production**: Multi-AZ deployment for high availability\n\n**CI/CD Pipeline:**\n• GitHub Actions for automated builds\n• Docker containers for consistent deployments\n• Automated testing (unit, integration, E2E)\n• Blue-green deployment strategy\n\n**Monitoring and Observability:**\n• Prometheus + Grafana for metrics\n• ELK stack for centralized logging\n• Jaeger for distributed tracing\n• PagerDuty for alerting\n\n**Security Measures:**\n• Network segmentation with VPCs\n• Secrets management with HashiCorp Vault\n• Container image scanning\n• Runtime security monitoring\n\n**Disaster Recovery:**\n• Multi-region backup strategy\n• Database replication and failover\n• Recovery time objective (RTO): 4 hours\n• Recovery point objective (RPO): 1 hour\n\nWould you like me to elaborate on any specific deployment aspect?",
+          "agentMetadata": {
+            "agentId": "solution-architect",
+            "agentName": "Michael Chen", 
+            "agentTitle": "Principal Solution Architect",
+            "agentDepartment": "Technical",
+            "expertise": ["DevOps", "Cloud Deployment", "Infrastructure", "Security"]
+          },
+          "stage": "DEPLOYMENT_PLAN",
+          "messageType": "deployment_strategy"
+        }
+      ]
+    },
+    "smart_planner": {
+      "implementation_plan": [
+        {
+          "id": "sp_ip_001",
+          "content": "Let me break down the project into manageable phases with strategic milestones:\n\n**Phase 1: Foundation (Weeks 1-4)**\n• Set up development environment and CI/CD pipeline\n• Implement core user authentication and authorization\n• Develop basic product catalog with search functionality\n• **Milestone**: MVP user registration and product browsing\n\n**Phase 2: Core Functionality (Weeks 5-8)**\n• Shopping cart and checkout process\n• Payment gateway integration (Stripe/PayPal)\n• Order management system\n• Basic vendor onboarding\n• **Milestone**: Complete customer purchase flow\n\n**Phase 3: Vendor Platform (Weeks 9-12)**\n• Advanced vendor management dashboard\n• Multi-vendor product listings and inventory\n• Commission calculation and payout system\n• Vendor analytics and reporting\n• **Milestone**: Multi-vendor marketplace launch\n\n**Phase 4: Optimization (Weeks 13-16)**\n• Performance optimization and scaling\n• Advanced search and filtering\n• Recommendation engine\n• Mobile app development\n• **Milestone**: Platform optimization and mobile launch\n\n**Resource Allocation:**\n• 2 Backend developers (full-time)\n• 1 Frontend developer (full-time)\n• 1 DevOps engineer (0.5 FTE)\n• 1 QA engineer (0.5 FTE)\n• 1 UI/UX designer (0.3 FTE)\n\n**Risk Management:**\n• Payment security compliance (PCI DSS)\n• Third-party integration dependencies\n• Performance under high load\n• Data privacy and GDPR compliance\n\n**Budget Estimation:**\n• Development: $180,000 - $220,000\n• Infrastructure: $2,000 - $5,000/month\n• Third-party services: $1,000 - $3,000/month\n\nShall we dive deeper into any specific phase or risk mitigation strategies?",
+          "agentMetadata": {
+            "agentId": "smart-planner",
+            "agentName": "Emma Thompson",
+            "agentTitle": "Strategic Project Planner",
+            "agentDepartment": "Strategy", 
+            "expertise": ["Project Management", "Strategic Planning", "Resource Allocation", "Risk Management"],
+            "communicationStyle": "structured_strategic"
+          },
+          "stage": "IMPLEMENTATION_PLAN",
+          "messageType": "project_roadmap",
+          "contextTags": ["phases", "milestones", "resources", "budget", "risks"]
+        }
+      ],
+      "monitoring_setup": [
+        {
+          "id": "sp_ms_001",
+          "content": "Here's a comprehensive monitoring and success measurement strategy:\n\n**Key Performance Indicators (KPIs):**\n• **Business Metrics**: Revenue, conversion rate, customer acquisition cost\n• **Technical Metrics**: Response time, uptime, error rates\n• **User Experience**: Page load time, bounce rate, user satisfaction\n• **Vendor Metrics**: Vendor adoption, product listing growth, commission revenue\n\n**Monitoring Dashboard Structure:**\n• **Executive Dashboard**: High-level business metrics and trends\n• **Operations Dashboard**: System health, performance, alerts\n• **Marketing Dashboard**: Customer behavior, funnel analysis\n• **Vendor Dashboard**: Vendor performance, earnings, product metrics\n\n**Alerting Strategy:**\n• **Critical**: System outages, payment failures, security breaches\n• **Warning**: Performance degradation, high error rates\n• **Info**: Deployment notifications, scheduled maintenance\n\n**Success Milestones:**\n• Month 1: 100 registered users, 50 products listed\n• Month 3: 1,000 users, 10 active vendors, $10K GMV\n• Month 6: 5,000 users, 50 vendors, $100K GMV\n• Month 12: 20,000 users, 200 vendors, $1M GMV\n\n**Continuous Improvement Process:**\n• Weekly performance reviews\n• Monthly stakeholder reports\n• Quarterly strategic planning sessions\n• Annual platform evolution assessment\n\n**Data Analytics Implementation:**\n• Google Analytics for web traffic analysis\n• Mixpanel for user behavior tracking\n• Custom analytics for business intelligence\n• A/B testing framework for optimization\n\nThis monitoring framework will ensure we can track progress, identify issues early, and make data-driven decisions for platform growth.",
+          "agentMetadata": {
+            "agentId": "smart-planner",
+            "agentName": "Emma Thompson",
+            "agentTitle": "Strategic Project Planner",
+            "agentDepartment": "Strategy",
+            "expertise": ["Performance Analytics", "Strategic Metrics", "Business Intelligence"]
+          },
+          "stage": "MONITORING_SETUP",
+          "messageType": "monitoring_strategy"
+        }
+      ]
+    },
+    "developer": {
+      "implementation_plan": [
+        {
+          "id": "dev_ip_001",
+          "content": "I'll provide implementation details for the core e-commerce functionality:\n\n**User Authentication Implementation:**\n```javascript\n// JWT-based authentication with refresh tokens\nconst authMiddleware = (req, res, next) => {\n  const token = req.headers.authorization?.split(' ')[1];\n  if (!token) return res.status(401).json({ error: 'No token provided' });\n  \n  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {\n    if (err) return res.status(403).json({ error: 'Invalid token' });\n    req.user = decoded;\n    next();\n  });\n};\n```\n\n**Product Catalog API Design:**\n• **GET /api/products** - List products with pagination and filters\n• **GET /api/products/:id** - Get product details with reviews\n• **POST /api/products** - Create new product (vendors only)\n• **PUT /api/products/:id** - Update product information\n• **DELETE /api/products/:id** - Remove product (soft delete)\n\n**Database Schema Design:**\n```sql\n-- Core entities with relationships\nCREATE TABLE users (\n  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n  email VARCHAR(255) UNIQUE NOT NULL,\n  password_hash VARCHAR(255) NOT NULL,\n  role user_role NOT NULL DEFAULT 'customer',\n  created_at TIMESTAMP DEFAULT NOW()\n);\n\nCREATE TABLE products (\n  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n  vendor_id UUID REFERENCES users(id),\n  name VARCHAR(255) NOT NULL,\n  description TEXT,\n  price DECIMAL(10,2) NOT NULL,\n  inventory_count INTEGER DEFAULT 0,\n  category_id UUID REFERENCES categories(id),\n  created_at TIMESTAMP DEFAULT NOW()\n);\n```\n\n**Performance Optimizations:**\n• Database indexing on frequently queried fields\n• Redis caching for product catalog and user sessions\n• Image optimization and CDN integration\n• API response compression with gzip\n• Connection pooling for database connections\n\n**Security Implementations:**\n• Input validation and sanitization with Joi\n• SQL injection prevention with parameterized queries\n• Rate limiting for API endpoints (express-rate-limit)\n• HTTPS enforcement and CORS configuration\n• Password hashing with bcrypt (12 rounds)\n\n**Error Handling Strategy:**\n```javascript\n// Centralized error handling middleware\nconst errorHandler = (err, req, res, next) => {\n  const statusCode = err.statusCode || 500;\n  const message = err.message || 'Internal server error';\n  \n  logger.error({\n    error: err.message,\n    stack: err.stack,\n    url: req.url,\n    method: req.method\n  });\n  \n  res.status(statusCode).json({\n    error: message,\n    requestId: req.requestId\n  });\n};\n```\n\nWould you like me to elaborate on any specific implementation aspect or provide more detailed code examples?",
+          "agentMetadata": {
+            "agentId": "developer",
+            "agentName": "Alex Kim",
+            "agentTitle": "Senior Full-Stack Developer", 
+            "agentDepartment": "Technical",
+            "expertise": ["Full-Stack Development", "API Design", "Database Design", "Security Implementation"],
+            "communicationStyle": "code_focused"
+          },
+          "stage": "IMPLEMENTATION_PLAN",
+          "messageType": "technical_implementation",
+          "contextTags": ["authentication", "api_design", "database", "security", "performance"]
+        }
+      ]
+    },
+    "qa_tester": {
+      "testing_strategy": [
+        {
+          "id": "qa_ts_001",
+          "content": "I'll outline comprehensive testing strategies for the e-commerce platform:\n\n**Testing Pyramid Structure:**\n• **Unit Tests (70%)** - Individual component and function testing\n• **Integration Tests (20%)** - API endpoints and service integration\n• **End-to-End Tests (10%)** - Complete user journey validation\n\n**Unit Testing Framework:**\n```javascript\n// Example: Product service unit test with Jest\ndescribe('ProductService', () => {\n  it('should calculate discount price correctly', () => {\n    const product = new Product({ \n      price: 100, \n      discountPercentage: 0.15 \n    });\n    expect(product.getFinalPrice()).toBe(85);\n  });\n  \n  it('should validate product inventory', () => {\n    const product = new Product({ inventory: 5 });\n    expect(product.isInStock()).toBe(true);\n    expect(product.canFulfillQuantity(3)).toBe(true);\n    expect(product.canFulfillQuantity(6)).toBe(false);\n  });\n});\n```\n\n**API Testing Strategy:**\n• **Tools**: Jest + Supertest for Node.js APIs\n• **Coverage**: All CRUD operations, authentication flows\n• **Scenarios**: Success cases, error handling, edge cases\n• **Performance**: Load testing with Artillery or k6\n\n**End-to-End Testing:**\n• **Tools**: Playwright for cross-browser testing\n• **Critical User Journeys**:\n  - User registration and email verification\n  - Product search and filtering\n  - Add to cart and checkout process\n  - Payment processing and order confirmation\n  - Vendor product listing and management\n\n**Security Testing:**\n• **Authentication**: Token validation, session management\n• **Authorization**: Role-based access control testing\n• **Input Validation**: SQL injection, XSS prevention\n• **Data Privacy**: PCI compliance, GDPR requirements\n\n**Performance Testing:**\n• **Load Testing**: Normal expected traffic (1000 concurrent users)\n• **Stress Testing**: Peak traffic scenarios (5000+ users)\n• **Spike Testing**: Sudden traffic increases (flash sales)\n• **Volume Testing**: Large dataset handling (100k+ products)\n\n**Quality Gates:**\n• 80% code coverage minimum for new features\n• All critical path tests must pass before deployment\n• No high-severity security vulnerabilities\n• Performance benchmarks: API response < 200ms, page load < 3s\n\n**Test Data Management:**\n• Synthetic data generation for consistent testing\n• Test environment isolation and cleanup\n• Privacy-compliant test datasets\n• Database seeding and teardown automation\n\n**Continuous Testing Integration:**\n```yaml\n# GitHub Actions workflow example\nname: Test Suite\non: [push, pull_request]\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v2\n      - name: Run unit tests\n        run: npm run test:unit\n      - name: Run integration tests \n        run: npm run test:integration\n      - name: Run E2E tests\n        run: npm run test:e2e\n      - name: Upload coverage\n        run: codecov\n```\n\n**Bug Tracking and Reporting:**\n• Jira integration for bug lifecycle management\n• Severity classification (Critical, High, Medium, Low)\n• Regression test suite maintenance\n• Test result dashboards and metrics\n\nShall we prioritize specific testing areas or discuss test automation strategies in more detail?",
+          "agentMetadata": {
+            "agentId": "qa-tester",
+            "agentName": "Maria Santos",
+            "agentTitle": "Lead QA Engineer",
+            "agentDepartment": "Quality",
+            "expertise": ["Test Automation", "Performance Testing", "Security Testing", "Quality Assurance"],
+            "communicationStyle": "methodical_detailed"
+          },
+          "stage": "TESTING_STRATEGY",
+          "messageType": "comprehensive_testing",
+          "contextTags": ["testing_pyramid", "automation", "performance", "security", "quality_gates"]
+        }
+      ]
+    }
+  },
+  "multi_agent_conversations": {
+    "collaborative_analysis": [
+      {
+        "sequence": 1,
+        "agentId": "business-analyst",
+        "content": "I've identified the core business requirements. The primary focus should be on multi-vendor marketplace functionality with robust payment processing.",
+        "contextReferences": [],
+        "collaborationType": "initial_analysis"
+      },
+      {
+        "sequence": 2,
+        "agentId": "solution-architect", 
+        "content": "Building on Sarah's analysis, I recommend a microservices architecture to support the multi-vendor requirements she identified. This will provide the scalability needed for the marketplace model.",
+        "contextReferences": ["business-analyst"],
+        "collaborationType": "building_on_previous"
+      },
+      {
+        "sequence": 3,
+        "agentId": "smart-planner",
+        "content": "Considering both the business requirements from Sarah and Michael's architectural approach, I suggest a phased implementation strategy starting with core vendor functionality.",
+        "contextReferences": ["business-analyst", "solution-architect"],
+        "collaborationType": "synthesis"
+      }
+    ],
+    "consensus_building": [
+      {
+        "consensusType": "unanimous_approval",
+        "agentVotes": {
+          "business-analyst": {
+            "vote": "approve",
+            "reasoning": "All business requirements have been thoroughly addressed"
+          },
+          "solution-architect": {
+            "vote": "approve", 
+            "reasoning": "Technical architecture is sound and scalable"
+          },
+          "smart-planner": {
+            "vote": "approve",
+            "reasoning": "Implementation plan is realistic and well-structured"
+          },
+          "developer": {
+            "vote": "approve",
+            "reasoning": "Technical implementation is feasible with current resources"
+          },
+          "qa-tester": {
+            "vote": "approve",
+            "reasoning": "Testing strategy covers all critical aspects"
+          }
+        },
+        "consensusMessage": "All agents agree to proceed with the microservices architecture using AWS cloud platform with phased implementation approach.",
+        "consensusLevel": "unanimous"
+      }
+    ],
+    "conflict_resolution": [
+      {
+        "conflictType": "technical_approach_disagreement",
+        "originalPositions": {
+          "solution-architect": {
+            "position": "microservices",
+            "reasoning": "Better scalability and maintainability"
+          },
+          "developer": {
+            "position": "monolith",
+            "reasoning": "Faster initial development and deployment"
+          },
+          "smart-planner": {
+            "position": "hybrid",
+            "reasoning": "Balance between speed and scalability"
+          }
+        },
+        "resolution": {
+          "approach": "modular_monolith_with_migration_plan",
+          "description": "Start with modular monolith for faster initial deployment, designed with microservices patterns for future migration",
+          "timeline": "Migrate to microservices after MVP validation in 6-9 months",
+          "compromise": "This balances Emma's concern about initial complexity with Michael's scalability requirements"
+        }
+      }
+    ]
+  },
+  "stage_specific_responses": {
+    "PROBLEM_CAPTURE": {
+      "stage_description": "Understanding and defining the core problem",
+      "typical_agents": ["business-analyst", "smart-planner"],
+      "message_templates": [
+        {
+          "type": "requirements_gathering",
+          "content": "I need to understand your business objectives and target audience for this project.",
+          "followUpQuestions": [
+            "What is your primary business goal?",
+            "Who is your target customer?", 
+            "What problem are you solving?"
+          ]
+        }
+      ]
+    },
+    "PROBLEM_CLARIFICATION": {
+      "stage_description": "Clarifying requirements and constraints",
+      "typical_agents": ["business-analyst", "solution-architect"],
+      "message_templates": [
+        {
+          "type": "clarification_questions",
+          "content": "Let me clarify some important details about your requirements.",
+          "followUpQuestions": [
+            "What are your technical constraints?",
+            "What is your timeline and budget?",
+            "Are there any compliance requirements?"
+          ]
+        }
+      ]
+    },
+    "SOLUTION_DESIGN": {
+      "stage_description": "Designing the technical solution",
+      "typical_agents": ["solution-architect", "developer"],
+      "message_templates": [
+        {
+          "type": "architecture_proposal",
+          "content": "Based on your requirements, I recommend the following technical architecture.",
+          "components": [
+            "System architecture diagram",
+            "Technology stack recommendations", 
+            "Scalability considerations",
+            "Security framework"
+          ]
+        }
+      ]
+    },
+    "IMPLEMENTATION_PLAN": {
+      "stage_description": "Creating detailed implementation roadmap",
+      "typical_agents": ["smart-planner", "developer"],
+      "message_templates": [
+        {
+          "type": "project_roadmap",
+          "content": "Here's a detailed implementation plan with phases and milestones.",
+          "elements": [
+            "Project phases",
+            "Resource allocation",
+            "Timeline estimates",
+            "Risk mitigation"
+          ]
+        }
+      ]
+    },
+    "TESTING_STRATEGY": {
+      "stage_description": "Defining comprehensive testing approach",
+      "typical_agents": ["qa-tester", "developer"],
+      "message_templates": [
+        {
+          "type": "testing_framework",
+          "content": "I'll outline a comprehensive testing strategy for quality assurance.",
+          "components": [
+            "Testing pyramid structure",
+            "Automation framework",
+            "Performance testing",
+            "Quality gates"
+          ]
+        }
+      ]
+    },
+    "DEPLOYMENT_PLAN": {
+      "stage_description": "Planning deployment and infrastructure",
+      "typical_agents": ["solution-architect", "developer"],
+      "message_templates": [
+        {
+          "type": "deployment_strategy",
+          "content": "Here's a comprehensive deployment plan for your platform.",
+          "elements": [
+            "Infrastructure setup",
+            "CI/CD pipeline",
+            "Monitoring strategy",
+            "Disaster recovery"
+          ]
+        }
+      ]
+    },
+    "MONITORING_SETUP": {
+      "stage_description": "Setting up monitoring and success metrics",
+      "typical_agents": ["smart-planner", "qa-tester"],
+      "message_templates": [
+        {
+          "type": "monitoring_framework",
+          "content": "Let's establish monitoring and success measurement systems.",
+          "components": [
+            "KPI definitions", 
+            "Dashboard setup",
+            "Alert configuration",
+            "Success milestones"
+          ]
+        }
+      ]
+    }
+  },
+  "agent_metadata_variations": {
+    "business_analyst_profiles": [
+      {
+        "agentId": "business-analyst-001",
+        "agentName": "Sarah Rodriguez",
+        "agentTitle": "Senior Business Analyst",
+        "agentDepartment": "Strategy",
+        "experienceLevel": "senior",
+        "specializations": ["Requirements Analysis", "Stakeholder Management", "Process Design"],
+        "communicationStyle": "analytical_detailed"
+      },
+      {
+        "agentId": "business-analyst-002", 
+        "agentName": "David Chen",
+        "agentTitle": "Lead Business Analyst",
+        "agentDepartment": "Strategy",
+        "experienceLevel": "lead",
+        "specializations": ["Market Research", "Competitive Analysis", "ROI Analysis"],
+        "communicationStyle": "strategic_focused"
+      }
+    ],
+    "solution_architect_profiles": [
+      {
+        "agentId": "solution-architect-001",
+        "agentName": "Michael Thompson",
+        "agentTitle": "Principal Solution Architect",
+        "agentDepartment": "Technical",
+        "experienceLevel": "principal",
+        "specializations": ["System Architecture", "Cloud Infrastructure", "API Design"],
+        "communicationStyle": "technical_comprehensive"
+      },
+      {
+        "agentId": "solution-architect-002",
+        "agentName": "Lisa Wang",
+        "agentTitle": "Senior Solution Architect", 
+        "agentDepartment": "Technical",
+        "experienceLevel": "senior",
+        "specializations": ["Microservices", "Security Architecture", "Performance Optimization"],
+        "communicationStyle": "technical_precise"
+      }
+    ]
+  },
+  "decision_point_responses": {
+    "stage_completion_recommendations": [
+      {
+        "stage": "PROBLEM_CAPTURE",
+        "agentRecommendations": {
+          "business-analyst": "Requirements are clearly defined and stakeholders identified. Ready to proceed.",
+          "smart-planner": "Business objectives are well understood. We have sufficient information for solution design."
+        },
+        "consensusLevel": "high",
+        "readyForAdvancement": true
+      }
+    ],
+    "refinement_requests": [
+      {
+        "refinementType": "additional_technical_details",
+        "agentFeedback": {
+          "solution-architect": "Need more information about performance requirements and expected load.",
+          "developer": "Integration requirements need clarification for accurate time estimation."
+        },
+        "specificQuestions": [
+          "What is the expected concurrent user load?",
+          "Are there specific performance benchmarks?",
+          "Which third-party services need integration?"
+        ]
+      }
+    ]
+  },
+  "real_time_status_data": {
+    "agent_activity_states": {
+      "active": {
+        "status": "active",
+        "indicators": ["processing", "analyzing", "generating"],
+        "visualCues": ["spinning_icon", "progress_bar", "activity_pulse"]
+      },
+      "waiting": {
+        "status": "waiting",
+        "indicators": ["awaiting_input", "on_standby", "ready"],
+        "visualCues": ["clock_icon", "dimmed_state"]
+      },
+      "completed": {
+        "status": "completed", 
+        "indicators": ["finished", "done", "contribution_complete"],
+        "visualCues": ["checkmark_icon", "completed_state"]
+      }
+    },
+    "progress_tracking": {
+      "stage_progress_examples": [
+        {
+          "stage": "PROBLEM_CAPTURE",
+          "progress": 75,
+          "completionCriteria": [
+            "Business requirements identified (✓)",
+            "Stakeholders mapped (✓)", 
+            "Success criteria defined (✓)",
+            "Risk assessment (in progress)"
+          ]
+        }
+      ]
+    }
+  },
+  "error_and_edge_cases": {
+    "agent_service_failures": [
+      {
+        "errorType": "agent_unavailable",
+        "agentId": "business-analyst",
+        "errorMessage": "Business Analyst agent temporarily unavailable",
+        "fallbackResponse": "I'll continue with available agents and circle back when the Business Analyst is ready.",
+        "retryStrategy": "exponential_backoff"
+      }
+    ],
+    "incomplete_responses": [
+      {
+        "scenario": "partial_agent_response",
+        "originalContent": "I've analyzed your requirements and found...",
+        "recoveryMessage": "My response was interrupted. Let me complete my analysis.",
+        "contextPreservation": true
+      }
+    ]
+  }
+}
