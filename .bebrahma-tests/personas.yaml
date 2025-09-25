@@ -1,0 +1,12 @@
+personas:
+  - id: indie-marketer
+    goal: "Validate problem → produce GTM brief quickly"
+    task: "Create a project for 'invoice reconciliation for small agencies' and generate a GTM prompt."
+    
+  - id: technical-tinkerer
+    goal: "Probe advanced options & exports"
+    task: "Create project 'API error triage assistant' and export BRD + prompts."
+    
+  - id: nontechnical-solo
+    goal: "One-pass clarity"
+    task: "Start from blank, accept defaults, reach a usable MVP brief."

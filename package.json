@@ -1,0 +1,67 @@
+{
+  "name": "bebrahma",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "npm@11.4.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "test": "turbo test",
+    "test:unit": "turbo test:unit",
+    "test:integration": "turbo test:integration",
+    "test:e2e": "playwright test",
+    "test:citations": "npm run test:unit -- --grep 'citation'",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "clean": "turbo clean && rm -rf node_modules",
+    "db:migrate": "npm run -w @bebrahma/database migrate",
+    "db:seed": "npm run -w @bebrahma/database seed",
+    "db:studio": "npm run -w @bebrahma/database studio",
+    "db:push": "npm run -w @bebrahma/database push",
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
+    "fly:deploy": "fly deploy",
+    "fly:logs": "fly logs",
+    "fly:ssh": "fly ssh console",
+    "docker:build": "docker-compose -f docker/docker-compose.yml build",
+    "docker:up": "docker-compose -f docker/docker-compose.yml up",
+    "docker:down": "docker-compose -f docker/docker-compose.yml down",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "prepare": "husky install",
+    "beb:install": "npx playwright install",
+    "beb:verify": "node scripts/verify-setup.mjs",
+    "beb:run": "node .bebrahma-tests/playwright-runner.mjs --persona=indie-marketer",
+    "beb:run:all": "node scripts/scenario-generator.mjs --all",
+    "beb:trace:view": "npx playwright show-trace ./playwright-traces/last.zip || echo 'No trace yet'",
+    "beb:visual-regression": "node scripts/visual-regression-runner.mjs",
+    "beb:visual-regression:cleanup": "node scripts/visual-regression-runner.mjs --cleanup",
+    "beb:visual-regression:baseline": "node scripts/visual-regression-runner.mjs --baseline",
+    "beb:ci-report": "node scripts/generate-ci-report.mjs"
+  },
+  "devDependencies": {
+    "@playwright/mcp": "^0.0.39",
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.19.10",
+    "dotenv": "^17.2.2",
+    "eslint": "^8.54.0",
+    "husky": "^8.0.3",
+    "js-yaml": "^4.1.0",
+    "openai": "^5.23.0",
+    "pixelmatch": "^7.1.0",
+    "pngjs": "^7.0.0",
+    "prettier": "^3.1.0",
+    "turbo": "^1.11.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
