@@ -255,6 +255,7 @@ model Task {
   id              String     @id @default(cuid())
   projectId       String
   boardId         String?
+  phaseId         String?    // Link to Playbook Phase (optional)
   title           String
   description     String?
   category        String
@@ -271,11 +272,13 @@ model Task {
   // Relations
   project         Project           @relation(fields: [projectId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   board           Board?            @relation(fields: [boardId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  phase           Phase?            @relation("PhaseTask", fields: [phaseId], references: [id], onUpdate: Cascade, onDelete: SetNull)
   dependencies    TaskDependency[]  @relation("TaskDependencies")
   dependents      TaskDependency[]  @relation("DependentTasks")
 
   @@index([projectId])
   @@index([boardId])
+  @@index([phaseId])
   @@index([status])
   @@index([assigneeId])
   @@index([dueDate])
@@ -463,4 +466,253 @@ model UsageMetrics {
   @@index([userId])
   @@index([date])
   @@index([createdAt])
+}
+
+// ============================================================================
+// BUSINESS IDE CORE MODELS
+// ============================================================================
+
+// Workspace: Top-level container for Business IDE artifacts
+model Workspace {
+  id          String   @id @default(cuid())
+  userId      String
+  slug        String   @unique
+  name        String
+  description String?
+  objectives  String[]
+  constraints String[]
+  status      String   @default("active") // active, archived, completed
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  artifacts    Artifact[]
+  playbooks    Playbook[]
+  scoreboards  Scoreboard[]
+
+  @@index([userId])
+  @@index([slug])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum ArtifactType {
+  PLAYBOOK
+  PILOT_PACK
+  PRD
+  PITCH
+  OUTREACH_EMAIL
+  MODEL_SHEET
+  MEETING_NOTES
+  CONTRACT
+  RESEARCH_NOTE
+  DESIGN_DOC
+  TEST_PLAN
+  OTHER
+}
+
+enum ArtifactStatus {
+  DRAFT
+  REVIEW
+  APPROVED
+  SENT
+  SIGNED
+  ARCHIVED
+}
+
+// Artifact: Versioned documents with metadata and lineage
+model Artifact {
+  id          String         @id @default(cuid())
+  workspaceId String
+  title       String
+  type        ArtifactType
+  status      ArtifactStatus @default(DRAFT)
+  version     Int            @default(1)
+  content     String         @db.Text // Main content
+  contentHash String         // SHA-256 hash for de-duplication
+  storagePath String?        // Local or cloud storage path
+  storageUrl  String?        // Public URL if applicable
+
+  // Metadata
+  tags        String[]
+  createdBy   String
+  source      String?        // e.g., "prompt:xyz", "manual", "workflow:abc"
+
+  // Lineage tracking
+  parentId    String?        // Parent artifact for versioning
+  lineage     Json           @default("[]") // Array of ancestor artifact IDs
+
+  // Search optimization
+  searchVector String?       @db.Text // Postgres tsvector stored as text
+
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  // Relations
+  workspace   Workspace      @relation(fields: [workspaceId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  parent      Artifact?      @relation("ArtifactVersions", fields: [parentId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  children    Artifact[]     @relation("ArtifactVersions")
+
+  @@index([workspaceId])
+  @@index([type])
+  @@index([status])
+  @@index([createdBy])
+  @@index([parentId])
+  @@index([contentHash])
+  @@index([createdAt])
+  @@index([updatedAt])
+}
+
+// Playbook: Phased project execution plan
+model Playbook {
+  id          String   @id @default(cuid())
+  workspaceId String
+  name        String
+  description String?
+  isTemplate  Boolean  @default(false)
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  phases      Phase[]
+
+  @@index([workspaceId])
+  @@index([isTemplate])
+  @@index([createdBy])
+}
+
+// Phase: Stage in a playbook
+model Phase {
+  id          String   @id @default(cuid())
+  playbookId  String
+  name        String
+  description String?
+  order       Int      // Sequence order
+  status      String   @default("pending") // pending, active, completed, blocked
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  playbook    Playbook @relation(fields: [playbookId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  gates       Gate[]
+  tasks       Task[]   @relation("PhaseTask")
+
+  @@index([playbookId])
+  @@index([order])
+  @@index([status])
+}
+
+enum GateCheckType {
+  ARTIFACT_EXISTS
+  METRIC_THRESHOLD
+  CHECKLIST_COMPLETE
+  MANUAL_APPROVAL
+  TASK_COMPLETION
+}
+
+// Gate: Checkpoint that must pass before proceeding
+model Gate {
+  id          String       @id @default(cuid())
+  phaseId     String
+  name        String
+  description String?
+  checkType   GateCheckType
+  checkConfig Json         // Configuration for the check (artifact ID, metric threshold, etc.)
+  blocking    Boolean      @default(true)
+  status      String       @default("pending") // pending, passed, failed
+  lastChecked DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  // Relations
+  phase       Phase        @relation(fields: [phaseId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@index([phaseId])
+  @@index([status])
+  @@index([checkType])
+}
+
+// Scoreboard: KPI dashboard for a workspace
+model Scoreboard {
+  id          String   @id @default(cuid())
+  workspaceId String
+  name        String
+  description String?
+  cadence     String   @default("weekly") // daily, weekly, monthly
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  workspace      Workspace      @relation(fields: [workspaceId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  metrics        Metric[]
+  weeklyReviews  WeeklyReview[]
+
+  @@index([workspaceId])
+  @@index([createdBy])
+}
+
+// Metric: Individual KPI definition
+model Metric {
+  id           String   @id @default(cuid())
+  scoreboardId String
+  name         String
+  definition   String
+  unit         String
+  target       Float?
+  threshold    Float?   // Warning threshold
+  dataSource   String?  // How to collect this metric
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  scoreboard   Scoreboard       @relation(fields: [scoreboardId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  snapshots    MetricSnapshot[]
+
+  @@index([scoreboardId])
+}
+
+// MetricSnapshot: Time-series data for metrics
+model MetricSnapshot {
+  id        String   @id @default(cuid())
+  metricId  String
+  value     Float
+  timestamp DateTime @default(now())
+  metadata  Json?    // Additional context
+
+  // Relations
+  metric    Metric   @relation(fields: [metricId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@index([metricId])
+  @@index([timestamp])
+}
+
+// WeeklyReview: Weekly retrospective with decisions and experiments
+model WeeklyReview {
+  id              String   @id @default(cuid())
+  scoreboardId    String
+  weekNumber      Int      // ISO week number
+  year            Int
+  summary         String   @db.Text
+  achievements    String[]
+  challenges      String[]
+  decisions       Json     @default("[]") // Array of decision objects
+  nextExperiments Json     @default("[]") // Array of experiment objects
+  failureTaxonomy Json     @default("{}") // Categorized failures: {category: count}
+  createdBy       String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  scoreboard      Scoreboard @relation(fields: [scoreboardId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@unique([scoreboardId, year, weekNumber])
+  @@index([scoreboardId])
+  @@index([year])
+  @@index([weekNumber])
+  @@index([createdBy])
 }
