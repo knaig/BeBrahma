@@ -23,6 +23,12 @@ import docsRoutes from './routes/docs';
 import analyticsRoutes from './routes/analytics';
 import feedbackRoutes from './routes/feedback';
 
+// Founder OS routes
+import workspaceRoutes from './routes/workspace';
+import artifactsRoutes from './routes/artifacts';
+import searchRoutes from './routes/search';
+import dashboardRoutes from './routes/dashboard';
+
 // Import middleware
 import { generalRateLimit } from './middleware/rateLimit';
 
@@ -122,6 +128,12 @@ app.use('/api', exportRoutes);
 app.use('/api', docsRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/feedback', feedbackRoutes);
+
+// Founder OS routes
+app.use('/api', workspaceRoutes);
+app.use('/api', artifactsRoutes);
+app.use('/api', searchRoutes);
+app.use('/api', dashboardRoutes);
 
 // Error handling middleware
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
