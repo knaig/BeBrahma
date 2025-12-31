@@ -354,12 +354,97 @@ export const dashboardAPI = {
   },
 };
 
+// ============================================================================
+// PLAYBOOK API
+// ============================================================================
+
+export const playbookAPI = {
+  async create(data: any): Promise<ApiResponse<any>> {
+    return apiRequest('/api/playbooks', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async list(filters?: { workspaceSlug?: string; status?: string }): Promise<ApiResponse<any[]>> {
+    const params = new URLSearchParams(filters as any);
+    return apiRequest(`/api/playbooks?${params}`);
+  },
+
+  async get(id: string): Promise<ApiResponse<any>> {
+    return apiRequest(`/api/playbooks/${id}`);
+  },
+
+  async start(id: string): Promise<ApiResponse<any>> {
+    return apiRequest(`/api/playbooks/${id}/start`, {
+      method: 'POST',
+    });
+  },
+
+  async completePhase(phaseId: string, data: { gateResults: Record<string, boolean>; notes?: string }): Promise<ApiResponse<any>> {
+    return apiRequest(`/api/playbooks/phases/${phaseId}/complete`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async updateGate(gateId: string, data: { status: string; notes?: string }): Promise<ApiResponse<any>> {
+    return apiRequest(`/api/playbooks/gates/${gateId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  },
+};
+
+// ============================================================================
+// SCOREBOARD API
+// ============================================================================
+
+export const scoreboardAPI = {
+  async create(data: any): Promise<ApiResponse<any>> {
+    return apiRequest('/api/scoreboards', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async list(filters?: { workspaceSlug?: string; status?: string }): Promise<ApiResponse<any[]>> {
+    const params = new URLSearchParams(filters as any);
+    return apiRequest(`/api/scoreboards?${params}`);
+  },
+
+  async get(id: string, period?: number): Promise<ApiResponse<any>> {
+    const params = period ? `?period=${period}` : '';
+    return apiRequest(`/api/scoreboards/${id}${params}`);
+  },
+
+  async recordMetric(id: string, data: { metricId: string; value: number; notes?: string }): Promise<ApiResponse<any>> {
+    return apiRequest(`/api/scoreboards/${id}/metrics`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async createReview(id: string, data: { insights?: string; actions?: any[] }): Promise<ApiResponse<any>> {
+    return apiRequest(`/api/scoreboards/${id}/reviews`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  async getAnalytics(id: string): Promise<ApiResponse<any>> {
+    return apiRequest(`/api/scoreboards/${id}/analytics`);
+  },
+};
+
 // Export all
 export const founderOSAPI = {
   workspace: workspaceAPI,
   artifact: artifactAPI,
   search: searchAPI,
   dashboard: dashboardAPI,
+  playbook: playbookAPI,
+  scoreboard: scoreboardAPI,
 };
 
 export default founderOSAPI;

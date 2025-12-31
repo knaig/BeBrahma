@@ -15,7 +15,9 @@ import {
   CheckCircle2,
   Loader2,
   Calendar,
-  TrendingUp
+  TrendingUp,
+  BookOpen,
+  BarChart3
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -122,6 +124,47 @@ export default function MissionControl({ workspaceSlug }: MissionControlProps) {
             </p>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Quick Access to Phase 2 Features */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Link href="/founder-os/playbooks">
+          <Card className="hover:shadow-md transition-shadow cursor-pointer border-purple-200 bg-purple-50/30">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <BookOpen className="h-5 w-5 text-purple-600" />
+                </div>
+                <div>
+                  <CardTitle className="text-base">Playbooks</CardTitle>
+                  <CardDescription className="text-xs">
+                    Structured workflows to guide your progress
+                  </CardDescription>
+                </div>
+                <ArrowRight className="h-4 w-4 text-purple-600 ml-auto" />
+              </div>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        <Link href="/founder-os/scoreboards">
+          <Card className="hover:shadow-md transition-shadow cursor-pointer border-blue-200 bg-blue-50/30">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <BarChart3 className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                  <CardTitle className="text-base">Scoreboards</CardTitle>
+                  <CardDescription className="text-xs">
+                    Track metrics and measure your results
+                  </CardDescription>
+                </div>
+                <ArrowRight className="h-4 w-4 text-blue-600 ml-auto" />
+              </div>
+            </CardHeader>
+          </Card>
+        </Link>
       </div>
 
       {/* Main Dashboard Grid */}

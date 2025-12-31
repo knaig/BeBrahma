@@ -28,6 +28,8 @@ import workspaceRoutes from './routes/workspace';
 import artifactsRoutes from './routes/artifacts';
 import searchRoutes from './routes/search';
 import dashboardRoutes from './routes/dashboard';
+import playbooksRoutes from './routes/playbooks';
+import scoreboardsRoutes from './routes/scoreboards';
 
 // Import middleware
 import { generalRateLimit } from './middleware/rateLimit';
@@ -134,6 +136,8 @@ app.use('/api', workspaceRoutes);
 app.use('/api', artifactsRoutes);
 app.use('/api', searchRoutes);
 app.use('/api', dashboardRoutes);
+app.use('/api', playbooksRoutes);
+app.use('/api', scoreboardsRoutes);
 
 // Error handling middleware
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
