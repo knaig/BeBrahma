@@ -11,6 +11,8 @@ from typing import List
 from app.services.scoring_service import BusinessContext
 from app.frameworks.base import Framework
 from app.frameworks.critical_unknown import CriticalUnknownFramework
+from app.frameworks.problem_solution_fit import ProblemSolutionFitFramework
+from app.frameworks.icp_wedge import ICPWedgeFramework
 from app.core.logging import logger
 
 
@@ -29,9 +31,8 @@ class FrameworkRouter:
         # Initialize available frameworks
         self.frameworks = {
             'critical_unknown': CriticalUnknownFramework(),
-            # TODO: Add more frameworks
-            # 'problem_solution_fit': ProblemSolutionFitFramework(),
-            # 'icp_wedge': ICPWedgeFramework(),
+            'problem_solution_fit': ProblemSolutionFitFramework(),
+            'icp_wedge': ICPWedgeFramework(),
         }
 
     async def select_frameworks(
