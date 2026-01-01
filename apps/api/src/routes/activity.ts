@@ -1,7 +1,7 @@
 import express from 'express';
 import { clerkClient } from '@clerk/express';
 import { broadcastActivityEvent } from '../websocket/index.js';
-import { apiConfig } from '../../../bebrahma/env.config.js';
+import { apiConfig } from '../config/env.config.js';
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ const RETRY_DELAY = 1000; // 1 second
 async function makeServiceCall(url: string, options: RequestInit, retries = MAX_RETRIES): Promise<Response> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), SERVICE_TIMEOUT);
-  
+
   try {
     const response = await fetch(url, {
       ...options,
@@ -24,13 +24,13 @@ async function makeServiceCall(url: string, options: RequestInit, retries = MAX_
     return response;
   } catch (error) {
     clearTimeout(timeoutId);
-    
+
     if (retries > 0 && (error instanceof Error && error.name === 'AbortError')) {
       console.warn(`[Activity] Service call timeout, retrying... (${MAX_RETRIES - retries + 1}/${MAX_RETRIES})`);
       await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
       return makeServiceCall(url, options, retries - 1);
     }
-    
+
     throw error;
   }
 }
@@ -51,11 +51,11 @@ const requireAuth = async (req: express.Request, res: express.Response, next: ex
   try {
     const token = req.headers.authorization?.replace('Bearer ', '');
     const userId = req.headers['user-id'] as string;
-    
+
     if (!token || !userId) {
       return res.status(401).json({ success: false, error: 'Authentication required' });
     }
-    
+
     // Verify the JWT token with Clerk
     try {
       await clerkClient.verifyToken(token);
@@ -77,27 +77,27 @@ const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const rateLimit = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const userId = req.auth?.userId;
   if (!userId) return next();
-  
+
   const now = Date.now();
   const windowMs = 60 * 1000; // 1 minute
   const maxRequests = 100; // 100 requests per minute
-  
+
   const userLimit = rateLimitMap.get(userId);
-  
+
   if (!userLimit || now > userLimit.resetTime) {
     // Reset or initialize
     rateLimitMap.set(userId, { count: 1, resetTime: now + windowMs });
     return next();
   }
-  
+
   if (userLimit.count >= maxRequests) {
-    return res.status(429).json({ 
-      success: false, 
+    return res.status(429).json({
+      success: false,
       error: 'Rate limit exceeded',
       retryAfter: Math.ceil((userLimit.resetTime - now) / 1000)
     });
   }
-  
+
   userLimit.count++;
   next();
 };
@@ -105,25 +105,25 @@ const rateLimit = (req: express.Request, res: express.Response, next: express.Ne
 // Input validation middleware
 const validateActivityTrack = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const { sessionId, activityType, description } = req.body;
-  
+
   if (!sessionId || typeof sessionId !== 'string') {
     return res.status(400).json({ success: false, error: 'sessionId is required and must be a string' });
   }
-  
+
   if (!activityType || !['tool_used', 'site_visited', 'document_read', 'content_created'].includes(activityType)) {
-    return res.status(400).json({ 
-      success: false, 
-      error: 'activityType is required and must be one of: tool_used, site_visited, document_read, content_created' 
+    return res.status(400).json({
+      success: false,
+      error: 'activityType is required and must be one of: tool_used, site_visited, document_read, content_created'
     });
   }
-  
+
   if (!description || typeof description !== 'string') {
     return res.status(400).json({ success: false, error: 'description is required and must be a string' });
   }
-  
+
   // Sanitize description
   req.body.description = description.substring(0, 500); // Max 500 chars
-  
+
   next();
 };
 
@@ -132,24 +132,24 @@ router.post('/track', requireAuth, rateLimit, validateActivityTrack, async (req,
   try {
     const { sessionId, activityType, description, metadata = {} } = req.body;
     const userId = req.auth?.userId;
-    
+
     // Add user info to metadata
     const enrichedMetadata = {
       ...metadata,
       userId,
       timestamp: new Date().toISOString()
     };
-    
+
     // Broadcast activity event via WebSocket
     broadcastActivityEvent(sessionId, activityType, description, enrichedMetadata);
-    
+
     console.log('[Activity] Tracked activity:', {
       sessionId,
       activityType,
       description: description.substring(0, 100),
       userId
     });
-    
+
     return res.json({
       success: true,
       message: 'Activity tracked successfully',
@@ -175,17 +175,17 @@ router.get('/session/:sessionId', requireAuth, async (req, res) => {
   try {
     const { sessionId } = req.params;
     const userId = req.auth?.userId;
-    
+
     if (!sessionId) {
       return res.status(400).json({ success: false, error: 'sessionId is required' });
     }
-    
+
     // Fetch data from crew service endpoints
     const baseUrl = apiConfig.CREW_SERVICE_URL;
     if (!baseUrl) {
-      return res.status(500).json({ 
-        success: false, 
-        error: 'Crew service not configured' 
+      return res.status(500).json({
+        success: false,
+        error: 'Crew service not configured'
       });
     }
 
@@ -199,19 +199,19 @@ router.get('/session/:sessionId', requireAuth, async (req, res) => {
         retry: true
       });
     }
-    
+
     try {
       // Fetch tool traces and memory data in parallel
       const [toolsResponse, memoryResponse] = await Promise.all([
         makeServiceCall(`${baseUrl}/api/tools/traces/${encodeURIComponent(sessionId)}`, { method: 'GET' }),
         makeServiceCall(`${baseUrl}/api/crew/memory/${encodeURIComponent(sessionId)}`, { method: 'GET' })
       ]);
-      
+
       const [toolsData, memoryData] = await Promise.all([
         toolsResponse.ok ? toolsResponse.json() : { success: false, tool_calls: [] },
         memoryResponse.ok ? memoryResponse.json() : { success: false, notes: [], summaries: [], messages: [] }
       ]);
-      
+
       // Transform data into quad-section format
       const activityData = {
         toolsUsed: transformToolCalls(toolsData.tool_calls || []),
@@ -219,7 +219,7 @@ router.get('/session/:sessionId', requireAuth, async (req, res) => {
         documentsRead: transformDocuments(memoryData.notes || [], memoryData.summaries || []),
         contentCreated: transformContentCreated(memoryData.summaries || [], memoryData.messages || [])
       };
-      
+
       console.log('[Activity] Session data retrieved:', {
         sessionId,
         userId,
@@ -228,18 +228,18 @@ router.get('/session/:sessionId', requireAuth, async (req, res) => {
         documentsCount: activityData.documentsRead.length,
         contentCount: activityData.contentCreated.length
       });
-      
+
       return res.json({
         success: true,
         sessionId,
         data: activityData,
         timestamp: new Date().toISOString()
       });
-      
+
     } catch (fetchError) {
       console.error('Error fetching crew service data:', fetchError);
       const errorMessage = fetchError instanceof Error ? fetchError.message : 'Unknown error';
-      
+
       // Check if it's a timeout or connection error
       if (errorMessage.includes('timeout') || errorMessage.includes('ECONNREFUSED')) {
         return res.status(503).json({
@@ -249,7 +249,7 @@ router.get('/session/:sessionId', requireAuth, async (req, res) => {
           retry: true
         });
       }
-      
+
       return res.status(502).json({
         success: false,
         error: 'Failed to fetch session data from crew service',
@@ -257,7 +257,7 @@ router.get('/session/:sessionId', requireAuth, async (req, res) => {
         retry: true
       });
     }
-    
+
   } catch (error) {
     console.error('Session activity data error:', error);
     return res.status(500).json({
@@ -282,7 +282,7 @@ router.get('/health', (req, res) => {
 // Data transformation functions
 function transformToolCalls(toolCalls: any[]): any[] {
   const toolUsageMap = new Map();
-  
+
   toolCalls.forEach((call: any) => {
     const toolName = call.tool_name;
     if (toolUsageMap.has(toolName)) {
@@ -304,20 +304,20 @@ function transformToolCalls(toolCalls: any[]): any[] {
       });
     }
   });
-  
-  return Array.from(toolUsageMap.values()).sort((a, b) => 
+
+  return Array.from(toolUsageMap.values()).sort((a, b) =>
     new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime()
   );
 }
 
 function extractSiteVisits(toolCalls: any[]): any[] {
   const siteVisitsMap = new Map();
-  
+
   toolCalls.forEach((call: any) => {
     if (call.tool_name && (call.tool_name.includes('firecrawl') || call.tool_name.includes('browse') || call.tool_name.includes('crawl'))) {
       const url = call.metadata?.url || call.result?.url;
       const title = call.metadata?.title || call.result?.title || 'Unknown Page';
-      
+
       if (url) {
         if (siteVisitsMap.has(url)) {
           const existing = siteVisitsMap.get(url);
@@ -335,15 +335,15 @@ function extractSiteVisits(toolCalls: any[]): any[] {
       }
     }
   });
-  
-  return Array.from(siteVisitsMap.values()).sort((a, b) => 
+
+  return Array.from(siteVisitsMap.values()).sort((a, b) =>
     new Date(b.lastVisited).getTime() - new Date(a.lastVisited).getTime()
   );
 }
 
 function transformDocuments(notes: any[], summaries: any[]): any[] {
   const documents = [];
-  
+
   notes.forEach((note: any) => {
     documents.push({
       title: note.title || 'Research Note',
@@ -353,7 +353,7 @@ function transformDocuments(notes: any[], summaries: any[]): any[] {
       metadata: note.metadata
     });
   });
-  
+
   summaries.forEach((summary: any) => {
     documents.push({
       title: summary.title || 'Summary',
@@ -363,15 +363,15 @@ function transformDocuments(notes: any[], summaries: any[]): any[] {
       metadata: summary.metadata
     });
   });
-  
-  return documents.sort((a, b) => 
+
+  return documents.sort((a, b) =>
     new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   );
 }
 
 function transformContentCreated(summaries: any[], messages: any[]): any[] {
   const content = [];
-  
+
   summaries.forEach((summary: any) => {
     content.push({
       title: summary.title || 'Generated Summary',
@@ -381,7 +381,7 @@ function transformContentCreated(summaries: any[], messages: any[]): any[] {
       metadata: summary.metadata
     });
   });
-  
+
   messages.filter((msg: any) => msg.type === 'agent' && msg.content).forEach((message: any) => {
     content.push({
       title: `Agent Response - ${new Date(message.timestamp).toLocaleTimeString()}`,
@@ -391,8 +391,8 @@ function transformContentCreated(summaries: any[], messages: any[]): any[] {
       metadata: { agentId: message.agentId, ...message.metadata }
     });
   });
-  
-  return content.sort((a, b) => 
+
+  return content.sort((a, b) =>
     new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   );
 }

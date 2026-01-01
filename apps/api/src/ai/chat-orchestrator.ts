@@ -4,7 +4,7 @@ import { DecisionTracker, DecisionPoint } from './decision-tracker';
 import { SmartPlannerAgent, DataPlan } from './smart-planner';
 import { BUSINESS_AGENTS, getCriticalAgents, getSaaSAgents, getIndustryAgents } from '../agents/business-agents';
 import { CrewClient } from './crew-client';
-import { apiConfig } from '../../../bebrahma/env.config.js';
+import { apiConfig } from '../config/env.config.js';
 
 export interface ChatMessage {
   id: string;
@@ -102,8 +102,8 @@ export class ChatOrchestrator {
   private crewClient: CrewClient;
   private sessions: Map<string, ChatSession> = new Map();
   // Crew run-loop state per session: abstracts the underlying Crew AI runner
-  private crewState: Map<string, { 
-    initialized: boolean; 
+  private crewState: Map<string, {
+    initialized: boolean;
     turn: number;
     stepId?: string;
   }> = new Map();
@@ -121,16 +121,16 @@ export class ChatOrchestrator {
     if (!externalUrl) {
       throw new Error('CREW_SERVICE_URL is required for CrewAI integration');
     }
-    
+
     // Validate crew service URL format
     try {
       new URL(externalUrl);
     } catch (error) {
       throw new Error(`Invalid CREW_SERVICE_URL format: ${externalUrl}`);
     }
-    
+
     this.crewClient = new CrewClient(externalUrl);
-    
+
     // Background reachability check
     this.checkCrewReachability(externalUrl);
   }
@@ -139,12 +139,12 @@ export class ChatOrchestrator {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
-      
+
       const response = await fetch(`${crewUrl}/health`, {
         method: 'GET',
         signal: controller.signal
       });
-      
+
       clearTimeout(timeoutId);
       this.crewReachable = response.ok;
       console.log(`[Orchestrator] Crew service reachable: ${this.crewReachable}`);
@@ -209,7 +209,7 @@ export class ChatOrchestrator {
     projectTitle: string = 'Business Strategy Session',
     stepId?: string
   ): Promise<{ messages: ChatMessage[]; decisionDocument: string }> {
-    
+
     // Get or create session
     let session = this.sessions.get(sessionId);
     if (!session) {
@@ -242,7 +242,7 @@ export class ChatOrchestrator {
     // Select relevant agents based on data plan and ensure critical agents are included
     const selectedAgents = this.selectRelevantAgents(userMessage, dataPlan);
     console.log('Selected agents:', selectedAgents.map(a => `${a.name} (${a.department})`));
-    
+
     // Add system message explaining the plan with agent selection transparency
     const planMessage: ChatMessage = {
       id: `msg_${Date.now()}_plan`,
@@ -256,9 +256,9 @@ export class ChatOrchestrator {
       type: 'agent_contribution',
       metadata: {
         dataPlan: dataPlan,
-        selectedAgents: selectedAgents.map(a => ({ 
-          id: a.id, 
-          name: a.name, 
+        selectedAgents: selectedAgents.map(a => ({
+          id: a.id,
+          name: a.name,
           department: a.department,
           expertise: a.expertise?.slice(0, 3) || [],
           strategy: a.personality || 'Data-driven analysis'
@@ -298,7 +298,7 @@ export class ChatOrchestrator {
           previousMessages: session.messages.map(m => m.content)
         }
       );
-      
+
       if (scenarioResponse && scenarioResponse.content) {
         // Add scenario modeling message
         const scenarioMsg: ChatMessage = {
@@ -317,10 +317,10 @@ export class ChatOrchestrator {
             scenarios: scenarioResponse.content
           }
         };
-        
+
         session.messages.push(scenarioMsg);
       }
-      
+
       // Then generate decision point
       const decisionResponse = await this.aiService.generateResponse(
         `Based on the collaborative analysis from ${selectedAgents.length} agents and their debate, generate a decision point for the user. The decision should be actionable and require user input to proceed.`,
@@ -367,7 +367,7 @@ export class ChatOrchestrator {
             dataPoints: citations
           }
         };
-        
+
         session.messages.push(decisionMsg);
 
         // Map outputs to stepData for current step with evidence links
@@ -454,26 +454,26 @@ export class ChatOrchestrator {
 
   // Generate initial agent contributions with thinking and analysis
   private async generateInitialAgentContributions(
-    agents: any[], 
-    userMessage: string, 
-    dataPlan: DataPlan, 
+    agents: any[],
+    userMessage: string,
+    dataPlan: DataPlan,
     session: ChatSession
   ): Promise<ChatMessage[]> {
     const contributions: ChatMessage[] = [];
-    
+
     for (const agent of agents) {
       try {
         await this.delay(this.thinkingDelay);
-        
+
         // Generate agent's initial analysis
         const agentResponse = await this.generateAgentResponse(agent, userMessage, dataPlan);
-        
+
         // Ensure we have a valid response
         if (!agentResponse || !agentResponse.content) {
           console.error(`Invalid response from agent ${agent.id}:`, agentResponse);
           continue;
         }
-        
+
         // Add agent contribution to decision tracker
         this.decisionTracker.addAgentContribution(session.currentDecision?.id || 'unknown', {
           agentId: agent.id,
@@ -507,9 +507,9 @@ export class ChatOrchestrator {
             internalResponse: agentResponse.internalResponse || null
           }
         };
-        
+
         contributions.push(agentMsg);
-        
+
         // Track agent interaction
         const interaction: AgentInteraction = {
           agentId: agent.id,
@@ -520,31 +520,31 @@ export class ChatOrchestrator {
           citations: agentResponse.metadata?.dataPoints || []
         };
         session.agentInteractions.push(interaction);
-        
+
       } catch (error) {
         console.error(`Error processing agent ${agent.id}:`, error);
         // Continue with other agents even if one fails
         continue;
       }
     }
-    
+
     return contributions;
   }
 
   // Generate agent debate where agents respond to each other's insights
   private async generateAgentDebate(
-    agents: any[], 
-    initialContributions: ChatMessage[], 
+    agents: any[],
+    initialContributions: ChatMessage[],
     session: ChatSession
   ): Promise<ChatMessage[]> {
     const debateContributions: ChatMessage[] = [];
-    
+
     // Create debate rounds where agents respond to each other
     for (let round = 0; round < 1; round++) { // 1 round to converge faster
       for (const agent of agents) {
         try {
           await this.delay(this.debateDelay);
-          
+
           // Find insights from other agents to respond to
           const otherAgentInsights = initialContributions
             .filter(msg => msg.agentId !== agent.id && msg.type === 'agent_contribution')
@@ -553,12 +553,12 @@ export class ChatOrchestrator {
               content: msg.content,
               department: msg.department
             }));
-          
+
           if (otherAgentInsights.length === 0) continue;
-          
+
           // Generate debate response
           const debateResponse = await this.generateDebateResponse(agent, otherAgentInsights, session);
-          
+
           if (debateResponse) {
             const debateMsg: ChatMessage = {
               id: `msg_${Date.now()}_debate_${agent.id}`,
@@ -577,9 +577,9 @@ export class ChatOrchestrator {
                 confidence: debateResponse.confidence || 0.8
               }
             };
-            
+
             debateContributions.push(debateMsg);
-            
+
             // Track debate interaction
             const interaction: AgentInteraction = {
               agentId: agent.id,
@@ -592,21 +592,21 @@ export class ChatOrchestrator {
             };
             session.agentInteractions.push(interaction);
           }
-          
+
         } catch (error) {
           console.error(`Error generating debate response for agent ${agent.id}:`, error);
           continue;
         }
       }
     }
-    
+
     return debateContributions;
   }
 
   // Generate consensus based on all agent contributions and debate
   private async generateConsensus(
-    agents: any[], 
-    allContributions: ChatMessage[], 
+    agents: any[],
+    allContributions: ChatMessage[],
     session: ChatSession
   ): Promise<ChatMessage | null> {
     try {
@@ -614,9 +614,9 @@ export class ChatOrchestrator {
 
 Agent Contributions:
 ${allContributions
-  .filter(msg => msg.type === 'agent_contribution' || msg.type === 'agent_debate')
-  .map(msg => `- ${msg.agentName} (${msg.department}): ${msg.content.substring(0, 200)}...`)
-  .join('\n')}
+          .filter(msg => msg.type === 'agent_contribution' || msg.type === 'agent_debate')
+          .map(msg => `- ${msg.agentName} (${msg.department}): ${msg.content.substring(0, 200)}...`)
+          .join('\n')}
 
 Please provide:
 1. Key consensus points where agents agree
@@ -660,23 +660,23 @@ Format as a clear, actionable summary.`;
     } catch (error) {
       console.error('Error generating consensus:', error);
     }
-    
+
     return null;
   }
 
   // Generate debate response where an agent responds to other agents' insights
   private async generateDebateResponse(
-    agent: any, 
-    otherAgentInsights: any[], 
+    agent: any,
+    otherAgentInsights: any[],
     session: ChatSession
   ): Promise<any> {
     const debatePrompt = `You are ${agent.name}, a ${agent.title} with expertise in ${agent.expertise?.join(', ')}.
 
 Other team members have shared their insights. Please respond to their perspectives:
 
-${otherAgentInsights.map(insight => 
-  `**${insight.agentName} (${insight.department}):** ${insight.content}`
-).join('\n\n')}
+${otherAgentInsights.map(insight =>
+      `**${insight.agentName} (${insight.department}):** ${insight.content}`
+    ).join('\n\n')}
 
 Your response should:
 1. Acknowledge valuable insights from other agents
@@ -690,13 +690,13 @@ Keep your response to 2-3 sentences. Be collaborative but maintain your unique p
     try {
       const response = await this.aiService.generateResponse(
         debatePrompt,
-      agent.id,
-      {
+        agent.id,
+        {
           sessionId: session.sessionId,
           userId: 'system',
           conversationHistory: session.messages,
-        availableTools: agent.tools || [],
-        userPreferences: {},
+          availableTools: agent.tools || [],
+          userPreferences: {},
           previousMessages: session.messages.map(m => m.content)
         }
       );
@@ -717,24 +717,24 @@ Keep your response to 2-3 sentences. Be collaborative but maintain your unique p
   private selectRelevantAgents(userMessage: string, dataPlan: DataPlan): any[] {
     // Get all business agents
     const allAgents = this.getBusinessAgents();
-    
+
     // Always include critical agents for reality checking
     const criticalAgents = getCriticalAgents();
-    
+
     // Select agents based on message content and data plan
     let selectedAgents: any[] = [];
-    
+
     // Priority 1: Required agents from data plan
     const requiredAgents = dataPlan.phases[dataPlan.currentPhase]?.requiredAgents || [];
     const requiredAgentObjects = allAgents.filter(agent => requiredAgents.includes(agent.id));
     selectedAgents.push(...requiredAgentObjects);
-    
+
     // Priority 2: Always include Critical Cassandra for reality checking
     const criticalCassandra = criticalAgents.find(agent => agent.id === 'critical-cassandra');
     if (criticalCassandra && !selectedAgents.includes(criticalCassandra)) {
       selectedAgents.push(criticalCassandra);
     }
-    
+
     // Priority 3: Core agents for startup/business questions
     if (this.isStartupQuestion(userMessage)) {
       // Always include CEO for business strategy
@@ -742,13 +742,13 @@ Keep your response to 2-3 sentences. Be collaborative but maintain your unique p
       if (ceo && !selectedAgents.includes(ceo)) {
         selectedAgents.push(ceo);
       }
-      
+
       // Always include CTO for technical feasibility
       const cto = allAgents.find(agent => agent.id === 'cto');
       if (cto && !selectedAgents.includes(cto)) {
         selectedAgents.push(cto);
       }
-      
+
       // Include SaaS Sage Sarah for SaaS-related questions
       if (this.isSaaSQuestion(userMessage)) {
         const saasAgents = getSaaSAgents();
@@ -758,7 +758,7 @@ Keep your response to 2-3 sentences. Be collaborative but maintain your unique p
           }
         });
       }
-      
+
       // Include Domain Doctor Dave for industry-specific questions
       if (this.isIndustrySpecificQuestion(userMessage)) {
         const industryAgents = getIndustryAgents();
@@ -769,13 +769,13 @@ Keep your response to 2-3 sentences. Be collaborative but maintain your unique p
         });
       }
     }
-    
+
     // Priority 4: Relevant agents based on message content
-    const relevantAgents = allAgents.filter(agent => 
-      !selectedAgents.includes(agent) && 
+    const relevantAgents = allAgents.filter(agent =>
+      !selectedAgents.includes(agent) &&
       this.isAgentRelevantForMessage(agent, userMessage)
     );
-    
+
     // Add relevant agents, prioritizing by department importance
     const priorityOrder = ['critical', 'leadership', 'market-intelligence', 'user-research', 'data', 'business', 'technical', 'domain', 'saas', 'industry'];
     const sortedRelevantAgents = relevantAgents.sort((a, b) => {
@@ -783,9 +783,9 @@ Keep your response to 2-3 sentences. Be collaborative but maintain your unique p
       const bPriority = priorityOrder.indexOf(b.department);
       return aPriority - bPriority;
     });
-    
+
     selectedAgents.push(...sortedRelevantAgents);
-    
+
     // Ensure we have at least 4-6 agents for comprehensive analysis
     const defaultMax = 4;
     const maxAgents = Math.min(selectedAgents.length, dataPlan.maxConcurrentAgents || defaultMax);
@@ -798,7 +798,7 @@ Keep your response to 2-3 sentences. Be collaborative but maintain your unique p
       'demand', 'supply', 'pricing', 'competition', 'growth', 'scaling', 'funding', 'investment',
       'lab kits', 'school', 'children', 'education', 'monthly', 'subscription', 'business model'
     ];
-    
+
     const message = userMessage.toLowerCase();
     return startupKeywords.some(keyword => message.includes(keyword));
   }
@@ -809,7 +809,7 @@ Keep your response to 2-3 sentences. Be collaborative but maintain your unique p
       'b2b', 'enterprise', 'sml', 'customer acquisition', 'churn', 'lifetime value', 'cac',
       'mrr', 'arr', 'product-led growth', 'freemium', 'tiered pricing'
     ];
-    
+
     const message = userMessage.toLowerCase();
     return saasKeywords.some(keyword => message.includes(keyword));
   }
@@ -820,7 +820,7 @@ Keep your response to 2-3 sentences. Be collaborative but maintain your unique p
       'legal', 'consulting', 'media', 'entertainment', 'travel', 'food', 'automotive', 'energy',
       'regulatory', 'compliance', 'industry', 'sector', 'vertical'
     ];
-    
+
     const message = userMessage.toLowerCase();
     return industryKeywords.some(keyword => message.includes(keyword));
   }
@@ -828,7 +828,7 @@ Keep your response to 2-3 sentences. Be collaborative but maintain your unique p
   private isAgentRelevantForMessage(agent: any, userMessage: string): boolean {
     const message = userMessage.toLowerCase();
     const agentExpertise = agent.expertise?.map((exp: string) => exp.toLowerCase()) || [];
-    
+
     return agentExpertise.some((expertise: string) => message.includes(expertise));
   }
 
@@ -957,7 +957,7 @@ Let's begin the collaborative analysis...`;
           source: 'user_decision'
         }
       };
-      
+
       session.messages.push(decisionMsg);
 
       // Update decision tracker - find the current decision and update it
@@ -989,14 +989,14 @@ Let's begin the collaborative analysis...`;
       }
 
       let newMessages: ChatMessage[] = [];
-      
+
       if (phase === 'refine') {
         // Create a real agent dialogue where agents discuss and refine the analysis
         const dataPlan = session.messages[session.messages.length - 1]?.metadata?.dataPlan;
         if (!dataPlan) {
           throw new Error('No data plan available for refinement');
         }
-        
+
         // Start with a facilitator message
         const facilitatorMsg: ChatMessage = {
           id: `msg_${Date.now()}_facilitator`,
@@ -1011,23 +1011,23 @@ Let's begin the collaborative analysis...`;
           metadata: {}
         };
         newMessages.push(facilitatorMsg);
-        
+
         // Select agents for refinement dialogue
         const refinementAgents = this.selectRelevantAgents(userMessage, dataPlan).slice(0, 3);
-        
+
         // Create agent-to-agent dialogue
         for (let i = 0; i < refinementAgents.length; i++) {
           const agent = refinementAgents[i];
-          
+
           try {
             await this.delay(this.thinkingDelay);
-            
+
             // Generate response that considers previous agent inputs
             const previousAgentInputs = newMessages
               .filter(m => m.sender === 'agent')
               .map(m => `${m.agentName}: ${m.content}`)
               .join('\n\n');
-            
+
             const dialoguePrompt = `You are ${agent.name}, ${agent.title}. 
 
 Previous agents have shared their thoughts:
@@ -1053,7 +1053,7 @@ Keep your response conversational and focused on improving the analysis.`;
                 previousMessages: newMessages.map(m => m.content)
               }
             );
-            
+
             if (agentResponse && agentResponse.content) {
               const dialogueMsg: ChatMessage = {
                 id: `msg_${Date.now()}_${agent.id}_dialogue`,
@@ -1075,7 +1075,7 @@ Keep your response conversational and focused on improving the analysis.`;
                   internalResponse: agentResponse.metadata?.['internalResponse'] || null
                 }
               };
-              
+
               newMessages.push(dialogueMsg);
             }
           } catch (error) {
@@ -1083,7 +1083,7 @@ Keep your response conversational and focused on improving the analysis.`;
             continue;
           }
         }
-        
+
         // Add a synthesis message
         const synthesisMsg: ChatMessage = {
           id: `msg_${Date.now()}_synthesis`,
@@ -1101,7 +1101,7 @@ Keep your response conversational and focused on improving the analysis.`;
           metadata: {}
         };
         newMessages.push(synthesisMsg);
-        
+
       } else if (phase === 'next') {
         // Move to next phase with proactive agent conversation
         const nextPhaseMsg: ChatMessage = {
@@ -1116,21 +1116,21 @@ Keep your response conversational and focused on improving the analysis.`;
           type: 'agent_contribution',
           metadata: {}
         };
-        
+
         newMessages.push(nextPhaseMsg);
-        
+
         // Add proactive next phase analysis with agent collaboration
         const nextPhaseDataPlan = session.messages[session.messages.length - 1]?.metadata?.dataPlan;
         if (!nextPhaseDataPlan) {
           throw new Error('No data plan available for next phase');
         }
-        
+
         const nextPhaseAgents = this.selectRelevantAgents(userMessage, nextPhaseDataPlan).slice(0, 2);
-        
+
         for (const agent of nextPhaseAgents) {
           try {
             await this.delay(this.thinkingDelay);
-            
+
             // Generate proactive response that builds on previous analysis
             const proactivePrompt = `You are ${agent.name}, ${agent.title}. 
 
@@ -1155,7 +1155,7 @@ Be proactive and forward-thinking. Don't just analyze - recommend action.`;
                 previousMessages: newMessages.map(m => m.content)
               }
             );
-            
+
             if (agentResponse && agentResponse.content) {
               const proactiveMsg: ChatMessage = {
                 id: `msg_${Date.now()}_${agent.id}_proactive`,
@@ -1177,7 +1177,7 @@ Be proactive and forward-thinking. Don't just analyze - recommend action.`;
                   internalResponse: agentResponse.metadata?.['internalResponse'] || null
                 }
               };
-              
+
               newMessages.push(proactiveMsg);
             }
           } catch (error) {
@@ -1237,7 +1237,7 @@ Be proactive and forward-thinking. Don't just analyze - recommend action.`;
       // Determine current phase
       let phase: ProgressState['phase'] = 'planning';
       let currentPhase = 'Initializing analysis...';
-      
+
       if (session.messages.length === 0) {
         phase = 'planning';
         currentPhase = 'Creating strategic plan...';
@@ -1258,7 +1258,7 @@ Be proactive and forward-thinking. Don't just analyze - recommend action.`;
       // Create agent progress tracking
       const agents: AgentProgress[] = [];
       const agentMessages = session.messages.filter(m => m.sender === 'agent');
-      
+
       // Add Smart Planner progress
       agents.push({
         agentId: 'smart-planner',

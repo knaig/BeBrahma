@@ -3,7 +3,7 @@ import cors from 'cors';
 import { createServer } from 'http';
 
 // Load unified env config (supports root .env and .env.local)
-import { apiConfig as config } from '../../../bebrahma/env.config.js';
+import { apiConfig as config } from './config/env.config.js';
 
 // Import routes
 import conversationRoutes from './routes/conversation';
@@ -48,21 +48,21 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Apply general rate limiting
-app.use(generalRateLimit);
+// Apply general rate limiting (disabled for development)
+// app.use(generalRateLimit);
 
 // Health check endpoint
 app.get('/health', async (_req, res) => {
   // Quick reachability checks for external services
   let crewReachable = false;
   let workflowReachable = false;
-  
+
   try {
     crewReachable = await checkServiceReachability(config.CREW_SERVICE_URL, 'Crew');
   } catch (error) {
     // Service check failed
   }
-  
+
   try {
     workflowReachable = await checkServiceReachability(config.WORKFLOW_SERVICE_URL, 'Workflow');
   } catch (error) {
@@ -76,40 +76,40 @@ app.get('/health', async (_req, res) => {
     port: config.PORT,
     apiUrl: config.API_URL,
     frontendUrl: config.FRONTEND_URL,
-      services: {
-        llm: {
-          openai: Boolean(config.OPENAI_API_KEY),
-          anthropic: Boolean(config.ANTHROPIC_API_KEY),
+    services: {
+      llm: {
+        openai: Boolean(config.OPENAI_API_KEY),
+        anthropic: Boolean(config.ANTHROPIC_API_KEY),
+      },
+      billing: {
+        stripe: Boolean(process.env.STRIPE_SECRET_KEY),
+        razorpay: Boolean(process.env.RAZORPAY_KEY_ID),
+      },
+      auth: {
+        clerk: Boolean(process.env.CLERK_SECRET_KEY),
+      },
+      database: {
+        connected: Boolean(process.env.DATABASE_URL),
+      },
+      websocket: {
+        healthy: webSocketManager.isHealthy(),
+      },
+      activity: {
+        tracking: true,
+      },
+      external: {
+        crew: {
+          url: config.CREW_SERVICE_URL,
+          configured: Boolean(config.CREW_SERVICE_URL),
+          reachable: crewReachable,
         },
-        billing: {
-          stripe: Boolean(process.env.STRIPE_SECRET_KEY),
-          razorpay: Boolean(process.env.RAZORPAY_KEY_ID),
+        workflow: {
+          url: config.WORKFLOW_SERVICE_URL,
+          configured: Boolean(config.WORKFLOW_SERVICE_URL),
+          reachable: workflowReachable,
         },
-        auth: {
-          clerk: Boolean(process.env.CLERK_SECRET_KEY),
-        },
-        database: {
-          connected: Boolean(process.env.DATABASE_URL),
-        },
-        websocket: {
-          healthy: webSocketManager.isHealthy(),
-        },
-        activity: {
-          tracking: true,
-        },
-        external: {
-          crew: {
-            url: config.CREW_SERVICE_URL,
-            configured: Boolean(config.CREW_SERVICE_URL),
-            reachable: crewReachable,
-          },
-          workflow: {
-            url: config.WORKFLOW_SERVICE_URL,
-            configured: Boolean(config.WORKFLOW_SERVICE_URL),
-            reachable: workflowReachable,
-          },
-        },
-      }
+      },
+    }
   });
 });
 
@@ -191,7 +191,7 @@ server.listen(PORT, () => {
   console.log(`🛰️ CREW_SERVICE_URL: ${config.CREW_SERVICE_URL}`);
   console.log(`⚙️ WORKFLOW_SERVICE_URL: ${config.WORKFLOW_SERVICE_URL}`);
   console.log(`🔌 WebSocket URL: ws://localhost:${PORT}/ws`);
-  
+
   // Validate service URLs during startup
   validateServiceUrls().catch(error => {
     console.error('Error during service validation:', error);
@@ -203,12 +203,12 @@ async function checkServiceReachability(url: string, serviceName: string): Promi
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
-    
+
     const response = await fetch(`${url}/health`, {
       method: 'GET',
       signal: controller.signal
     });
-    
+
     clearTimeout(timeoutId);
     return response.ok;
   } catch (error) {
@@ -219,31 +219,31 @@ async function checkServiceReachability(url: string, serviceName: string): Promi
 // Service URL validation function
 async function validateServiceUrls() {
   console.log('\n🔍 Validating service connectivity...');
-  
+
   // Validate crew service URL
   try {
     const crewUrl = new URL(config.CREW_SERVICE_URL);
     console.log(`✅ Crew Service URL valid: ${crewUrl.href}`);
-    
+
     // Check reachability
     const crewReachable = await checkServiceReachability(config.CREW_SERVICE_URL, 'Crew');
     console.log(`📡 Crew Service reachable: ${crewReachable}`);
   } catch (error) {
     console.error(`❌ Invalid Crew Service URL: ${config.CREW_SERVICE_URL}`);
   }
-  
+
   // Validate workflow service URL
   try {
     const workflowUrl = new URL(config.WORKFLOW_SERVICE_URL);
     console.log(`✅ Workflow Service URL valid: ${workflowUrl.href}`);
-    
+
     // Check reachability
     const workflowReachable = await checkServiceReachability(config.WORKFLOW_SERVICE_URL, 'Workflow');
     console.log(`📡 Workflow Service reachable: ${workflowReachable}`);
   } catch (error) {
     console.error(`❌ Invalid Workflow Service URL: ${config.WORKFLOW_SERVICE_URL}`);
   }
-  
+
   // Check if we're in a deployment environment
   const deploymentEnv = config.DEPLOYMENT_ENV || config.NODE_ENV;
   if (deploymentEnv === 'staging' || deploymentEnv === 'production') {
@@ -252,7 +252,7 @@ async function validateServiceUrls() {
   } else {
     console.log(`🏠 Development Environment: Using localhost URLs`);
   }
-  
+
   console.log('🔍 Service validation complete\n');
 }
 

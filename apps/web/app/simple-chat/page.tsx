@@ -35,12 +35,12 @@ export default function SimpleChat() {
   // Start new session
   const startSession = async () => {
     if (!input.trim()) return;
-    
+
     setIsLoading(true);
     setIsConversationComplete(false); // Lock buttons during conversation
     const newSessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     setSessionId(newSessionId);
-    
+
     // Add user message
     const userMessage: Message = {
       id: `user_${Date.now()}`,
@@ -49,9 +49,9 @@ export default function SimpleChat() {
       timestamp: new Date().toISOString(),
       type: 'user_input'
     };
-    
+
     setMessages([userMessage]);
-    
+
     try {
       const response = await fetch(`${API_BASE}/chat/crew/start`, {
         method: 'POST',
@@ -61,15 +61,15 @@ export default function SimpleChat() {
           task: input
         })
       });
-      
+
       if (response.ok) {
         const data: ChatResponse = await response.json();
         setCurrentStage(data.stage);
-        
+
         // Add all AI messages
         const aiMessages = data.messages.filter(msg => msg.sender !== 'user');
         setMessages(prev => [...prev, ...aiMessages]);
-        
+
         // Check if we have a decision point
         checkForDecisionPoint(data.messages);
       }
@@ -85,7 +85,7 @@ export default function SimpleChat() {
   // Get next crew turn
   const getNextTurn = async () => {
     if (!sessionId) return;
-    
+
     setIsLoading(true);
     setIsConversationComplete(false); // Lock buttons during conversation
     try {
@@ -94,16 +94,16 @@ export default function SimpleChat() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId })
       });
-      
+
       if (response.ok) {
         const data: ChatResponse = await response.json();
         setCurrentStage(data.stage);
-        
+
         // Add new messages
-        const newMessages = data.messages.filter(msg => 
+        const newMessages = data.messages.filter(msg =>
           !messages.some(existing => existing.id === msg.id)
         );
-        
+
         if (newMessages.length > 0) {
           setMessages(prev => [...prev, ...newMessages]);
           checkForDecisionPoint(newMessages);
@@ -129,11 +129,11 @@ export default function SimpleChat() {
   // Handle decision
   const handleDecision = async (decision: string) => {
     if (!sessionId) return;
-    
+
     setIsLoading(true);
     setIsConversationComplete(false); // Lock buttons during conversation
     setShowDecisionButtons(false);
-    
+
     // Add decision message
     const decisionMessage: Message = {
       id: `decision_${Date.now()}`,
@@ -142,9 +142,9 @@ export default function SimpleChat() {
       timestamp: new Date().toISOString(),
       type: 'user_approval'
     };
-    
+
     setMessages(prev => [...prev, decisionMessage]);
-    
+
     try {
       const response = await fetch(`${API_BASE}/chat/decision`, {
         method: 'POST',
@@ -155,11 +155,11 @@ export default function SimpleChat() {
           userMessage: 'Continue analysis'
         })
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setCurrentStage(data.stage);
-        
+
         // Get next turn after decision
         setTimeout(() => getNextTurn(), 1000);
       }
@@ -184,19 +184,19 @@ export default function SimpleChat() {
   // }, [sessionId, showDecisionButtons, isLoading, messages]);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-4 transition-colors">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">🚀 BeBrahma Simple Chat</h1>
-          <p className="text-gray-600 mb-4">Direct CLI-to-UI mapping - Simple and effective</p>
-          
+        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 mb-6 transition-colors">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">🚀 BeBrahma Simple Chat</h1>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">Direct CLI-to-UI mapping - Simple and effective</p>
+
           {sessionId && (
             <div className="flex items-center gap-4 text-sm">
-              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full">
+              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full">
                 Session: {sessionId.slice(0, 20)}...
               </span>
-              <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full">
+              <span className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">
                 Stage: {currentStage || 'Initializing...'}
               </span>
             </div>
@@ -205,20 +205,20 @@ export default function SimpleChat() {
 
         {/* Chat Input */}
         {!sessionId && (
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 mb-6 transition-colors">
             <div className="flex gap-3">
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Describe your SaaS business idea..."
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-slate-700 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 onKeyPress={(e) => e.key === 'Enter' && startSession()}
               />
               <button
                 onClick={startSession}
                 disabled={!input.trim() || isLoading || !isConversationComplete}
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {isLoading ? 'Starting...' : !isConversationComplete ? '⏳ Wait...' : 'Start Analysis'}
               </button>
@@ -227,7 +227,7 @@ export default function SimpleChat() {
         )}
 
         {/* Messages */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 mb-6 transition-colors">
           <div className="space-y-4 max-h-96 overflow-y-auto">
             {messages.map((message) => (
               <div
@@ -235,16 +235,15 @@ export default function SimpleChat() {
                 className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-3xl px-4 py-3 rounded-lg ${
-                    message.sender === 'user'
-                      ? 'bg-blue-600 text-white'
+                  className={`max-w-3xl px-4 py-3 rounded-lg ${message.sender === 'user'
+                      ? 'bg-blue-600 dark:bg-blue-500 text-white'
                       : message.type === 'decision_point'
-                      ? 'bg-yellow-100 border-2 border-yellow-400'
-                      : 'bg-gray-100 text-gray-900'
-                  }`}
+                        ? 'bg-yellow-100 dark:bg-yellow-900 border-2 border-yellow-400 dark:border-yellow-600 dark:text-white'
+                        : 'bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-white'
+                    }`}
                 >
                   {message.agentName && (
-                    <div className="text-xs font-semibold mb-1 text-gray-600">
+                    <div className="text-xs font-semibold mb-1 text-gray-600 dark:text-gray-300">
                       {message.agentName} ({message.agentTitle})
                     </div>
                   )}
@@ -301,7 +300,7 @@ export default function SimpleChat() {
             ⏳ Processing...
           </div>
         )}
-        
+
         {/* Conversation Lock Status */}
         {!isConversationComplete && !isLoading && (
           <div className="fixed bottom-4 left-4 bg-yellow-600 text-white px-4 py-2 rounded-lg shadow-lg">

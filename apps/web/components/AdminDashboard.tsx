@@ -137,7 +137,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     refreshAllData();
-    
+
     // Set up real-time updates every 10 seconds
     const interval = setInterval(() => {
       if (activeTab === 'realtime') {
@@ -166,26 +166,26 @@ export default function AdminDashboard() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="mt-4 text-lg">Loading admin dashboard...</p>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 dark:border-white mx-auto"></div>
+          <p className="mt-4 text-lg text-gray-900 dark:text-white">Loading admin dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-6 transition-colors">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">BeBrahma Admin Dashboard</h1>
-          <p className="text-gray-600 mt-2">Monitor system performance, agent activities, and real-time requests</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">BeBrahma Admin Dashboard</h1>
+          <p className="text-gray-600 dark:text-gray-300 mt-2">Monitor system performance, agent activities, and real-time requests</p>
         </div>
 
         {/* Refresh Button */}
         <div className="mb-6">
-          <Button 
-            onClick={refreshAllData} 
+          <Button
+            onClick={refreshAllData}
             disabled={loading}
             className="bg-blue-600 hover:bg-blue-700"
           >
@@ -194,7 +194,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex space-x-1 mb-6 bg-white rounded-lg p-1 shadow-sm">
+        <div className="flex space-x-1 mb-6 bg-white dark:bg-slate-800 rounded-lg p-1 shadow-sm transition-colors">
           {[
             { id: 'overview', label: '📊 Overview', icon: '📊' },
             { id: 'agents', label: '🤖 Agents', icon: '🤖' },
@@ -205,11 +205,10 @@ export default function AdminDashboard() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                activeTab === tab.id
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              }`}
+              className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === tab.id
+                  ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
             >
               {tab.label}
             </button>
@@ -299,14 +298,14 @@ export default function AdminDashboard() {
               <CardContent>
                 <div className="space-y-3">
                   {dashboardData.recentActivity.map((activity) => (
-                    <div key={activity.sessionId} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div key={activity.sessionId} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-700 rounded-lg transition-colors">
                       <div>
-                        <p className="font-medium">{activity.projectTitle}</p>
-                        <p className="text-sm text-gray-600">Session: {activity.sessionId}</p>
+                        <p className="font-medium text-gray-900 dark:text-white">{activity.projectTitle}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">Session: {activity.sessionId}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-medium">{activity.messageCount} messages</p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">{activity.messageCount} messages</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
                           {new Date(activity.lastActivity).toLocaleTimeString()}
                         </p>
                       </div>
@@ -472,11 +471,10 @@ export default function AdminDashboard() {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center space-x-2 mb-1">
-                            <span className={`px-2 py-1 rounded text-xs font-medium ${
-                              message.sender === 'user' ? 'bg-blue-100 text-blue-800' :
+                            <span className={`px-2 py-1 rounded text-xs font-medium ${message.sender === 'user' ? 'bg-blue-100 text-blue-800' :
                               message.sender === 'agent' ? 'bg-green-100 text-green-800' :
-                              'bg-gray-100 text-gray-800'
-                            }`}>
+                                'bg-gray-100 text-gray-800'
+                              }`}>
                               {message.sender}
                             </span>
                             <span className="text-xs text-gray-500">

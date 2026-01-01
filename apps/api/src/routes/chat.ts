@@ -1,7 +1,7 @@
 import express from 'express';
 import { ChatOrchestrator } from '../ai/chat-orchestrator.js';
 import { broadcastAgentStatus, broadcastAgentMessage, broadcastActivityEvent } from '../websocket/index.js';
-import { apiConfig } from '../../../bebrahma/env.config.js';
+import { apiConfig } from '../config/env.config.js';
 
 const router = express.Router();
 
@@ -17,7 +17,7 @@ let chatOrchestrator: ChatOrchestrator | null = null;
 async function makeServiceCall(url: string, options: RequestInit, retries = MAX_RETRIES): Promise<Response> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), SERVICE_TIMEOUT);
-  
+
   try {
     const response = await fetch(url, {
       ...options,
@@ -27,13 +27,13 @@ async function makeServiceCall(url: string, options: RequestInit, retries = MAX_
     return response;
   } catch (error) {
     clearTimeout(timeoutId);
-    
+
     if (retries > 0 && (error instanceof Error && error.name === 'AbortError')) {
       console.warn(`[API] Service call timeout, retrying... (${MAX_RETRIES - retries + 1}/${MAX_RETRIES})`);
       await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
       return makeServiceCall(url, options, retries - 1);
     }
-    
+
     throw error;
   }
 }
@@ -65,183 +65,81 @@ function getChatOrchestrator(): ChatOrchestrator {
 router.post('/chat/crew/start', async (req, res) => {
   try {
     const { sessionId, task, context } = req.body || {};
-    console.log('[API] POST /chat/crew/start', { sessionId, hasTask: Boolean(task), context, WORKFLOW_SERVICE_URL: apiConfig.WORKFLOW_SERVICE_URL });
+    console.log('[API] POST /chat/crew/start', { sessionId, hasTask: Boolean(task), context, CREW_SERVICE_URL: apiConfig.CREW_SERVICE_URL });
     if (!sessionId || !task) return res.status(400).json({ success: false, error: 'sessionId and task required' });
-    
-    // Call LangGraph Workflow service to start session with CrewAI integration
-    // Check if workflow service is available
-    if (!apiConfig.WORKFLOW_SERVICE_URL || apiConfig.WORKFLOW_SERVICE_URL === 'undefined') {
-      console.log('[API] Workflow service not configured, providing fallback response');
+
+    // Call Crew Service directly (bypassing workflow service)
+    const isCrewAvailable = await checkServiceAvailability(apiConfig.CREW_SERVICE_URL, 'Crew');
+    if (!isCrewAvailable) {
+      console.log('[API] Crew service unavailable');
       return res.status(503).json({
         success: false,
-        degraded: true,
-        error: 'Workflow service not configured',
-        messages: [
-          {
-            id: `ai_${Date.now()}`,
-            content: `I understand you need help with: "${task}". I'm currently setting up the AI team to assist you. The workflow service is being configured, but I can still help you get started. What specific aspect would you like to focus on first?`,
-            sender: 'ai',
-            timestamp: new Date().toISOString(),
-            type: 'ai_response'
-          }
-        ],
-        stage: 'initialization',
-        stageStatus: 'active',
-        stageProgress: { current: 1, total: 3 },
-        pendingDecision: false,
-        decisionOptions: []
+        error: 'Crew service unavailable'
       });
     }
 
-    // Check workflow service availability before making the call
-    const isWorkflowAvailable = await checkServiceAvailability(apiConfig.WORKFLOW_SERVICE_URL, 'Workflow');
-    if (!isWorkflowAvailable) {
-      console.log('[API] Workflow service unavailable, providing fallback response');
-      return res.status(503).json({
-        success: false,
-        degraded: true,
-        error: 'Workflow service unavailable',
-        messages: [
-          {
-            id: `ai_${Date.now()}`,
-            content: `I understand you need help with: "${task}". The workflow service is currently unavailable, but I can still help you get started. What specific aspect would you like to focus on first?`,
-            sender: 'ai',
-            timestamp: new Date().toISOString(),
-            type: 'ai_response'
-          }
-        ],
-        stage: 'initialization',
-        stageStatus: 'active',
-        stageProgress: { current: 1, total: 3 },
-        pendingDecision: false,
-        decisionOptions: []
-      });
-    }
-
-    const workflowResponse = await makeServiceCall(`${apiConfig.WORKFLOW_SERVICE_URL}/api/workflow/start`, {
+    const crewResponse = await makeServiceCall(`${apiConfig.CREW_SERVICE_URL}/api/crew/start`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sessionId, task, context: context || {} })
     });
-    
-    if (!workflowResponse.ok) {
-      console.error('[API] Workflow start failed:', workflowResponse.status, workflowResponse.statusText);
-      return res.status(500).json({ success: false, error: 'Failed to start workflow session' });
+
+    if (!crewResponse.ok) {
+      console.error('[API] Crew start failed:', crewResponse.status, crewResponse.statusText);
+      return res.status(500).json({ success: false, error: 'Failed to start crew session' });
     }
-    
-    const workflowData = await workflowResponse.json();
-    console.log('[API] Workflow start response:', { success: workflowData.success, messageCount: workflowData.messages?.length, stage: workflowData.stage });
-    
-    // Broadcast agent status updates via WebSocket if messages contain agent status
-    if (workflowData.messages && Array.isArray(workflowData.messages)) {
-      try {
-        workflowData.messages.forEach((message: any) => {
-          if (message.agentId && message.agentStatus) {
-            broadcastAgentStatus(sessionId, message.agentId, message.agentStatus, {
-              stage: workflowData.stage,
-              progress: message.progress,
-              task: message.currentTask
-            });
-          }
-          
-          // Broadcast agent message if it contains content
-          if (message.agentId && message.content) {
-            broadcastAgentMessage(sessionId, message.agentId, message.content, {
-              agentName: message.agentName,
-              department: message.agentDepartment,
-              messageType: message.metadata?.type || 'agent_contribution'
-            });
-          }
-        });
-      } catch (wsError) {
-        console.error('[API] WebSocket broadcast error in /chat/crew/start:', wsError);
-        // Don't fail the request if WebSocket fails
-      }
-    }
-    
-    // Return the workflow response with messages and stage
+
+    const crewData = await crewResponse.json();
+    console.log('[API] Crew start response:', { success: crewData.success, messageCount: crewData.messages?.length });
+
     return res.json({
-      success: workflowData.success,
-      messages: workflowData.messages || [],
-      stage: workflowData.stage || null,
-      stageStatus: workflowData.stageStatus || null,
-      stageProgress: workflowData.stageProgress || {},
-      pendingDecision: workflowData.pendingDecision || false,
-      decisionOptions: workflowData.decisionOptions || []
+      success: crewData.success,
+      messages: crewData.messages || [],
+      stage: crewData.stage || 'PROBLEM_CAPTURE',
+      messageCount: crewData.messageCount || 0
     });
   } catch (e) {
     console.error('[API] /chat/crew/start error', e);
-    return res.status(500).json({ success: false, error: 'Failed to start workflow session' });
+    return res.status(500).json({ success: false, error: 'Failed to start crew session' });
   }
 });
+
 
 router.post('/chat/crew/next', async (req, res) => {
   try {
     const { sessionId } = req.body || {};
-    console.log('[API] POST /chat/crew/next', { sessionId, WORKFLOW_SERVICE_URL: apiConfig.WORKFLOW_SERVICE_URL });
+    console.log('[API] POST /chat/crew/next', { sessionId, CREW_SERVICE_URL: apiConfig.CREW_SERVICE_URL });
     if (!sessionId) return res.status(400).json({ success: false, error: 'sessionId required' });
-    
-    // Check workflow service availability before making the call
-    const isWorkflowAvailable = await checkServiceAvailability(apiConfig.WORKFLOW_SERVICE_URL, 'Workflow');
-    if (!isWorkflowAvailable) {
-      return res.status(503).json({ success: false, error: 'Workflow service unavailable', retry: true });
+
+    // Call Crew Service directly
+    const isCrewAvailable = await checkServiceAvailability(apiConfig.CREW_SERVICE_URL, 'Crew');
+    if (!isCrewAvailable) {
+      return res.status(503).json({ success: false, error: 'Crew service unavailable', retry: true });
     }
-    
-    // Call LangGraph Workflow service to advance workflow step
-    const workflowResponse = await makeServiceCall(`${apiConfig.WORKFLOW_SERVICE_URL}/api/workflow/next`, {
+
+    const crewResponse = await makeServiceCall(`${apiConfig.CREW_SERVICE_URL}/api/crew/next`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sessionId })
     });
-    
-    if (!workflowResponse.ok) {
-      console.error('[API] Workflow next failed:', workflowResponse.status, workflowResponse.statusText);
-      return res.status(500).json({ success: false, error: 'Failed to advance workflow step' });
+
+    if (!crewResponse.ok) {
+      console.error('[API] Crew next failed:', crewResponse.status, crewResponse.statusText);
+      return res.status(500).json({ success: false, error: 'Failed to advance crew step' });
     }
-    
-    const workflowData = await workflowResponse.json();
-    console.log('[API] Workflow next response:', { success: workflowData.success, messageCount: workflowData.messages?.length, stage: workflowData.stage });
-    
-    // Broadcast agent status updates via WebSocket if messages contain agent status
-    if (workflowData.messages && Array.isArray(workflowData.messages)) {
-      try {
-        workflowData.messages.forEach((message: any) => {
-          if (message.agentId && message.agentStatus) {
-            broadcastAgentStatus(sessionId, message.agentId, message.agentStatus, {
-              stage: workflowData.stage,
-              progress: message.progress,
-              task: message.currentTask
-            });
-          }
-          
-          // Broadcast agent message if it contains content
-          if (message.agentId && message.content) {
-            broadcastAgentMessage(sessionId, message.agentId, message.content, {
-              agentName: message.agentName,
-              department: message.agentDepartment,
-              messageType: message.metadata?.type || 'agent_contribution'
-            });
-          }
-        });
-      } catch (wsError) {
-        console.error('[API] WebSocket broadcast error in /chat/crew/next:', wsError);
-        // Don't fail the request if WebSocket fails
-      }
-    }
-    
-    // Return the workflow response with messages and stage
+
+    const crewData = await crewResponse.json();
+    console.log('[API] Crew next response:', { success: crewData.success, messageCount: crewData.messages?.length });
+
     return res.json({
-      success: workflowData.success,
-      messages: workflowData.messages || [],
-      stage: workflowData.stage || null,
-      stageStatus: workflowData.stageStatus || null,
-      stageProgress: workflowData.stageProgress || {},
-      pendingDecision: workflowData.pendingDecision || false,
-      decisionOptions: workflowData.decisionOptions || []
+      success: crewData.success,
+      messages: crewData.messages || [],
+      stage: crewData.stage || 'PROBLEM_CAPTURE',
+      messageCount: crewData.messageCount || 0
     });
   } catch (e) {
     console.error('[API] /chat/crew/next error', e);
-    return res.status(500).json({ success: false, error: 'Failed to advance workflow step' });
+    return res.status(500).json({ success: false, error: 'Failed to advance crew step' });
   }
 });
 
@@ -298,7 +196,7 @@ router.post('/chat/decision', async (req, res) => {
               task: message.currentTask
             });
           }
-          
+
           // Broadcast agent message if it contains content
           if (message.agentId && message.content) {
             broadcastAgentMessage(sessionId, message.agentId, message.content, {
@@ -424,13 +322,13 @@ router.get('/chat/crew/status/:sessionId', async (req, res) => {
     const { sessionId } = req.params;
     console.log('[API] GET /chat/crew/status', { sessionId });
     if (!sessionId) return res.status(400).json({ success: false, error: 'sessionId required' });
-    
+
     // Call LangGraph Workflow service to get status
     const workflowResponse = await makeServiceCall(`${apiConfig.WORKFLOW_SERVICE_URL}/api/workflow/status/${sessionId}`, { method: 'GET' });
     if (!workflowResponse.ok) {
       return res.status(404).json({ success: false, error: 'Workflow session not found' });
     }
-    
+
     const workflowData = await workflowResponse.json();
     return res.json({
       success: workflowData.success,
@@ -462,9 +360,9 @@ router.post('/chat', async (req, res) => {
     const { message, sessionId, stepId } = req.body;
 
     if (!message || !sessionId) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Message and sessionId are required' 
+      return res.status(400).json({
+        success: false,
+        error: 'Message and sessionId are required'
       });
     }
 
@@ -485,7 +383,7 @@ router.post('/chat', async (req, res) => {
       'Business Strategy Session',
       stepId
     );
-    
+
     return res.json({
       success: true,
       message: 'Chat processed successfully',
@@ -495,11 +393,11 @@ router.post('/chat', async (req, res) => {
         decisionDocument: result.decisionDocument
       }
     });
-      
+
   } catch (error) {
     console.error('Chat API error:', error);
-    return res.status(500).json({ 
-      success: false, 
+    return res.status(500).json({
+      success: false,
       error: 'Failed to process chat message',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -513,9 +411,9 @@ router.post('/chat/approval', async (req, res) => {
     const { sessionId, response } = req.body;
 
     if (!sessionId || !response) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'SessionId and response are required' 
+      return res.status(400).json({
+        success: false,
+        error: 'SessionId and response are required'
       });
     }
 
@@ -539,8 +437,8 @@ router.post('/chat/approval', async (req, res) => {
 
   } catch (error) {
     console.error('Approval API error:', error);
-    return res.status(500).json({ 
-      success: false, 
+    return res.status(500).json({
+      success: false,
       error: 'Failed to process approval',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -552,13 +450,13 @@ router.get('/chat/decision-document/:sessionId', (req, res) => {
   try {
     const { sessionId } = req.params;
     const markdown = getChatOrchestrator().getDecisionDocument(sessionId);
-    
+
     res.setHeader('Content-Type', 'text/markdown');
     res.send(markdown);
   } catch (error) {
     console.error('Decision document error:', error);
-    res.status(500).json({ 
-      success: false, 
+    res.status(500).json({
+      success: false,
       error: 'Failed to get decision document',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -570,14 +468,14 @@ router.get('/chat/internal-details/:sessionId', (req, res) => {
   try {
     const { sessionId } = req.params;
     const internalDetails = getChatOrchestrator().getInternalDetails(sessionId);
-    
+
     if (internalDetails.error) {
       return res.status(404).json({
         success: false,
         error: internalDetails.error
       });
     }
-    
+
     return res.json({
       success: true,
       internalDetails
@@ -596,17 +494,17 @@ router.get('/chat/internal-details/:sessionId', (req, res) => {
 router.get('/chat/memory/:sessionId', async (req, res) => {
   try {
     const { sessionId } = req.params;
-    
+
     // Check crew service availability before making the call
     const isCrewAvailable = await checkServiceAvailability(apiConfig.CREW_SERVICE_URL, 'Crew');
     if (!isCrewAvailable) {
       return res.status(503).json({ success: false, error: 'Crew service unavailable', retry: true });
     }
-    
+
     const base = apiConfig.CREW_SERVICE_URL;
     const r = await makeServiceCall(`${base}/api/crew/memory/${encodeURIComponent(sessionId)}`, { method: 'GET' });
     const j = await r.json();
-    
+
     // Broadcast activity events for memory items
     if (j.success) {
       try {
@@ -626,7 +524,7 @@ router.get('/chat/memory/:sessionId', async (req, res) => {
             );
           });
         }
-        
+
         // Broadcast content created events for summaries
         if (j.summaries && Array.isArray(j.summaries)) {
           j.summaries.forEach((summary: any) => {
@@ -643,7 +541,7 @@ router.get('/chat/memory/:sessionId', async (req, res) => {
             );
           });
         }
-        
+
         // Broadcast content created events for agent messages
         if (j.messages && Array.isArray(j.messages)) {
           j.messages.filter((msg: any) => msg.type === 'agent' && msg.content).forEach((message: any) => {
@@ -665,7 +563,7 @@ router.get('/chat/memory/:sessionId', async (req, res) => {
         console.error('WebSocket broadcast error in memory proxy:', wsError);
       }
     }
-    
+
     return res.json(j);
   } catch (error) {
     console.error('Memory proxy error:', error);
@@ -677,13 +575,13 @@ router.get('/chat/memory/:sessionId', async (req, res) => {
 router.get('/chat/notes/:sessionId', async (req, res) => {
   try {
     const { sessionId } = req.params;
-    
+
     // Check crew service availability before making the call
     const isCrewAvailable = await checkServiceAvailability(apiConfig.CREW_SERVICE_URL, 'Crew');
     if (!isCrewAvailable) {
       return res.status(503).json({ success: false, error: 'Crew service unavailable', retry: true });
     }
-    
+
     const base = apiConfig.CREW_SERVICE_URL;
     const r = await makeServiceCall(`${base}/api/crew/notes/${encodeURIComponent(sessionId)}`, { method: 'GET' });
     const j = await r.json();
@@ -702,7 +600,7 @@ router.post('/chat/summarize', async (req, res) => {
     if (!isCrewAvailable) {
       return res.status(503).json({ success: false, error: 'Crew service unavailable', retry: true });
     }
-    
+
     const base = apiConfig.CREW_SERVICE_URL;
     const r = await makeServiceCall(`${base}/api/crew/summarize`, {
       method: 'POST',
@@ -725,7 +623,7 @@ router.post('/chat/eval/stage-flow', async (req, res) => {
     if (!isCrewAvailable) {
       return res.status(503).json({ success: false, error: 'Crew service unavailable', retry: true });
     }
-    
+
     const base = apiConfig.CREW_SERVICE_URL;
     const r = await makeServiceCall(`${base}/api/eval/stage-flow`, {
       method: 'POST',
@@ -748,7 +646,7 @@ router.get('/chat/tools', async (_req, res) => {
     if (!isCrewAvailable) {
       return res.status(503).json({ success: false, error: 'Crew service unavailable', retry: true });
     }
-    
+
     const base = apiConfig.CREW_SERVICE_URL;
     const r = await makeServiceCall(`${base}/api/tools/list`, { method: 'GET' });
     const j = await r.json();
@@ -762,17 +660,17 @@ router.get('/chat/tools', async (_req, res) => {
 router.get('/chat/tools/traces/:sessionId', async (req, res) => {
   try {
     const { sessionId } = req.params;
-    
+
     // Check crew service availability before making the call
     const isCrewAvailable = await checkServiceAvailability(apiConfig.CREW_SERVICE_URL, 'Crew');
     if (!isCrewAvailable) {
       return res.status(503).json({ success: false, error: 'Crew service unavailable', retry: true });
     }
-    
+
     const base = apiConfig.CREW_SERVICE_URL;
     const r = await makeServiceCall(`${base}/api/tools/traces/${encodeURIComponent(sessionId)}`, { method: 'GET' });
     const j = await r.json();
-    
+
     // Broadcast activity events for tool usage
     if (j.success && j.tool_calls && Array.isArray(j.tool_calls)) {
       try {
@@ -788,7 +686,7 @@ router.get('/chat/tools/traces/:sessionId', async (req, res) => {
               result: toolCall.result
             }
           );
-          
+
           // If it's a firecrawl tool, also broadcast site visit
           if (toolCall.tool_name && toolCall.tool_name.includes('firecrawl')) {
             const url = toolCall.metadata?.url || toolCall.result?.url;
@@ -812,7 +710,7 @@ router.get('/chat/tools/traces/:sessionId', async (req, res) => {
         console.error('WebSocket broadcast error in tool traces:', wsError);
       }
     }
-    
+
     return res.json(j);
   } catch (error) {
     console.error('Tools traces proxy error:', error);
@@ -849,30 +747,30 @@ router.get('/chat/trace/:sessionId', (req, res) => {
 router.get('/chat/progress/:sessionId', async (req, res) => {
   try {
     const { sessionId } = req.params;
-    
+
     // Check workflow service availability before making the call
     const isWorkflowAvailable = await checkServiceAvailability(apiConfig.WORKFLOW_SERVICE_URL, 'Workflow');
     if (!isWorkflowAvailable) {
       return res.status(503).json({ success: false, error: 'Workflow service unavailable', retry: true });
     }
-    
+
     // Call workflow service to get current status and progress
     const workflowResponse = await makeServiceCall(`${apiConfig.WORKFLOW_SERVICE_URL}/api/workflow/status/${sessionId}`, { method: 'GET' });
     if (!workflowResponse.ok) {
       return res.status(404).json({ success: false, error: 'Workflow session not found' });
     }
-    
+
     const workflowData = await workflowResponse.json();
-    
+
     // Compute progress from stageProgress
     const stageProgress = workflowData.stageProgress || {};
     const totalStages = Object.keys(stageProgress).length;
     const completedStages = Object.values(stageProgress).filter((status: any) => status === 'completed').length;
     const overallProgress = totalStages > 0 ? Math.round((completedStages / totalStages) * 100) : 0;
-    
+
     // Lightweight log to trace progress state transitions
     console.log('[API] GET /chat/progress', { sessionId, stage: workflowData.stage, overall: overallProgress });
-    
+
     return res.json({
       success: true,
       progressState: {
@@ -900,14 +798,14 @@ router.get('/chat/progress/:sessionId', async (req, res) => {
 router.post('/chat/continue', async (req, res) => {
   try {
     const { sessionId, phase, userMessage } = req.body;
-    
+
     if (!sessionId || !phase) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'SessionId and phase are required' 
+      return res.status(400).json({
+        success: false,
+        error: 'SessionId and phase are required'
       });
     }
-    
+
     // FIXED: When phase is 'next' after user approval, we should forward the decision
     // to advance the stage, not call nextCrewTurn() again
     if (phase === 'next') {
@@ -923,7 +821,7 @@ router.post('/chat/continue', async (req, res) => {
             userMessage: userMessage || 'User approved and wants to continue'
           })
         });
-        
+
         if (response.ok) {
           const decisionResult = await response.json();
           return res.json({
@@ -968,7 +866,7 @@ router.post('/chat/continue', async (req, res) => {
             userMessage: userMessage || 'User decision'
           })
         });
-        
+
         if (response.ok) {
           forwarded = await response.json();
           console.log('[API] CrewAI continue decision response:', { success: forwarded.success, stage: forwarded.stage });
@@ -988,11 +886,11 @@ router.post('/chat/continue', async (req, res) => {
     }
 
     return res.status(400).json({ success: false, error: 'Invalid phase' });
-    
+
   } catch (error) {
     console.error('Continue analysis error:', error);
-    return res.status(500).json({ 
-      success: false, 
+    return res.status(500).json({
+      success: false,
       error: 'Failed to continue analysis',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -1003,28 +901,28 @@ router.post('/chat/continue', async (req, res) => {
 router.post('/chat/api-keys', (req, res) => {
   try {
     const { sourceId, apiKey } = req.body;
-    
+
     if (!sourceId || !apiKey) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'SourceId and apiKey are required' 
+      return res.status(400).json({
+        success: false,
+        error: 'SourceId and apiKey are required'
       });
     }
-    
+
     // TODO: Implement data source manager
     // // TODO: chatOrchestrator['dataSourceManager'].setApiKey(sourceId, apiKey);
     console.log(`API key set for ${sourceId}`);
-    
+
     return res.json({
       success: true,
       message: `API key set for ${sourceId}`,
       sourceId
     });
-    
+
   } catch (error) {
     console.error('API key setting error:', error);
-    return res.status(500).json({ 
-      success: false, 
+    return res.status(500).json({
+      success: false,
       error: 'Failed to set API key',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -1036,16 +934,16 @@ router.get('/chat/data-sources', (_req, res) => {
   try {
     // TODO: Implement data source manager
     const sources: any[] = [];
-    
+
     return res.json({
       success: true,
       sources: sources
     });
-    
+
   } catch (error) {
     console.error('Data sources error:', error);
-    return res.status(500).json({ 
-      success: false, 
+    return res.status(500).json({
+      success: false,
       error: 'Failed to get data sources',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -1057,16 +955,16 @@ router.get('/chat/marketplace/usage', (_req, res) => {
   try {
     // TODO: Implement data source manager
     const usage = { budget: 0, spent: 0, remaining: 0 };
-    
+
     return res.json({
       success: true,
       usage
     });
-    
+
   } catch (error) {
     console.error('Marketplace usage error:', error);
-    return res.status(500).json({ 
-      success: false, 
+    return res.status(500).json({
+      success: false,
       error: 'Failed to get marketplace usage',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -1077,27 +975,27 @@ router.get('/chat/marketplace/usage', (_req, res) => {
 router.post('/chat/marketplace/budget', (req, res) => {
   try {
     const { budget } = req.body;
-    
+
     if (!budget || typeof budget !== 'number' || budget <= 0) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Valid budget amount is required' 
+      return res.status(400).json({
+        success: false,
+        error: 'Valid budget amount is required'
       });
     }
-    
+
     // Set the budget in the marketplace service
     // TODO: chatOrchestrator['dataSourceManager']['marketplace'].setMonthlyBudget(budget);
-    
+
     return res.json({
       success: true,
       message: `Monthly budget set to $${budget}`,
       budget
     });
-    
+
   } catch (error) {
     console.error('Budget setting error:', error);
-    return res.status(500).json({ 
-      success: false, 
+    return res.status(500).json({
+      success: false,
       error: 'Failed to set budget',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -1108,11 +1006,11 @@ router.post('/chat/marketplace/budget', (req, res) => {
 router.get('/sessions/:sessionId', (req, res) => {
   const { sessionId } = req.params;
   const session = getChatOrchestrator()['sessions'].get(sessionId);
-  
+
   if (!session) {
     return res.status(404).json({ error: 'Session not found' });
   }
-  
+
   return res.json({ session });
 });
 
@@ -1196,7 +1094,7 @@ router.get('/agents', (_req, res) => {
       department: 'data'
     }
   ];
-  
+
   return res.json({ agents });
 });
 

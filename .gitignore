@@ -118,3 +118,6 @@ apps/workflow-service/*.db*
 /reports
 /playwright-report
 /playwright-traces
+.env.local
+apps/web/.env.local
+apps/api/.env

@@ -1,4 +1,4 @@
-declare module '../../../bebrahma/env.config.js' {
+declare module '../config/env.config.js' {
   export interface EnvConfig {
     NODE_ENV: string;
     PORT: number;

@@ -13,8 +13,8 @@ const isDev = process.argv.includes('--dev') || process.env.NODE_ENV === 'develo
 
 // URLs
 const WEB_URL = isDev
-  ? 'http://localhost:3000/founder-os'
-  : 'http://localhost:3000/founder-os'; // In production, you'd use the built Next.js app
+  ? 'http://localhost:3001'
+  : 'http://localhost:3001'; // In production, you'd use the built Next.js app
 
 function createWindow() {
   // Get saved window bounds or use defaults
