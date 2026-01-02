@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeBrahma v0.3 - UI Preview</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #root {
+            width: 100%;
+            max-width: 428px;
+        }
+
+        .phone-frame {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: black;
+            border-radius: 0 0 20px 20px;
+            z-index: 10;
+        }
+
+        .screen {
+            padding: 40px 20px 20px 20px;
+            min-height: 812px;
+            background: #F9FAFB;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .menu-icon, .notification-icon {
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #DBEAFE;
+            color: #1E40AF;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .recommendation-card {
+            background: white;
+            border: 2px solid #2563EB;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .metrics {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .metric {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: #4B5563;
+        }
+
+        .metric-icon {
+            font-size: 16px;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .confidence-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #D1FAE5;
+            color: #065F46;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .rationale-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rationale-card {
+            background: #FEF3C7;
+            border-left: 4px solid #F59E0B;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .rationale-text {
+            font-size: 14px;
+            color: #374151;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .read-more {
+            color: #2563EB;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .alternatives-section {
+            margin-bottom: 24px;
+        }
+
+        .alternative-item {
+            padding: 12px;
+            background: #F3F4F6;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alternative-item:hover {
+            background: #E5E7EB;
+            transform: translateX(4px);
+        }
+
+        .alternative-title {
+            font-size: 14px;
+            color: #374151;
+            flex: 1;
+        }
+
+        .alternative-score {
+            font-size: 13px;
+            color: #6B7280;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #2563EB;
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .btn-primary:hover {
+            background: #1E40AF;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            border: 1px solid #D1D5DB;
+        }
+
+        .btn-secondary:hover {
+            background: #F9FAFB;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: #2563EB;
+        }
+
+        .btn-ghost:hover {
+            background: #EFF6FF;
+        }
+
+        .score-breakdown {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .score-item {
+            margin-bottom: 16px;
+        }
+
+        .score-label {
+            font-size: 13px;
+            color: #6B7280;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .score-bar-container {
+            background: #E5E7EB;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            background: #2563EB;
+            border-radius: 4px;
+            transition: width 0.5s ease-out;
+        }
+
+        .framework-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .framework-tag {
+            background: #DBEAFE;
+            color: #1E40AF;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .screen-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .screen-selector h3 {
+            font-size: 14px;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .screen-selector button {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            background: #F3F4F6;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .screen-selector button:hover {
+            background: #E5E7EB;
+        }
+
+        .screen-selector button.active {
+            background: #2563EB;
+            color: white;
+        }
+
+        .onboarding-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 30px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #2563EB, #7C3AED);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-bottom: 24px;
+        }
+
+        .tagline {
+            font-size: 28px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #6B7280;
+            line-height: 1.5;
+            margin-bottom: 48px;
+        }
+
+        .question-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 24px;
+        }
+
+        .voice-input {
+            width: 120px;
+            height: 120px;
+            background: #2563EB;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 0 auto 24px;
+        }
+
+        .voice-input:hover {
+            background: #1E40AF;
+            transform: scale(1.05);
+        }
+
+        .voice-input.recording {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 20px rgba(37, 99, 235, 0);
+            }
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            margin-bottom: 20px;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #2563EB;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .context-summary {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2563EB;
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: #6B7280;
+            margin-top: 4px;
+        }
+
+        .objective-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .objective-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar {
+            background: #E5E7EB;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10B981, #059669);
+            border-radius: 4px;
+        }
+
+        .objective-meta {
+            font-size: 13px;
+            color: #6B7280;
+        }
+
+        .task-list {
+            margin-bottom: 20px;
+        }
+
+        .task-item {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #D1D5DB;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        @media (max-width: 768px) {
+            .screen-selector {
+                position: static;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // NBA Recommendation Screen
+        function NBARecommendationScreen() {
+            const [showFullRationale, setShowFullRationale] = useState(false);
+            const [expandedAlternatives, setExpandedAlternatives] = useState(false);
+
+            const recommendation = {
+                title: "Conduct 5 customer interviews with target persona",
+                score: 8.7,
+                confidence: 82,
+                rationale: {
+                    summary: "You have 3 critical unknowns about customer pain points. Interviews will directly validate your problem hypothesis and uncover the #1 pain to solve.",
+                    full: "Your primary objective is 'Problem-Solution Fit'. You currently have 3 critical unknowns: (1) What's the #1 pain point?, (2) How severe is this pain?, (3) What are they using today? Customer interviews are the fastest way to resolve these unknowns and validate your problem hypothesis. This task has high feasibility (you can start today) and directly impacts your objective progress.",
+                    frameworks: ["Problem-Solution Fit", "Critical Unknown Mapping"]
+                },
+                alternatives: [
+                    { title: "Survey 50 target users via Typeform", score: 8.2 },
+                    { title: "Build landing page to test positioning", score: 7.9 }
+                ],
+                breakdown: [
+                    { label: "Objective Impact", score: 8.5 },
+                    { label: "Time Sensitivity", score: 7.2 },
+                    { label: "Evidence Gap", score: 9.1 },
+                    { label: "Unblocks", score: 8.0 },
+                    { label: "Feasibility", score: 8.3 }
+                ]
+            };
+
+            return (
+                <div>
+                    <div className="header">
+                        <button className="menu-icon">☰</button>
+                        <button className="notification-icon">🔔</button>
+                    </div>
+
+                    <div className="badge">⭐ Recommended</div>
+
+                    <div className="recommendation-card">
+                        <h1 className="task-title">{recommendation.title}</h1>
+
+                        <div className="metrics">
+                            <div className="metric">
+                                <span className="metric-icon">📊</span>
+                                <span>Score: <span className="metric-value">{recommendation.score}/10</span></span>
+                            </div>
+                        </div>
+
+                        <div className="confidence-badge">
+                            ✅ {recommendation.confidence}% Confidence
+                        </div>
+                    </div>
+
+                    <div className="rationale-section">
+                        <h2 className="section-title">💡 Why This Matters</h2>
+                        <div className="rationale-card">
+                            <p className="rationale-text">
+                                {showFullRationale ? recommendation.rationale.full : recommendation.rationale.summary}
+                            </p>
+                            <button className="read-more" onClick={() => setShowFullRationale(!showFullRationale)}>
+                                {showFullRationale ? '← Show Less' : 'Read Full Rationale →'}
+                            </button>
+
+                            {showFullRationale && (
+                                <div className="framework-tags">
+                                    {recommendation.rationale.frameworks.map((framework, i) => (
+                                        <span key={i} className="framework-tag">{framework}</span>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {showFullRationale && (
+                        <div className="score-breakdown">
+                            <h3 className="section-title">📊 Score Breakdown</h3>
+                            {recommendation.breakdown.map((item, i) => (
+                                <div key={i} className="score-item">
+                                    <div className="score-label">
+                                        <span>{item.label}</span>
+                                        <span className="metric-value">{item.score}/10</span>
+                                    </div>
+                                    <div className="score-bar-container">
+                                        <div className="score-bar-fill" style={{ width: `${item.score * 10}%` }}></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    <div className="alternatives-section">
+                        <h2 className="section-title">
+                            🔀 Alternatives ({recommendation.alternatives.length})
+                        </h2>
+                        {(expandedAlternatives ? recommendation.alternatives : recommendation.alternatives.slice(0, 1)).map((alt, i) => (
+                            <div key={i} className="alternative-item">
+                                <div className="alternative-title">• {alt.title}</div>
+                                <div className="alternative-score">{alt.score}/10</div>
+                            </div>
+                        ))}
+                        {!expandedAlternatives && (
+                            <button className="read-more" onClick={() => setExpandedAlternatives(true)}>
+                                Show All →
+                            </button>
+                        )}
+                    </div>
+
+                    <div className="action-buttons">
+                        <button className="btn btn-primary">▶ Start Now</button>
+                        <button className="btn btn-secondary">✎ Modify</button>
+                        <button className="btn btn-secondary">⏭ Skip</button>
+                    </div>
+                </div>
+            );
+        }
+
+        // Onboarding Screen
+        function OnboardingScreen() {
+            const [step, setStep] = useState('welcome');
+            const [isRecording, setIsRecording] = useState(false);
+            const [answer, setAnswer] = useState('');
+
+            if (step === 'welcome') {
+                return (
+                    <div className="onboarding-screen">
+                        <div className="logo">🧠</div>
+                        <h1 className="tagline">Your AI Co-Founder</h1>
+                        <p className="subtitle">Always knows what to do next (and why)</p>
+                        <button className="btn btn-primary" onClick={() => setStep('question')}>
+                            Get Started →
+                        </button>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="onboarding-screen">
+                    <h1 className="question-title">🎯 One Question</h1>
+                    <p className="subtitle">What are you building?</p>
+
+                    <div
+                        className={`voice-input ${isRecording ? 'recording' : ''}`}
+                        onClick={() => setIsRecording(!isRecording)}
+                    >
+                        🎤
+                    </div>
+
+                    <p style={{ fontSize: '14px', color: '#6B7280', marginBottom: '16px' }}>
+                        {isRecording ? 'Listening...' : 'Tap to speak'}
+                    </p>
+
+                    <p style={{ fontSize: '14px', color: '#6B7280', marginBottom: '12px' }}>
+                        Or type your answer:
+                    </p>
+
+                    <input
+                        type="text"
+                        className="input-field"
+                        placeholder="e.g., A B2B SaaS for sales teams..."
+                        value={answer}
+                        onChange={(e) => setAnswer(e.target.value)}
+                    />
+
+                    <button className="btn btn-primary" disabled={!answer && !isRecording}>
+                        Continue →
+                    </button>
+                </div>
+            );
+        }
+
+        // Context View Screen
+        function ContextViewScreen() {
+            const context = {
+                summary: {
+                    objectives: 2,
+                    tasks: 5,
+                    unknowns: 3,
+                    signals: 15
+                },
+                objectives: [
+                    { title: "Problem-Solution Fit", progress: 65, tasks: 3, unknowns: 2 },
+                    { title: "ICP + Wedge", progress: 40, tasks: 2, unknowns: 1 }
+                ],
+                tasks: [
+                    "Conduct customer interview #3",
+                    "Synthesize learnings from interviews",
+                    "Build prototype v1",
+                    "Test prototype with 5 users",
+                    "Define pricing hypothesis"
+                ]
+            };
+
+            return (
+                <div>
+                    <div className="header">
+                        <button className="menu-icon">← NBA</button>
+                        <h2 style={{ fontSize: '18px', fontWeight: 600 }}>Context</h2>
+                        <div></div>
+                    </div>
+
+                    <div className="context-summary">
+                        <h3 className="section-title">📊 Summary</h3>
+                        <div className="summary-grid">
+                            <div className="summary-item">
+                                <div className="summary-value">{context.summary.objectives}</div>
+                                <div className="summary-label">Objectives</div>
+                            </div>
+                            <div className="summary-item">
+                                <div className="summary-value">{context.summary.tasks}</div>
+                                <div className="summary-label">Active Tasks</div>
+                            </div>
+                            <div className="summary-item">
+                                <div className="summary-value">{context.summary.unknowns}</div>
+                                <div className="summary-label">Open Unknowns</div>
+                            </div>
+                            <div className="summary-item">
+                                <div className="summary-value">{context.summary.signals}</div>
+                                <div className="summary-label">Recent Signals</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 className="section-title">🎯 Objectives</h3>
+                    {context.objectives.map((obj, i) => (
+                        <div key={i} className="objective-card">
+                            <div className="objective-title">{obj.title}</div>
+                            <div className="progress-bar">
+                                <div className="progress-fill" style={{ width: `${obj.progress}%` }}></div>
+                            </div>
+                            <div className="objective-meta">
+                                {obj.tasks} tasks, {obj.unknowns} unknowns
+                            </div>
+                        </div>
+                    ))}
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', marginTop: '24px' }}>
+                        <h3 className="section-title" style={{ marginBottom: 0 }}>✓ Tasks ({context.tasks.length})</h3>
+                        <button className="btn btn-ghost" style={{ padding: '4px 12px', fontSize: '14px' }}>+ New</button>
+                    </div>
+
+                    <div className="task-list">
+                        {context.tasks.slice(0, 3).map((task, i) => (
+                            <div key={i} className="task-item">
+                                <div className="task-checkbox"></div>
+                                <div className="task-text">{task}</div>
+                            </div>
+                        ))}
+                        <button className="read-more">Show All ({context.tasks.length}) →</button>
+                    </div>
+
+                    <button className="btn btn-primary" style={{ marginTop: '24px' }}>
+                        🤔 Ask NBA
+                    </button>
+                </div>
+            );
+        }
+
+        // Main App
+        function App() {
+            const [currentScreen, setCurrentScreen] = useState('nba');
+
+            const screens = {
+                'onboarding': { component: OnboardingScreen, label: 'Onboarding' },
+                'nba': { component: NBARecommendationScreen, label: 'NBA Recommendation' },
+                'context': { component: ContextViewScreen, label: 'Context View' }
+            };
+
+            const CurrentScreenComponent = screens[currentScreen].component;
+
+            return (
+                <>
+                    <div className="screen-selector">
+                        <h3>📱 Preview Screens</h3>
+                        {Object.entries(screens).map(([key, { label }]) => (
+                            <button
+                                key={key}
+                                className={currentScreen === key ? 'active' : ''}
+                                onClick={() => setCurrentScreen(key)}
+                            >
+                                {label}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="phone-frame">
+                        <div className="phone-notch"></div>
+                        <div className="screen">
+                            <CurrentScreenComponent />
+                        </div>
+                    </div>
+                </>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
