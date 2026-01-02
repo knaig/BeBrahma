@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeBrahma v0.3 - Web App Preview</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #F9FAFB;
+            overflow-x: hidden;
+        }
+
+        #root {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            height: 64px;
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #2563EB, #7C3AED);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .app-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .icon-button {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: none;
+            background: #F3F4F6;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .icon-button:hover {
+            background: #E5E7EB;
+        }
+
+        .profile-button {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #2563EB;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Main Layout */
+        .app-container {
+            display: flex;
+            height: calc(100vh - 64px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: white;
+            border-right: 1px solid #E5E7EB;
+            padding: 24px 12px;
+            overflow-y: auto;
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #6B7280;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: #F3F4F6;
+            color: #111827;
+        }
+
+        .nav-item.active {
+            background: #EFF6FF;
+            color: #2563EB;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            min-width: 20px;
+        }
+
+        .nav-label {
+            white-space: nowrap;
+        }
+
+        .sidebar.collapsed .nav-label {
+            display: none;
+        }
+
+        .nav-divider {
+            height: 1px;
+            background: #E5E7EB;
+            margin: 16px 0;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            max-width: 900px;
+        }
+
+        /* Right Panel */
+        .right-panel {
+            width: 380px;
+            background: white;
+            border-left: 1px solid #E5E7EB;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 16px;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #DBEAFE;
+            color: #1E40AF;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        /* Recommendation Card */
+        .recommendation-card {
+            background: white;
+            border: 2px solid #2563EB;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .task-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .metrics {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+
+        .metric {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: #4B5563;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .confidence-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #D1FAE5;
+            color: #065F46;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Score Breakdown */
+        .score-breakdown {
+            margin-bottom: 24px;
+        }
+
+        .score-item {
+            margin-bottom: 16px;
+        }
+
+        .score-label {
+            font-size: 13px;
+            color: #6B7280;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .score-bar-container {
+            background: #E5E7EB;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            background: #2563EB;
+            border-radius: 4px;
+            transition: width 0.5s ease-out;
+        }
+
+        /* Alternatives */
+        .alternatives-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alternative-item {
+            padding: 12px;
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alternative-item:hover {
+            background: #F3F4F6;
+            border-color: #D1D5DB;
+        }
+
+        .alternative-title {
+            font-size: 14px;
+            color: #374151;
+            flex: 1;
+        }
+
+        .alternative-score {
+            font-size: 13px;
+            color: #6B7280;
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #2563EB;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1E40AF;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            border: 1px solid #D1D5DB;
+        }
+
+        .btn-secondary:hover {
+            background: #F9FAFB;
+        }
+
+        .btn-full {
+            grid-column: 1 / -1;
+        }
+
+        /* Right Panel Content */
+        .rationale-section {
+            margin-bottom: 24px;
+        }
+
+        .rationale-text {
+            font-size: 14px;
+            color: #374151;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .framework-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .framework-tag {
+            background: #DBEAFE;
+            color: #1E40AF;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .confidence-breakdown {
+            margin-top: 20px;
+        }
+
+        .confidence-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #F3F4F6;
+        }
+
+        .confidence-item:last-child {
+            border-bottom: none;
+        }
+
+        .confidence-label {
+            font-size: 13px;
+            color: #6B7280;
+        }
+
+        .confidence-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .quick-stats {
+            background: #F9FAFB;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #6B7280;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2563EB;
+        }
+
+        /* Context View */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .summary-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2563EB;
+            margin-bottom: 8px;
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: #6B7280;
+        }
+
+        .objectives-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .objective-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .objective-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar {
+            background: #E5E7EB;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10B981, #059669);
+            border-radius: 4px;
+        }
+
+        .objective-meta {
+            font-size: 13px;
+            color: #6B7280;
+        }
+
+        /* Task List */
+        .task-list {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-bottom: 1px solid #F3F4F6;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .task-item:hover {
+            background: #F9FAFB;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #D1D5DB;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .task-priority {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .task-priority.high {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .task-priority.medium {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .task-priority.low {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        /* Onboarding */
+        .onboarding-container {
+            min-height: calc(100vh - 64px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .onboarding-card {
+            background: white;
+            border-radius: 16px;
+            padding: 48px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .onboarding-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #2563EB, #7C3AED);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 24px;
+        }
+
+        .onboarding-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .onboarding-subtitle {
+            font-size: 16px;
+            color: #6B7280;
+            line-height: 1.5;
+            margin-bottom: 40px;
+        }
+
+        .question-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #2563EB;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .or-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #E5E7EB;
+        }
+
+        .or-text {
+            font-size: 14px;
+            color: #9CA3AF;
+        }
+
+        .voice-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: #F3F4F6;
+            border: 2px dashed #D1D5DB;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 15px;
+            color: #6B7280;
+            margin-bottom: 24px;
+        }
+
+        .voice-button:hover {
+            background: #E5E7EB;
+            border-color: #9CA3AF;
+        }
+
+        .voice-button.recording {
+            background: #DBEAFE;
+            border-color: #2563EB;
+            color: #1E40AF;
+            animation: pulse-border 1.5s infinite;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% {
+                border-color: #2563EB;
+            }
+            50% {
+                border-color: #60A5FA;
+            }
+        }
+
+        /* Keyboard Shortcut Hint */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #111827;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .kbd {
+            background: #374151;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+
+        @media (max-width: 1024px) {
+            .right-panel {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -240px;
+                top: 64px;
+                height: calc(100vh - 64px);
+                z-index: 50;
+                transition: left 0.3s;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main-content {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Top Bar Component
+        function TopBar({ onToggleSidebar }) {
+            return (
+                <div className="top-bar">
+                    <div className="logo-section">
+                        <button className="icon-button" onClick={onToggleSidebar}>☰</button>
+                        <div className="logo">🧠</div>
+                        <div className="app-name">BeBrahma</div>
+                    </div>
+                    <div className="top-bar-right">
+                        <button className="icon-button">🔔</button>
+                        <button className="icon-button">⚙️</button>
+                        <button className="profile-button">JF</button>
+                    </div>
+                </div>
+            );
+        }
+
+        // Sidebar Component
+        function Sidebar({ collapsed, activeView, onNavigate }) {
+            const navItems = [
+                { id: 'nba', icon: '📊', label: 'NBA Recommendations' },
+                { id: 'context', icon: '📈', label: 'Context & State' },
+                { id: 'evidence', icon: '📝', label: 'Evidence' },
+                { id: 'decisions', icon: '⚖️', label: 'Decisions' },
+                { id: 'integrations', icon: '🔗', label: 'Integrations' },
+                { id: 'settings', icon: '⚙️', label: 'Settings' }
+            ];
+
+            return (
+                <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+                    {navItems.map((item, index) => (
+                        <React.Fragment key={item.id}>
+                            {index === 4 && <div className="nav-divider" />}
+                            <div
+                                className={`nav-item ${activeView === item.id ? 'active' : ''}`}
+                                onClick={() => onNavigate(item.id)}
+                            >
+                                <span className="nav-icon">{item.icon}</span>
+                                <span className="nav-label">{item.label}</span>
+                            </div>
+                        </React.Fragment>
+                    ))}
+                </div>
+            );
+        }
+
+        // Right Panel Component
+        function RightPanel() {
+            const rationale = {
+                summary: "Based on your 3 critical unknowns about customer pain points, interviews will directly validate your problem hypothesis and uncover the #1 pain to solve.",
+                full: "Your primary objective is 'Problem-Solution Fit'. You currently have 3 critical unknowns: (1) What's the #1 pain point?, (2) How severe is this pain?, (3) What are they using today?\n\nCustomer interviews are the fastest way to resolve these unknowns and validate your problem hypothesis. This task has high feasibility (you can start today) and directly impacts your objective progress.\n\nBased on your context, the Problem-Solution Fit framework indicates you're in Stage 1: Understanding the Problem. Conducting 5 interviews will give you sufficient signal to synthesize patterns and identify the core pain.",
+                frameworks: ["Problem-Solution Fit", "Critical Unknown Mapping"],
+                confidence: {
+                    overall: 82,
+                    factors: [
+                        { label: "Context Completeness", value: 80 },
+                        { label: "Historical Accuracy", value: 70 },
+                        { label: "Data Quality", value: 85 },
+                        { label: "Recency", value: 95 }
+                    ]
+                }
+            };
+
+            const [expanded, setExpanded] = useState(false);
+
+            return (
+                <div className="right-panel">
+                    <div className="rationale-section">
+                        <h3 className="section-title">💡 Why This Matters</h3>
+                        <p className="rationale-text">
+                            {expanded ? rationale.full : rationale.summary}
+                        </p>
+                        <button
+                            className="btn btn-secondary"
+                            style={{ padding: '8px 16px', fontSize: '13px' }}
+                            onClick={() => setExpanded(!expanded)}
+                        >
+                            {expanded ? '← Show Less' : 'Read Full Rationale →'}
+                        </button>
+
+                        <div className="framework-tags">
+                            {rationale.frameworks.map((framework, i) => (
+                                <span key={i} className="framework-tag">{framework}</span>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="confidence-breakdown">
+                        <h3 className="section-title">✅ Confidence: {rationale.confidence.overall}%</h3>
+                        {rationale.confidence.factors.map((factor, i) => (
+                            <div key={i} className="confidence-item">
+                                <span className="confidence-label">{factor.label}</span>
+                                <span className="confidence-value">{factor.value}%</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="quick-stats">
+                        <h4 style={{ fontSize: '14px', fontWeight: 600, marginBottom: '12px', color: '#111827' }}>
+                            📊 Quick Stats
+                        </h4>
+                        <div className="stat-item">
+                            <span className="stat-label">Objectives</span>
+                            <span className="stat-value">2</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">Active Tasks</span>
+                            <span className="stat-value">5</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">Open Unknowns</span>
+                            <span className="stat-value">3</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // NBA Dashboard View
+        function NBADashboard() {
+            const recommendation = {
+                title: "Conduct 5 customer interviews with target persona",
+                score: 8.7,
+                confidence: 82,
+                breakdown: [
+                    { label: "Objective Impact", score: 8.5 },
+                    { label: "Time Sensitivity", score: 7.2 },
+                    { label: "Evidence Gap", score: 9.1 },
+                    { label: "Unblocks", score: 8.0 },
+                    { label: "Feasibility", score: 8.3 }
+                ],
+                alternatives: [
+                    { title: "Survey 50 target users via Typeform", score: 8.2 },
+                    { title: "Build landing page to test positioning", score: 7.9 }
+                ]
+            };
+
+            return (
+                <div className="main-content">
+                    <div className="badge">⭐ Recommended</div>
+
+                    <div className="recommendation-card">
+                        <h1 className="task-title">{recommendation.title}</h1>
+
+                        <div className="metrics">
+                            <div className="metric">
+                                <span>📊</span>
+                                <span>Score: <span className="metric-value">{recommendation.score}/10</span></span>
+                            </div>
+                        </div>
+
+                        <div className="confidence-badge">
+                            ✅ {recommendation.confidence}% Confidence
+                        </div>
+                    </div>
+
+                    <div className="card">
+                        <h2 className="card-title">📊 Score Breakdown</h2>
+                        <div className="score-breakdown">
+                            {recommendation.breakdown.map((item, i) => (
+                                <div key={i} className="score-item">
+                                    <div className="score-label">
+                                        <span>{item.label}</span>
+                                        <span className="metric-value">{item.score}/10</span>
+                                    </div>
+                                    <div className="score-bar-container">
+                                        <div className="score-bar-fill" style={{ width: `${item.score * 10}%` }}></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="alternatives-section">
+                        <h2 className="section-title">🔀 Alternatives ({recommendation.alternatives.length})</h2>
+                        {recommendation.alternatives.map((alt, i) => (
+                            <div key={i} className="alternative-item">
+                                <div className="alternative-title">• {alt.title}</div>
+                                <div className="alternative-score">{alt.score}/10</div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="action-buttons">
+                        <button className="btn btn-primary">▶ Start Now</button>
+                        <button className="btn btn-secondary">✎ Modify</button>
+                        <button className="btn btn-secondary">⏭ Skip</button>
+                    </div>
+
+                    <button className="btn btn-secondary btn-full" style={{ marginTop: '16px' }}>
+                        + Add Update
+                    </button>
+                </div>
+            );
+        }
+
+        // Context View
+        function ContextView() {
+            const context = {
+                summary: { objectives: 2, tasks: 5, unknowns: 3, signals: 15 },
+                objectives: [
+                    { title: "Problem-Solution Fit", progress: 65, tasks: 3, unknowns: 2 },
+                    { title: "ICP + Wedge", progress: 40, tasks: 2, unknowns: 1 }
+                ],
+                tasks: [
+                    { text: "Conduct customer interview #3", priority: "high" },
+                    { text: "Synthesize learnings from interviews", priority: "medium" },
+                    { text: "Build prototype v1", priority: "medium" },
+                    { text: "Test prototype with 5 users", priority: "medium" },
+                    { text: "Define pricing hypothesis", priority: "low" }
+                ]
+            };
+
+            return (
+                <div className="main-content">
+                    <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '24px' }}>
+                        Context & State
+                    </h1>
+
+                    <div className="summary-grid">
+                        <div className="summary-card">
+                            <div className="summary-value">{context.summary.objectives}</div>
+                            <div className="summary-label">Objectives</div>
+                        </div>
+                        <div className="summary-card">
+                            <div className="summary-value">{context.summary.tasks}</div>
+                            <div className="summary-label">Active Tasks</div>
+                        </div>
+                        <div className="summary-card">
+                            <div className="summary-value">{context.summary.unknowns}</div>
+                            <div className="summary-label">Open Unknowns</div>
+                        </div>
+                        <div className="summary-card">
+                            <div className="summary-value">{context.summary.signals}</div>
+                            <div className="summary-label">Recent Signals</div>
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                        <h2 className="section-title">🎯 Objectives</h2>
+                        <button className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '14px' }}>
+                            + New Objective
+                        </button>
+                    </div>
+
+                    <div className="objectives-grid">
+                        {context.objectives.map((obj, i) => (
+                            <div key={i} className="objective-card">
+                                <div className="objective-title">{obj.title}</div>
+                                <div className="progress-bar">
+                                    <div className="progress-fill" style={{ width: `${obj.progress}%` }}></div>
+                                </div>
+                                <div className="objective-meta">
+                                    {obj.tasks} tasks, {obj.unknowns} unknowns
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                        <h2 className="section-title">✓ Tasks ({context.tasks.length})</h2>
+                        <button className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '14px' }}>
+                            + New Task
+                        </button>
+                    </div>
+
+                    <div className="task-list">
+                        {context.tasks.map((task, i) => (
+                            <div key={i} className="task-item">
+                                <div className="task-checkbox"></div>
+                                <div className="task-text">{task.text}</div>
+                                <div className={`task-priority ${task.priority}`}>
+                                    {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <button className="btn btn-primary" style={{ marginTop: '24px', width: '100%' }}>
+                        🤔 Ask NBA
+                    </button>
+                </div>
+            );
+        }
+
+        // Onboarding View
+        function OnboardingView({ onComplete }) {
+            const [answer, setAnswer] = useState('');
+            const [isRecording, setIsRecording] = useState(false);
+
+            return (
+                <div className="onboarding-container">
+                    <div className="onboarding-card">
+                        <div className="onboarding-logo">🧠</div>
+                        <h1 className="onboarding-title">Your AI Co-Founder</h1>
+                        <p className="onboarding-subtitle">
+                            Always knows what to do next (and why)
+                        </p>
+
+                        <div className="question-title">🎯 One Question</div>
+                        <p style={{ fontSize: '16px', color: '#6B7280', marginBottom: '20px' }}>
+                            What are you building?
+                        </p>
+
+                        <input
+                            type="text"
+                            className="input-field"
+                            placeholder="e.g., A B2B SaaS for sales teams to automate outreach..."
+                            value={answer}
+                            onChange={(e) => setAnswer(e.target.value)}
+                        />
+
+                        <div className="or-divider">
+                            <span className="or-text">or</span>
+                        </div>
+
+                        <button
+                            className={`voice-button ${isRecording ? 'recording' : ''}`}
+                            onClick={() => setIsRecording(!isRecording)}
+                        >
+                            🎤 {isRecording ? 'Recording...' : 'Use voice input'}
+                        </button>
+
+                        <button
+                            className="btn btn-primary"
+                            style={{ width: '100%' }}
+                            disabled={!answer && !isRecording}
+                            onClick={onComplete}
+                        >
+                            Continue →
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // Main App
+        function App() {
+            const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+            const [activeView, setActiveView] = useState('nba');
+            const [isOnboarded, setIsOnboarded] = useState(true);
+
+            const renderMainContent = () => {
+                if (!isOnboarded) {
+                    return <OnboardingView onComplete={() => setIsOnboarded(true)} />;
+                }
+
+                switch (activeView) {
+                    case 'context':
+                        return <ContextView />;
+                    case 'nba':
+                    default:
+                        return <NBADashboard />;
+                }
+            };
+
+            const showRightPanel = isOnboarded && (activeView === 'nba');
+
+            return (
+                <>
+                    <TopBar onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)} />
+                    <div className="app-container">
+                        {isOnboarded && (
+                            <Sidebar
+                                collapsed={sidebarCollapsed}
+                                activeView={activeView}
+                                onNavigate={setActiveView}
+                            />
+                        )}
+                        {renderMainContent()}
+                        {showRightPanel && <RightPanel />}
+                    </div>
+
+                    {isOnboarded && (
+                        <div className="keyboard-hint">
+                            Press <span className="kbd">Cmd+B</span> to toggle sidebar
+                        </div>
+                    )}
+                </>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

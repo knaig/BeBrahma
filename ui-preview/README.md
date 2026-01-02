@@ -1,134 +1,139 @@
 # BeBrahma v0.3 - UI Preview
 
-Interactive React preview of the BeBrahma mobile app UI.
+Interactive React previews of the BeBrahma app for both mobile and web platforms.
 
 ## 🎯 What This Is
 
-This is a standalone HTML/React preview showcasing the core screens of BeBrahma v0.3:
+Two standalone HTML/React previews showcasing:
 
-1. **Onboarding Screen** - Progressive profiling with ONE question
-2. **NBA Recommendation Screen** - Main app experience with recommendations, rationale, and alternatives
-3. **Context View Screen** - Business state graph overview
+1. **Mobile App** (`index.html`) - Phone-optimized UI
+2. **Web App** (`web.html`) - Desktop three-column layout
 
 ## 🚀 How to View
 
-### Option 1: Open Locally
-
-Simply open `index.html` in your web browser:
+### Quick Start
 
 ```bash
-# From the ui-preview directory
+# Open mobile preview
 open index.html
-# or
+
+# Open web preview
+open web.html
+
+# Or run local server
 python -m http.server 8000
-# Then visit http://localhost:8000
+# Mobile: http://localhost:8000/index.html
+# Web: http://localhost:8000/web.html
 ```
 
-### Option 2: Deploy to GitHub Pages
+## 📱 Mobile Preview (index.html)
 
-This preview can be deployed to GitHub Pages for easy sharing:
+### Features:
+- iPhone 13 frame (428x812px)
+- 3 screens: Onboarding, NBA Recommendation, Context View
+- Mobile-first interactions
+- Voice input animations
+- Bottom navigation pattern
 
-1. Push to GitHub (already done)
-2. Go to repository Settings → Pages
-3. Select branch and `/ui-preview` folder
-4. Access at: `https://[username].github.io/[repo-name]/ui-preview/`
+### Screens:
+1. **Onboarding** - Welcome + ONE question
+2. **NBA Recommendation** - Main recommendation with rationale
+3. **Context View** - Objectives, tasks, unknowns
 
-## 📱 Features Demonstrated
+## 💻 Web Preview (web.html)
 
-### Onboarding Flow
-- Welcome screen with brand introduction
-- "One Question" onboarding
-- Voice input animation (simulated)
-- Text input fallback
+### Features:
+- Desktop three-column layout
+- Left sidebar navigation (240px, collapsible)
+- Main content area (flex, 600-900px)
+- Right panel with rationale (380px)
+- Keyboard shortcuts
+- Hover states and interactions
 
-### NBA Recommendation Screen
-- Recommendation card with score and confidence
-- Collapsible rationale with full details
-- Score breakdown (5 dimensions)
-- Alternatives list
-- Framework tags
-- Action buttons (Start, Modify, Skip)
+### Views:
+1. **Onboarding** - Centered single-page flow
+2. **NBA Dashboard** - Full recommendation with score breakdown
+3. **Context View** - Summary stats, objectives grid, task table
 
-### Context View Screen
-- Summary statistics
-- Objectives with progress bars
-- Task list
-- Quick add buttons
-- "Ask NBA" CTA
+### Keyboard Shortcuts:
+- `Cmd/Ctrl + B` - Toggle sidebar
+- Click sidebar items to navigate
 
 ## 🎨 Design System
 
-The preview implements:
+Both previews implement:
 
-- **Colors:** Full BeBrahma color palette (Primary Blue, Success Green, Neutrals)
-- **Typography:** Inter font family with proper weights and sizes
-- **Components:** Cards, buttons, badges, progress bars, input fields
-- **Layout:** Mobile-first (max-width: 428px iPhone 13)
+- **Colors:** Primary Blue (#2563EB), Success Green (#10B981), Gray scale
+- **Typography:** Inter font family
+- **Components:** Cards, buttons, badges, progress bars, score bars
 - **Interactions:** Hover states, click animations, smooth transitions
-- **Phone Frame:** Realistic iPhone frame with notch
 
 ## 🔧 Technical Details
 
 **Stack:**
 - Pure HTML + CSS + JavaScript
-- React 18 (loaded via CDN)
-- Babel Standalone for JSX compilation
-- No build process required
+- React 18 (CDN)
+- Babel Standalone
+- No build process
 
 **Browser Support:**
 - Modern browsers (Chrome, Firefox, Safari, Edge)
-- Mobile browsers (iOS Safari, Chrome Mobile)
+- Responsive (mobile and desktop)
 
-## 📐 Screen Dimensions
+## 📐 Responsive Behavior
 
-- **Frame Width:** 428px (iPhone 13/14/15 width)
-- **Frame Height:** 812px (iPhone 13/14/15 height)
-- **Screen Padding:** 20px
-- **Notch Height:** 30px
+**Web Preview:**
+- Desktop Large (>1440px): Three columns (sidebar + main + right panel)
+- Desktop Medium (1024-1440px): Three columns (narrower right panel)
+- Tablet (768-1024px): Two columns (right panel hidden)
+- Mobile (<768px): Use mobile preview instead
 
 ## 🎯 Interactive Elements
 
-Try these interactions:
+### Mobile Preview:
+- Screen selector (top right)
+- Expandable rationale
+- Voice input animation
+- Alternative recommendations
 
-1. **Screen Selector** (top right on desktop) - Switch between screens
-2. **Read Full Rationale** - Expand/collapse full AI reasoning
-3. **Score Breakdown** - View when rationale is expanded
-4. **Show All Alternatives** - Expand alternatives list
-5. **Voice Input Button** - Pulsing animation on click
-6. **Task Checkboxes** - Hover states
-7. **All Buttons** - Hover and active states
+### Web Preview:
+- Collapsible sidebar
+- Expandable rationale in right panel
+- Confidence breakdown
+- Quick stats
+- Task checkboxes with hover
+- Priority badges
 
-## 🔄 Future Enhancements
+## 🔄 Cross-Platform Comparison
 
-This preview could be extended with:
-
-- [ ] Actual voice recording/transcription
-- [ ] API integration with backend
-- [ ] Dark mode toggle
-- [ ] More screens (Task Detail, Settings, etc.)
-- [ ] Animations and transitions
-- [ ] Mobile gesture support (swipe, pull-to-refresh)
-- [ ] State persistence (localStorage)
+| Feature | Mobile | Web |
+|---------|--------|-----|
+| Layout | Single column | Three columns |
+| Navigation | Bottom tabs | Left sidebar |
+| Input | Voice-first | Keyboard-first |
+| Screen Size | 428px | 1024-1920px |
+| Use Case | On-the-go | Deep work |
 
 ## 📚 Related Documentation
 
-- **UX Design Doc:** `/docs/bebrahma-v2/UX_DESIGN.md` - Complete design specifications
-- **PRD:** `/docs/bebrahma-v2/PRD.md` - Product requirements
-- **API Spec:** `/docs/bebrahma-v2/design/API_SPEC.md` - Backend API endpoints
+- **Mobile UX:** `/docs/bebrahma-v2/UX_DESIGN.md`
+- **Web UX:** `/docs/bebrahma-v2/UX_DESIGN_WEB.md`
+- **PRD:** `/docs/bebrahma-v2/PRD.md`
+- **API:** `/docs/bebrahma-v2/design/API_SPEC.md`
 
 ## 💡 Notes
 
-- This is a **static preview** with hardcoded data
-- Real app will be built with **React Native** for mobile
+- Static previews with hardcoded data
+- Real mobile app: React Native
+- Real web app: React + TypeScript + Vite
 - Backend API already implemented in `/api`
-- Voice input is simulated (no actual recording)
 
-## 🐛 Known Issues
+## 🐛 Known Limitations
 
 - Voice recording is simulated (visual only)
-- No actual data persistence
-- No dark mode implementation yet
-- Desktop-only screen selector (mobile shows inline)
+- No data persistence
+- No dark mode in previews yet
+- Web preview keyboard shortcuts are visual hints only
 
 ---
 
