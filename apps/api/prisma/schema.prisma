@@ -716,3 +716,317 @@ model WeeklyReview {
   @@index([weekNumber])
   @@index([createdBy])
 }
+
+// ============================================================================
+// DECISION OS - REVENUE LOOP WEDGE
+// ============================================================================
+
+enum EvidenceRung {
+  SYNTHETIC
+  ATTENTION
+  INTENT
+  COMMITMENT
+  RETENTION
+}
+
+enum DirectionStatus {
+  PENDING
+  FUNDED
+  DEFERRED
+  KILLED
+}
+
+enum ExperimentStatus {
+  DRAFT
+  QUEUED
+  RUNNING
+  PASSED
+  FAILED
+  ABANDONED
+}
+
+enum ExperimentGateType {
+  EVIDENCE_THRESHOLD
+  ARTIFACT_REQUIRED
+  METRIC_THRESHOLD
+  MANUAL_APPROVAL
+}
+
+enum SpeedMode {
+  FAST
+  SLOW
+}
+
+enum FounderProfile {
+  SPRINTER
+  PERFECTIONIST
+  BALANCED
+}
+
+enum IntegrationStatus {
+  CONNECTED
+  DISCONNECTED
+  ERROR
+}
+
+// Venture: Solo founder's business venture
+model Venture {
+  id                  String         @id @default(cuid())
+  userId              String
+  name                String
+  stage               String         @default("customer_discovery") // customer_discovery, offer, pipeline, first_revenue
+
+  // Budgets
+  hoursPerWeek        Int            @default(20)
+  sendsPerWeek        Int            @default(100)
+  spendPerWeek        Int            @default(500)
+
+  // WIP Limits
+  maxDirections       Int            @default(3)
+  maxActiveExperiments Int           @default(1)
+
+  // Profile & Settings
+  founderProfile      FounderProfile @default(BALANCED)
+  experienceVariant   String         @default("command_center") // command_center, in_tools
+
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  // Relations
+  directions          Direction[]
+  experiments         DecisionExperiment[]
+  evidence            DecisionEvidence[]
+  decisions           DecisionEvent[]
+  overrides           OverrideEvent[]
+  integrations        Integration[]
+
+  @@index([userId])
+  @@index([stage])
+  @@index([createdAt])
+}
+
+// Direction: Business direction/opportunity to explore
+model Direction {
+  id                  String         @id @default(cuid())
+  ventureId           String
+
+  // Direction Vector
+  icp                 String         // Who
+  problem             String         // What pain
+  offer               String         // Solution
+  channel             String         // How to reach
+  price               String         // Price point
+
+  // State
+  status              DirectionStatus @default(PENDING)
+  currentRung         EvidenceRung   @default(SYNTHETIC)
+  confidenceScore     Int            @default(0) // 0-100
+  expectedValue       Int            @default(0) // 0-100
+
+  // Budget Allocation
+  allocatedHours      Int            @default(0)
+  allocatedSends      Int            @default(0)
+  allocatedSpend      Int            @default(0)
+
+  // Kill Criteria
+  killCriteria        String[]
+
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  // Relations
+  venture             Venture        @relation(fields: [ventureId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  experiments         DecisionExperiment[]
+  evidence            DecisionEvidence[]
+  decisions           DecisionEvent[]
+
+  @@index([ventureId])
+  @@index([status])
+  @@index([currentRung])
+  @@index([createdAt])
+}
+
+// DecisionExperiment: Experiments to validate directions
+model DecisionExperiment {
+  id                  String         @id @default(cuid())
+  directionId         String
+  ventureId           String
+
+  title               String
+  hypothesis          String         @db.Text
+  approach            String         @db.Text
+
+  status              ExperimentStatus @default(DRAFT)
+  targetRung          EvidenceRung
+
+  // Decision Grading
+  grade               Int            // 0-3
+  speedMode           SpeedMode      @default(FAST)
+
+  // Cost Estimation
+  estimatedHours      Int            @default(0)
+  estimatedSends      Int            @default(0)
+  estimatedSpend      Int            @default(0)
+
+  // Timeline
+  startedAt           DateTime?
+  completedAt         DateTime?
+
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  // Relations
+  venture             Venture        @relation(fields: [ventureId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  direction           Direction      @relation(fields: [directionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  gates               ExperimentGate[]
+  evidence            DecisionEvidence[]
+
+  @@index([ventureId])
+  @@index([directionId])
+  @@index([status])
+  @@index([grade])
+  @@index([targetRung])
+  @@index([createdAt])
+}
+
+// ExperimentGate: Pass/fail criteria for experiments
+model ExperimentGate {
+  id                  String         @id @default(cuid())
+  experimentId        String
+  order               Int            // Sequential evaluation order
+
+  type                ExperimentGateType
+  description         String
+  condition           Json           // JSON rule for evaluation
+
+  status              String         @default("pending") // pending, passed, failed
+  evaluatedAt         DateTime?
+  evaluationResult    Json?
+
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  // Relations
+  experiment          DecisionExperiment @relation(fields: [experimentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@index([experimentId])
+  @@index([order])
+  @@index([status])
+}
+
+// DecisionEvidence: Evidence collected from experiments
+model DecisionEvidence {
+  id                  String         @id @default(cuid())
+  ventureId           String
+  directionId         String
+  experimentId        String?
+
+  rung                EvidenceRung
+  type                String         // interview, email_reply, signup, payment, etc.
+  description         String         @db.Text
+  data                Json           @default("{}")
+
+  source              String         // manual, gmail, stripe, etc.
+  sourceId            String?        // External ID from integration
+
+  createdAt           DateTime       @default(now())
+
+  // Relations
+  venture             Venture        @relation(fields: [ventureId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  direction           Direction      @relation(fields: [directionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  experiment          DecisionExperiment? @relation(fields: [experimentId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+
+  @@index([ventureId])
+  @@index([directionId])
+  @@index([experimentId])
+  @@index([rung])
+  @@index([source])
+  @@index([createdAt])
+}
+
+// DecisionEvent: Fund/Modify/Defer/Kill decisions
+model DecisionEvent {
+  id                  String         @id @default(cuid())
+  ventureId           String
+  directionId         String
+
+  actionType          String         // fund, modify, defer, kill
+  reason              String         @db.Text
+
+  // Context at time of decision
+  confidenceScore     Int
+  expectedValue       Int
+  currentRung         EvidenceRung
+
+  userId              String
+  createdAt           DateTime       @default(now())
+
+  // Relations
+  venture             Venture        @relation(fields: [ventureId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  direction           Direction      @relation(fields: [directionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@index([ventureId])
+  @@index([directionId])
+  @@index([actionType])
+  @@index([createdAt])
+}
+
+// OverrideEvent: Soft friction overrides
+model OverrideEvent {
+  id                  String         @id @default(cuid())
+  ventureId           String
+  entityId            String         // experimentId or directionId
+  entityType          String         // experiment, direction
+
+  grade               Int
+  mode                SpeedMode
+  actionType          String
+  recommendedAction   String
+  reason              String         @db.Text // Why they overrode (min 10 chars)
+
+  userId              String
+  createdAt           DateTime       @default(now())
+
+  // Relations
+  venture             Venture        @relation(fields: [ventureId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@index([ventureId])
+  @@index([entityId])
+  @@index([entityType])
+  @@index([createdAt])
+}
+
+// Integration: Connected tools for evidence capture
+model Integration {
+  id                  String         @id @default(cuid())
+  ventureId           String
+  userId              String
+
+  provider            String         // google_workspace, hubspot, stripe, github
+  providerType        String         // google_workspace, crm, payment, repo
+  status              IntegrationStatus @default(DISCONNECTED)
+
+  // OAuth tokens (encrypted)
+  accessToken         String?        @db.Text
+  refreshToken        String?        @db.Text
+  tokenExpiry         DateTime?
+
+  // Configuration
+  config              Json           @default("{}")  // Provider-specific config (filters, repos, etc.)
+
+  // Metadata
+  lastSyncAt          DateTime?
+  errorMessage        String?
+
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  // Relations
+  venture             Venture        @relation(fields: [ventureId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@unique([ventureId, provider])
+  @@index([ventureId])
+  @@index([userId])
+  @@index([provider])
+  @@index([status])
+}

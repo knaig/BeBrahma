@@ -31,11 +31,18 @@ import dashboardRoutes from './routes/dashboard';
 import playbooksRoutes from './routes/playbooks';
 import scoreboardsRoutes from './routes/scoreboards';
 
+// Decision OS routes
+import decisionOSRoutes from './routes/decision-os';
+import integrationsRoutes from './routes/integrations';
+
 // Import middleware
 import { generalRateLimit } from './middleware/rateLimit';
 
 // Import WebSocket manager
 import { webSocketManager } from './websocket/index';
+
+// Import Evidence Capture Service
+import { evidenceCaptureService } from './services/integrations/evidence-capture';
 
 const app = express();
 
@@ -139,6 +146,10 @@ app.use('/api', dashboardRoutes);
 app.use('/api', playbooksRoutes);
 app.use('/api', scoreboardsRoutes);
 
+// Decision OS routes
+app.use('/api/v1', decisionOSRoutes);
+app.use('/api/v1/integrations', integrationsRoutes);
+
 // Error handling middleware
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Error:', err);
@@ -196,6 +207,14 @@ server.listen(PORT, () => {
   validateServiceUrls().catch(error => {
     console.error('Error during service validation:', error);
   });
+
+  // Start evidence capture service
+  try {
+    evidenceCaptureService.start();
+    console.log('📊 Evidence capture service started');
+  } catch (error) {
+    console.error('❌ Failed to start evidence capture service:', error);
+  }
 });
 
 // Service reachability check function
