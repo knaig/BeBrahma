@@ -136,7 +136,7 @@
     "framer-motion": "^12.23.12",
     "html2canvas": "^1.4.1",
     "lucide-react": "^0.539.0",
-    "next": "14.0.4",
+    "next": "^15.5.9",
     "posthog-js": "^1.260.1",
     "react": "^18",
     "react-dom": "^18",
