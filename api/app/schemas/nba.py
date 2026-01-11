@@ -4,7 +4,7 @@ BeBrahma v0.3 - NBA Schemas
 Pydantic schemas for NBA recommendation requests and responses.
 """
 
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 from pydantic import BaseModel, Field
 from datetime import datetime
 from decimal import Decimal
@@ -117,7 +117,7 @@ class RationaleResponse(BaseModel):
     """Full rationale for a recommendation."""
     recommendation_id: str
     summary: str
-    full: Dict[str, any]
+    full: Dict[str, Any]
 
     class Config:
         json_schema_extra = {
@@ -136,11 +136,11 @@ class RationaleResponse(BaseModel):
 class ErrorResponse(BaseModel):
     """Error response."""
     success: bool = False
-    error: Dict[str, any]
+    error: Dict[str, Any]
 
 
 class SuccessResponse(BaseModel):
     """Generic success response wrapper."""
     success: bool = True
-    data: any
-    meta: Optional[Dict[str, any]] = None
+    data: Any
+    meta: Optional[Dict[str, Any]] = None

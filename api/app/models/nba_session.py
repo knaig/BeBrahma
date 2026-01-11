@@ -4,7 +4,7 @@ BeBrahma v0.3 - NBA Session Model
 Tracks each "What should I do next?" request.
 """
 
-from sqlalchemy import Column, String, Integer, TIMESTAMP, ARRAY, ForeignKey
+from sqlalchemy import JSON, Column, String, Integer, TIMESTAMP, ARRAY, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
@@ -36,15 +36,17 @@ class NBASession(Base):
     frameworks_used = Column(ARRAY(String(100)), default=[], nullable=False)
 
     # Result
-    top_recommendation_id = Column(UUID(as_uuid=True), ForeignKey("nba_recommendations.id", ondelete="SET NULL"), nullable=True)
+    # TODO: Add foreign key to nba_recommendations.id after initial migration
+    top_recommendation_id = Column(UUID(as_uuid=True), nullable=True)
     alternatives_count = Column(Integer, default=0, nullable=False)
 
     # User action (for learning)
     user_action = Column(String(50), nullable=True, index=True)  # accepted, chose_alternative, dismissed, deferred, NULL
-    chosen_recommendation_id = Column(UUID(as_uuid=True), ForeignKey("nba_recommendations.id", ondelete="SET NULL"), nullable=True)
+    # TODO: Add foreign key to nba_recommendations.id after initial migration
+    chosen_recommendation_id = Column(UUID(as_uuid=True), nullable=True)
 
     # Metadata
-    metadata = Column(JSON, default={}, nullable=False)
+    meta_data = Column(JSON, default={}, nullable=False)
 
     # Timestamps
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now(), nullable=False, index=True)

@@ -47,7 +47,7 @@ class Evidence(Base):
     collected_at = Column(TIMESTAMP(timezone=True), server_default=func.now(), nullable=False, index=True)
 
     # Metadata
-    metadata = Column(JSON, default={}, nullable=False)
+    meta_data = Column(JSON, default={}, nullable=False)
 
     # Timestamps
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now(), nullable=False)

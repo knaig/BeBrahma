@@ -11,12 +11,17 @@ from typing import AsyncGenerator
 from app.core.config import settings
 
 # Create async engine
-engine = create_async_engine(
-    settings.DATABASE_URL,
-    pool_size=settings.DATABASE_POOL_SIZE,
-    max_overflow=settings.DATABASE_MAX_OVERFLOW,
-    echo=settings.is_development,  # Log SQL in development
-)
+# Note: SQLite doesn't support pool_size/max_overflow parameters
+engine_kwargs = {
+    "echo": settings.is_development,  # Log SQL in development
+}
+
+# Only add pool parameters for PostgreSQL (not SQLite)
+if not settings.DATABASE_URL.startswith("sqlite"):
+    engine_kwargs["pool_size"] = settings.DATABASE_POOL_SIZE
+    engine_kwargs["max_overflow"] = settings.DATABASE_MAX_OVERFLOW
+
+engine = create_async_engine(settings.DATABASE_URL, **engine_kwargs)
 
 # Create async session factory
 async_session = async_sessionmaker(
