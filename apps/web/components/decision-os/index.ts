@@ -7,3 +7,4 @@ export { DecisionCard } from './DecisionCard';
 export { ExperimentRunner } from './ExperimentRunner';
 export { VCMemoCard } from './VCMemoCard';
 export { SoftFrictionModal } from './SoftFrictionModal';
+export { IntegrationWizard } from './IntegrationWizard';

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Mail, Calendar, Database, DollarSign, GitBranch, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { IntegrationProvider } from '@/lib/decision-os/types';
+import { IntegrationWizard } from '@/components/decision-os/IntegrationWizard';
 
 interface IntegrationCard {
   id: string;
@@ -55,19 +56,34 @@ export default function IntegrationsPage() {
   ]);
 
   const [selectedRepo, setSelectedRepo] = useState<string>('');
+  const [wizardOpen, setWizardOpen] = useState(false);
+  const [selectedIntegration, setSelectedIntegration] = useState<IntegrationCard | null>(null);
 
   async function handleConnect(integrationId: string) {
-    // TODO: Implement OAuth flow
-    alert(`OAuth flow for ${integrationId} not implemented yet. Add env vars and implement provider.`);
+    const integration = integrations.find((i) => i.id === integrationId);
+    if (integration) {
+      setSelectedIntegration(integration);
+      setWizardOpen(true);
+    }
+  }
 
-    // Mock connection
-    setIntegrations((prev) =>
-      prev.map((integration) =>
-        integration.id === integrationId
-          ? { ...integration, status: 'connected' as const }
-          : integration
-      )
-    );
+  function handleWizardComplete() {
+    if (selectedIntegration) {
+      setIntegrations((prev) =>
+        prev.map((integration) =>
+          integration.id === selectedIntegration.id
+            ? { ...integration, status: 'connected' as const }
+            : integration
+        )
+      );
+    }
+    setWizardOpen(false);
+    setSelectedIntegration(null);
+  }
+
+  function handleWizardCancel() {
+    setWizardOpen(false);
+    setSelectedIntegration(null);
   }
 
   async function handleDisconnect(integrationId: string) {
@@ -249,6 +265,16 @@ export default function IntegrationsPage() {
           )}
         </div>
       </div>
+
+      {/* Integration Wizard */}
+      {wizardOpen && selectedIntegration && (
+        <IntegrationWizard
+          integrationId={selectedIntegration.id}
+          integrationName={selectedIntegration.name}
+          onComplete={handleWizardComplete}
+          onCancel={handleWizardCancel}
+        />
+      )}
     </div>
   );
 }
